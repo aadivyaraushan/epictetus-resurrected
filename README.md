@@ -481,6 +481,32 @@ LiveKit Cloud → AWS Fargate (above) → any host that runs a long-lived contai
 
 ---
 
+## The portrait
+
+The mark in the header is a detail of a real engraving of Epictetus from the
+title page of *L. Annaei Senecae philosophi Opera*, 1605 — he is bald, bearded,
+and holding his lamp. It is public domain, from Wikimedia Commons, and the
+original plate is committed at [`assets/portrait/epictetus-1605.png`](assets/portrait/epictetus-1605.png).
+
+It is not used as a picture. [`assets/portrait/make-mark.py`](assets/portrait/make-mark.py)
+turns it into white ink on nothing: every pixel is white, and how opaque it is
+depends on how dark that pixel was on the plate, so the paper disappears and the
+page background shows through between the engraved lines. Two crops come out of
+it — the whole medallion for the header, and the head alone for the browser tab,
+because the full medallion turns to mud at 32 pixels. Re-run the script to
+regenerate both in place:
+
+```bash
+python assets/portrait/make-mark.py
+```
+
+Tracing it to SVG also works and was tried first, but a 1605 engraving is
+thousands of separate strokes and every one becomes a path — 400KB against 150KB
+for the image, and worse looking small, because a hairline a vector either keeps
+whole or drops entirely can instead go half-transparent and fade into tone.
+
+---
+
 ## AI tools used
 
 Built with **Claude Code** (Opus 5) doing essentially all of the typing, under my

@@ -63,9 +63,19 @@ export function CallView({
   return (
     <>
       <header className="masthead">
-        <div>
-          <h1>Epictetus, Resurrected</h1>
-          <p className="sub">Nicopolis, c. 108 &mdash; and now</p>
+        <div className="brand">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="mark"
+            src="/epictetus.png"
+            alt=""
+            width={396}
+            height={560}
+          />
+          <div>
+            <h1>Epictetus, Resurrected</h1>
+            <p className="sub">Nicopolis, c. 108 &mdash; and now</p>
+          </div>
         </div>
         <span className="badge">
           {backend === "live" ? "live Notion" : "example notes"}

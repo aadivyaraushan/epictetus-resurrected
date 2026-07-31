@@ -31,11 +31,20 @@ export function StartScreen({
   return (
     <main className="shell">
       <header className="masthead">
-        <div>
-          <h1>Epictetus, Resurrected</h1>
-          <p className="sub">Nicopolis, c. 108 &mdash; and now</p>
+        <div className="brand">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="mark"
+            src="/epictetus.png"
+            alt=""
+            width={396}
+            height={560}
+          />
+          <div>
+            <h1>Epictetus, Resurrected</h1>
+            <p className="sub">Nicopolis, c. 108 &mdash; and now</p>
+          </div>
         </div>
-        <span className="badge">grounded in the Discourses</span>
       </header>
 
       <form className="start" onSubmit={submit}>
@@ -49,7 +58,10 @@ export function StartScreen({
           Speak to him about something that is actually bothering you. He will ask
           before he advises. Everything he says is checked against his own
           recorded teaching first, and the passages he drew on appear beside the
-          conversation as he speaks.
+          conversation as he speaks. He also keeps a written record of the call
+          as it goes &mdash; the way Arrian kept one of his &mdash; so sessions
+          are recorded, and you can ask him at any point to read back what he
+          has written.
         </p>
 
         <button className="primary" type="submit" disabled={connecting}>
@@ -93,12 +105,6 @@ export function StartScreen({
           </p>
         )}
       </form>
-
-      <footer className="controls">
-        <span className="status">
-          Your microphone is only used while a call is running.
-        </span>
-      </footer>
     </main>
   );
 }

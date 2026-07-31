@@ -64,6 +64,21 @@ button:disabled {
   padding-bottom: 14px;
 }
 
+/* the title and the portrait travel together, so the badge on the call screen
+   still gets pushed to the far side */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* A detail of the 1605 engraving, reduced to white on nothing, so the page
+   background shows through the paper and only the engraved lines are drawn. */
+.mark {
+  height: 88px;
+  width: auto;
+}
+
 .masthead h1 {
   margin: 0;
   font-size: clamp(20px, 3vw, 26px);
