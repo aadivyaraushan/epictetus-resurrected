@@ -50,7 +50,7 @@ export async function draftReview(
       model: "gpt-5.6-luna",
       store: false,
       max_output_tokens: 500,
-      reasoning: { effort: "minimal" },
+      reasoning: { effort: "high" },
       input: [
         {
           role: "system",

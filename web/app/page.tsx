@@ -21,7 +21,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { CallView } from "../call/live/call-view";
 import { ReviewScreen } from "../call/review/review-screen";
-import type { CallReviewSource, TranscriptTurn } from "../call/review/review-data";
+import type {
+  CallReviewSource,
+  ReferencedChapter,
+  TranscriptTurn,
+} from "../call/review/review-data";
 import { finishCallReview } from "../call/review/flow/call-review-flow";
 import {
   StartScreen,
@@ -44,7 +48,11 @@ export default function Page() {
   const [connecting, setConnecting] = useState(false);
   const [callFailure, setCallFailure] = useState<string | null>(null);
   const [notionFailure, setNotionFailure] = useState<string | null>(null);
-  const source = useRef<CallReviewSource>({ turns: [], capturedCommitment: "" });
+  const source = useRef<CallReviewSource>({
+    turns: [],
+    capturedCommitment: "",
+    chaptersReferenced: [],
+  });
 
   const loadNotion = useCallback(async () => {
     setNotionBusy(true);
@@ -77,7 +85,7 @@ export default function Page() {
   const startCall = useCallback(async () => {
     setConnecting(true);
     setCallFailure(null);
-    source.current = { turns: [], capturedCommitment: "" };
+    source.current = { turns: [], capturedCommitment: "", chaptersReferenced: [] };
     try {
       const response = await fetch("/api/token", { method: "POST" });
       const body = await response.json();
@@ -97,7 +105,11 @@ export default function Page() {
 
   const completeCall = useCallback(() => {
     setReview(
-      finishCallReview(source.current.turns, source.current.capturedCommitment),
+      finishCallReview(
+        source.current.turns,
+        source.current.capturedCommitment,
+        source.current.chaptersReferenced,
+      ),
     );
     leaveCall();
   }, [leaveCall]);
@@ -108,6 +120,10 @@ export default function Page() {
 
   const rememberCommitment = useCallback((text: string) => {
     source.current.capturedCommitment = text;
+  }, []);
+
+  const rememberChapters = useCallback((chapters: ReferencedChapter[]) => {
+    source.current.chaptersReferenced = chapters;
   }, []);
 
   const disconnectNotion = useCallback(async () => {
@@ -174,6 +190,7 @@ export default function Page() {
         reviewDestination={notion.connected ? notion.selectedDatabase.name : null}
         onTurnsChange={rememberTurns}
         onCommitment={rememberCommitment}
+        onChaptersChange={rememberChapters}
         onEndCall={completeCall}
       />
     </LiveKitRoom>

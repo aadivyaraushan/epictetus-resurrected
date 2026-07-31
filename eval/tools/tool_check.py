@@ -45,7 +45,7 @@ PROMPTS = [
 
 
 class _NoGrounding:
-    async def for_turn(self, text):
+    async def for_turn(self, text, prior_assistant=""):
         return ""
 
 

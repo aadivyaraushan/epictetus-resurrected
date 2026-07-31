@@ -17,7 +17,12 @@
  */
 
 import { useDataChannel } from "@livekit/components-react";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+
+import {
+  mergeReferencedChapters,
+  type ReferencedChapter,
+} from "../../review/review-data";
 
 const TOPIC = "epictetus.sources";
 
@@ -28,9 +33,14 @@ type Source = {
   score: number;
 };
 
-export function SourcePanel() {
+export function SourcePanel({
+  onChaptersChange,
+}: {
+  onChaptersChange: (chapters: ReferencedChapter[]) => void;
+}) {
   const [sources, setSources] = useState<Source[]>([]);
   const [everGrounded, setEverGrounded] = useState(false);
+  const chapters = useRef<ReferencedChapter[]>([]);
 
   const receive = useCallback((message: { payload: Uint8Array }) => {
     try {
@@ -38,11 +48,13 @@ export function SourcePanel() {
       const incoming: Source[] = Array.isArray(body?.sources) ? body.sources : [];
       setSources(incoming);
       if (incoming.length > 0) setEverGrounded(true);
+      chapters.current = mergeReferencedChapters(chapters.current, incoming);
+      onChaptersChange(chapters.current);
     } catch (error) {
       // A malformed message should cost the panel, not the call.
       console.error("[source-panel] could not read a sources message", error);
     }
-  }, []);
+  }, [onChaptersChange]);
 
   useDataChannel(TOPIC, receive);
 

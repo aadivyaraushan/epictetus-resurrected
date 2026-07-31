@@ -22,7 +22,7 @@ import { useCallback, useState } from "react";
 import { SourcePanel } from "./panels/source-panel";
 import { ToolActivity } from "./panels/tool-activity";
 import { Transcript } from "./transcript";
-import type { TranscriptTurn } from "../review/review-data";
+import type { ReferencedChapter, TranscriptTurn } from "../review/review-data";
 
 // LiveKit reports more states than a caller needs to distinguish. Anything not
 // named here is "connecting", which is what it looks like from the outside.
@@ -36,11 +36,13 @@ export function CallView({
   reviewDestination,
   onTurnsChange,
   onCommitment,
+  onChaptersChange,
   onEndCall,
 }: {
   reviewDestination: string | null;
   onTurnsChange: (turns: TranscriptTurn[]) => void;
   onCommitment: (text: string) => void;
+  onChaptersChange: (chapters: ReferencedChapter[]) => void;
   onEndCall: () => void;
 }) {
   const { state, audioTrack } = useVoiceAssistant();
@@ -89,7 +91,7 @@ export function CallView({
       <div className="call live-layout">
         <Transcript onTurnsChange={onTurnsChange} />
         <aside className="evidence-rail">
-          <SourcePanel />
+          <SourcePanel onChaptersChange={onChaptersChange} />
           <ToolActivity onCommitment={onCommitment} />
         </aside>
       </div>

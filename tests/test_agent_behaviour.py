@@ -18,7 +18,11 @@ import json
 import pytest
 
 from agent.grounding.turn_rag import Grounding, worth_searching
-from agent.retrieval.search.passage_search import Passage, Retrieval
+from agent.retrieval.search.passage_search import (
+    MIN_COSINE_TO_GROUND,
+    Passage,
+    Retrieval,
+)
 from agent.session.record import SessionRecord
 
 
@@ -32,6 +36,19 @@ class FakeSearch:
     def search(self, question: str) -> Retrieval:
         self.asked.append(question)
         return self.retrieval
+
+
+class FakeTurnFilter:
+    def __init__(self, decision: bool = True, error: Exception | None = None):
+        self.decision = decision
+        self.error = error
+        self.asked: list[tuple[str, str]] = []
+
+    async def should_retrieve(self, prior_assistant: str, current_user: str) -> bool:
+        self.asked.append((prior_assistant, current_user))
+        if self.error is not None:
+            raise self.error
+        return self.decision
 
 
 def grounded_result() -> Retrieval:
@@ -48,11 +65,25 @@ def grounded_result() -> Retrieval:
     return Retrieval(passages=[passage], best_cosine=0.51, grounded=True, reason="above gate")
 
 
+def ambiguous_result(score: float = 0.2451) -> Retrieval:
+    result = grounded_result()
+    return Retrieval(
+        passages=result.passages,
+        best_cosine=score,
+        grounded=True,
+        reason="inside Luna range",
+    )
+
+
 def ungrounded_result() -> Retrieval:
     return Retrieval(passages=[], best_cosine=0.11, grounded=False, reason="below gate")
 
 
 # --- 1. whether a turn gets grounded ----------------------------------------
+
+
+def test_the_new_cosine_floor_is_the_highest_value_that_keeps_turn_three():
+    assert MIN_COSINE_TO_GROUND == 0.2315
 
 
 @pytest.mark.parametrize(
@@ -97,6 +128,109 @@ async def test_an_ungrounded_turn_adds_nothing_to_the_prompt():
     """Below the gate, the model is handed no passages at all."""
     grounding = Grounding(FakeSearch(ungrounded_result()))
     assert await grounding.for_turn("hey, can you hear me?") == ""
+
+
+@pytest.mark.asyncio
+async def test_luna_rejects_an_acknowledgment_inside_the_new_score_range():
+    published: list[dict] = []
+
+    async def publish(payload: str, topic: str) -> None:
+        published.append(json.loads(payload))
+
+    turn_filter = FakeTurnFilter(decision=False)
+    grounding = Grounding(
+        FakeSearch(ambiguous_result()),
+        publish=publish,
+        turn_filter=turn_filter,
+    )
+
+    block = await grounding.for_turn(
+        "That helps. Okay. All right. Thanks.",
+        prior_assistant="Does the waiting feel less heavy now?",
+    )
+
+    assert block == ""
+    assert turn_filter.asked == [
+        ("Does the waiting feel less heavy now?", "That helps. Okay. All right. Thanks.")
+    ]
+    assert published == [{"sources": []}]
+
+
+@pytest.mark.asyncio
+async def test_exact_lower_boundary_is_checked_by_luna():
+    turn_filter = FakeTurnFilter(decision=True)
+    grounding = Grounding(
+        FakeSearch(ambiguous_result(score=0.2315)),
+        turn_filter=turn_filter,
+    )
+
+    block = await grounding.for_turn(
+        "I think I will walk away.",
+        prior_assistant="Which choice is actually yours?",
+    )
+
+    assert "Of things some are in our power" in block
+    assert len(turn_filter.asked) == 1
+
+
+@pytest.mark.asyncio
+async def test_score_at_old_gate_bypasses_luna():
+    turn_filter = FakeTurnFilter(error=AssertionError("Luna should not be called"))
+    grounding = Grounding(
+        FakeSearch(ambiguous_result(score=0.36)),
+        turn_filter=turn_filter,
+    )
+
+    block = await grounding.for_turn("How should I handle this decision?")
+
+    assert "Of things some are in our power" in block
+    assert turn_filter.asked == []
+
+
+@pytest.mark.asyncio
+async def test_score_below_new_floor_bypasses_luna():
+    turn_filter = FakeTurnFilter(error=AssertionError("Luna should not be called"))
+    grounding = Grounding(FakeSearch(ungrounded_result()), turn_filter=turn_filter)
+
+    assert await grounding.for_turn("hey can you hear me now") == ""
+    assert turn_filter.asked == []
+
+
+@pytest.mark.asyncio
+async def test_production_luna_failure_is_logged_and_keeps_the_panel_empty(caplog):
+    published: list[dict] = []
+
+    async def publish(payload: str, topic: str) -> None:
+        published.append(json.loads(payload))
+
+    turn_filter = FakeTurnFilter(error=TimeoutError("Luna timed out"))
+    grounding = Grounding(
+        FakeSearch(ambiguous_result()),
+        publish=publish,
+        turn_filter=turn_filter,
+        hide_filter_errors=True,
+    )
+
+    with caplog.at_level("ERROR"):
+        block = await grounding.for_turn("I think I will walk away")
+
+    assert block == ""
+    assert published == [{"sources": []}]
+    assert "Luna filter failed" in caplog.text
+    assert "showing no sources" in caplog.text
+
+
+@pytest.mark.asyncio
+async def test_development_luna_failure_stops_the_request():
+    turn_filter = FakeTurnFilter(error=TimeoutError("Luna timed out"))
+    grounding = Grounding(
+        FakeSearch(ambiguous_result()),
+        turn_filter=turn_filter,
+        hide_filter_errors=False,
+    )
+
+    with pytest.raises(TimeoutError, match="Luna timed out"):
+        await grounding.for_turn("I think I will walk away")
 
 
 @pytest.mark.asyncio
@@ -176,6 +310,7 @@ def test_the_agent_exposes_exactly_the_two_call_tools():
 
 def test_the_agent_cannot_search_private_notion_pages():
     from agent.persona.epictetus_agent import Epictetus
+
     assert not hasattr(Epictetus, "search_my_notion")
 
 
@@ -196,7 +331,7 @@ def test_the_session_log_starts_empty():
 
 
 def test_a_written_entry_is_numbered_so_he_can_say_it_out_loud():
-    """"That is the third thing I have written down" is checkable by a listener
+    """ "That is the third thing I have written down" is checkable by a listener
     in a way that "I have written it down" is not."""
     record = SessionRecord()
     assert record.write("reflection", "first")["entry"] == 1

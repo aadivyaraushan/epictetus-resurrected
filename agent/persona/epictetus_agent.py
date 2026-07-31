@@ -47,9 +47,7 @@ class Epictetus(Agent):
 
     # --- retrieval: every turn, not by his choice ---------------------------
 
-    async def on_user_turn_completed(
-        self, turn_ctx: ChatContext, new_message: ChatMessage
-    ) -> None:
+    async def on_user_turn_completed(self, turn_ctx: ChatContext, new_message: ChatMessage) -> None:
         """Put his own recorded teaching in front of him before he answers.
 
         LiveKit calls this after the caller stops speaking and before the model
@@ -58,7 +56,18 @@ class Epictetus(Agent):
         gets added at all; on a turn it declines, this adds nothing and he
         answers as himself.
         """
-        block = await self._grounding.for_turn(new_message.text_content or "")
+        prior_assistant = next(
+            (
+                item.text_content or ""
+                for item in reversed(turn_ctx.items)
+                if isinstance(item, ChatMessage) and item.role == "assistant"
+            ),
+            "",
+        )
+        block = await self._grounding.for_turn(
+            new_message.text_content or "",
+            prior_assistant=prior_assistant,
+        )
         if block:
             turn_ctx.add_message(role="assistant", content=block)
 
@@ -81,9 +90,7 @@ class Epictetus(Agent):
         return found
 
     @function_tool
-    async def write_to_session_log(
-        self, context: RunContext, note: str, kind: EntryKind
-    ) -> str:
+    async def write_to_session_log(self, context: RunContext, note: str, kind: EntryKind) -> str:
         """Write one line into the record you are keeping of this conversation.
 
         Keep it as you go, not only at the end. Write a line whenever something
@@ -109,9 +116,7 @@ class Epictetus(Agent):
 
     # --- telling the browser what he just did -------------------------------
 
-    async def _say_doing(
-        self, action: str, detail: str, kind: EntryKind | None = None
-    ) -> None:
+    async def _say_doing(self, action: str, detail: str, kind: EntryKind | None = None) -> None:
         if self._publish is None:
             return
         try:

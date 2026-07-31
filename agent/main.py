@@ -29,6 +29,8 @@ import os
 import sys
 from pathlib import Path
 
+from openai import AsyncOpenAI as OpenAIClient
+
 from dotenv import load_dotenv
 from livekit.agents import (
     AgentServer,
@@ -44,6 +46,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 from agent.grounding.turn_rag import Grounding  # noqa: E402
+from agent.grounding.turn_filter import LunaTurnFilter  # noqa: E402
 from agent.persona.epictetus_agent import Epictetus  # noqa: E402
 from agent.persona.voice_and_words import DEFAULT_VOICE_ENV, GREETING  # noqa: E402
 from agent.retrieval.search.index_store import load_index  # noqa: E402
@@ -120,10 +123,17 @@ def build_llm() -> openai.LLM:
     return openai.LLM(model=LLM_MODEL, temperature=0.75, api_key=_key("OPENAI_API_KEY"))
 
 
+def build_turn_filter() -> LunaTurnFilter:
+    return LunaTurnFilter(client=OpenAIClient(api_key=_key("OPENAI_API_KEY"), max_retries=0))
+
+
+def luna_errors_are_fatal() -> bool:
+    """Local failures must be visible; deployed workers keep the call alive."""
+    return "start" not in sys.argv[1:]
+
+
 def build_tts() -> elevenlabs.TTS:
-    return elevenlabs.TTS(
-        model=TTS_MODEL, voice_id=_voice_id(), api_key=_key("ELEVENLABS_API_KEY")
-    )
+    return elevenlabs.TTS(model=TTS_MODEL, voice_id=_voice_id(), api_key=_key("ELEVENLABS_API_KEY"))
 
 
 @server.rtc_session(agent_name="epictetus")
@@ -146,7 +156,16 @@ async def entrypoint(ctx: JobContext) -> None:
         await ctx.room.local_participant.publish_data(payload, topic=topic, reliable=True)
 
     search = ctx.proc.userdata.get("search")
-    grounding = Grounding(search, publish=publish) if search else _NoGrounding()
+    grounding = (
+        Grounding(
+            search,
+            publish=publish,
+            turn_filter=build_turn_filter(),
+            hide_filter_errors=not luna_errors_are_fatal(),
+        )
+        if search
+        else _NoGrounding()
+    )
 
     session = AgentSession(
         stt=build_stt(),
@@ -173,7 +192,7 @@ async def entrypoint(ctx: JobContext) -> None:
 class _NoGrounding:
     """Stands in when the index would not load. He talks; nothing is cited."""
 
-    async def for_turn(self, text: str) -> str:
+    async def for_turn(self, text: str, prior_assistant: str = "") -> str:
         return ""
 
 

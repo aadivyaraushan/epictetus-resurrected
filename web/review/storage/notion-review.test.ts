@@ -10,6 +10,10 @@ describe("completed Notion review", () => {
         summary: "The user focused on what they can control.",
         nextStep: "Send the outline tomorrow morning.",
         transcript: "You: I will send it.\nEpictetus: At what time?",
+        chaptersReferenced: [
+          { citation: "Book 2, Chapter 1", title: "On Tranquillity" },
+          { citation: "Book 4, Chapter 1", title: "About Freedom" },
+        ],
       },
       { id: "review-source", name: "Evening Reviews", titleProperty: "Reflection" },
     );
@@ -23,6 +27,8 @@ describe("completed Notion review", () => {
     expect(JSON.stringify(page.children)).toContain("Summary");
     expect(JSON.stringify(page.children)).toContain("Next step");
     expect(JSON.stringify(page.children)).toContain("Transcript");
+    expect(JSON.stringify(page.children)).toContain("Chapters referenced");
+    expect(JSON.stringify(page.children)).toContain("Book 4, Chapter 1 — About Freedom");
     expect(JSON.stringify(page.children)).toContain("Send the outline tomorrow morning.");
   });
 

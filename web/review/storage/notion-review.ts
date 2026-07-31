@@ -1,10 +1,12 @@
 import type { SelectedNotionDatabase } from "../../notion/connection/session/session";
+import type { ReferencedChapter } from "../../call/review/review-data";
 
 export type CompletedReview = {
   title: string;
   summary: string;
   nextStep: string;
   transcript: string;
+  chaptersReferenced: ReferencedChapter[];
 };
 
 type RichText = { type: "text"; text: { content: string } };
@@ -45,6 +47,10 @@ export function buildReviewPage(
   review: CompletedReview,
   database: SelectedNotionDatabase,
 ) {
+  const chaptersReferenced = review.chaptersReferenced ?? [];
+  const chapterList = chaptersReferenced.length
+    ? chaptersReferenced.map((chapter) => `${chapter.citation} — ${chapter.title}`).join("\n")
+    : "None recorded during this call.";
   return {
     parent: { data_source_id: database.id },
     properties: {
@@ -57,6 +63,8 @@ export function buildReviewPage(
       ...paragraphs(review.summary),
       heading("Next step"),
       ...paragraphs(review.nextStep),
+      heading("Chapters referenced"),
+      ...paragraphs(chapterList),
       heading("Transcript"),
       ...paragraphs(review.transcript),
     ],

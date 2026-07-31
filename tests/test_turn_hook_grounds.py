@@ -31,10 +31,10 @@ class _FakeGrounding:
 
     def __init__(self, block: str) -> None:
         self._block = block
-        self.asked: list[str] = []
+        self.asked: list[tuple[str, str]] = []
 
-    async def for_turn(self, text: str) -> str:
-        self.asked.append(text)
+    async def for_turn(self, text: str, prior_assistant: str = "") -> str:
+        self.asked.append((text, prior_assistant))
         return self._block
 
 
@@ -59,7 +59,7 @@ async def test_passage_reaches_the_model_on_a_grounded_turn():
         ctx, ChatMessage(role="user", content=["I cannot stop worrying about my job"])
     )
 
-    assert grounding.asked == ["I cannot stop worrying about my job"]
+    assert grounding.asked == [("I cannot stop worrying about my job", "")]
     added = " ".join(str(item.content) for item in ctx.items)
     assert "some things are up to us" in added
 
@@ -86,7 +86,25 @@ async def test_an_empty_turn_does_not_crash_the_call():
 
     await agent.on_user_turn_completed(ctx, ChatMessage(role="user", content=[]))
 
-    assert grounding.asked == [""]
+    assert grounding.asked == [("", "")]
+
+
+@pytest.mark.asyncio
+async def test_the_hook_gives_luna_only_the_latest_epictetus_reply():
+    agent, grounding = _agent("")
+    ctx = ChatContext.empty()
+    ctx.add_message(role="assistant", content="An older reply")
+    ctx.add_message(role="user", content="An older user turn")
+    ctx.add_message(role="assistant", content="Does the waiting feel less heavy now?")
+
+    await agent.on_user_turn_completed(
+        ctx,
+        ChatMessage(role="user", content=["That helps. Okay. All right. Thanks."]),
+    )
+
+    assert grounding.asked == [
+        ("That helps. Okay. All right. Thanks.", "Does the waiting feel less heavy now?")
+    ]
 
 
 def test_the_hook_matches_the_signature_livekit_calls():
