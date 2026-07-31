@@ -17,24 +17,39 @@ the citing and he does the talking.
 > | | |
 > |---|---|
 > | Corpus, index, retrieval, evaluation | **done and measured** |
-> | Agent worker (speech, language model, voice, 4 tools, RAG) | **done, 35 tests pass** |
+> | Agent worker (speech, language model, voice, 3 tools, RAG) | **done, 45 tests pass** |
 > | Web front end + token endpoint | **done, 18 tests pass, deployed** |
 > | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
 > | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
+> | Spoken call, end to end | **done** — see the transcript of the gate below |
 > | Video | **not yet** |
 >
-> **What has been verified with the real keys:** the worker registers with
-> LiveKit as `agent_name: epictetus`; the production token endpoint mints a
-> token with a unique room, minimal grants and agent dispatch; speech works in
-> both directions — a sentence spoken by ElevenLabs and fed back to Deepgram
-> came back word for word at confidence 1.000; and the persona holds in text,
-> with all four tools firing, nothing cited out loud, and no philosophy at
-> "hello".
+> **A real spoken call has now been made through the deployed link**, and the
+> retrieval gate behaved on live speech exactly as it did on the test set. Four
+> turns, and the log for each one:
 >
-> **What has not:** a full spoken call through a microphone, end to end. Every
-> component of it has been exercised, but not the whole thing at once, because
-> the verification here had no microphone. Everything claimed with a number was
-> measured; everything not run says so.
+> | turn | best cosine | what happened |
+> |---|---|---|
+> | 1 | 0.318 | below 0.36 — answered ungrounded |
+> | 2 | 0.379 | grounded on Book 2 Ch. 1 and Book 1 Ch. 27 |
+> | 3 | 0.388 | grounded on Book 2 Ch. 5, Book 2 Ch. 1, Book 1 Ch. 28 |
+> | 4 | 0.227 | below 0.36 — answered ungrounded |
+>
+> That is the whole design working in the open: retrieval ran on every turn
+> without being asked, and the threshold picked out the two turns that were
+> really questions about how to live from the two that were not.
+>
+> **Also verified with the real keys:** the worker registers with LiveKit as
+> `agent_name: epictetus`; the production token endpoint mints a token with a
+> unique room, minimal grants and agent dispatch; a sentence spoken by ElevenLabs
+> and fed back to Deepgram came back word for word at confidence 1.000; and the
+> persona holds, with the tools firing, nothing cited out loud, and no philosophy
+> at "hello".
+>
+> **What is still open:** the worker runs on a laptop, so the link is only live
+> while that laptop is — see *Deploying* for the one command that fixes it. And
+> the video is not recorded. Everything claimed with a number was measured;
+> everything not run says so.
 
 ---
 
@@ -59,10 +74,9 @@ the citing and he does the talking.
           │                             │                  │  NOT a tool          │   (in image,
           │  POST /api/token            │                  │          +           │    in repo)
           └─────────────────────────────┘                  │  ┌────────────────┐  │
-             Vercel serverless function                    │  │ 4 TOOLS        │  │
+             Vercel serverless function                    │  │ 3 TOOLS        │  │
              signs the JWT with the LiveKit                │  │ look_up_modern │──┼──> web
-             API secret (server-side only)                 │  │ read_calendar  │──┼──> GCal
-                                                           │  │ read_notes     │──┼──> Notion
+             API secret (server-side only)                 │  │ search_notion  │──┼──> Notion
                                                            │  │ write_journal  │──┼──> Notion
                                                            │  └────────────────┘  │
                                                            └──────────────────────┘
@@ -180,7 +194,7 @@ It is now **0.36** — the highest value that still rejects every small-talk tur
 It grounds 61 of the 65 real questions across both sets. Headroom is about 0.006
 in each direction, which is thin, and the honest reason to accept it is that both
 failure modes are mild: ground a tool turn by mistake and the model gets passages
-it ignores while it calls the calendar; miss a real question and he answers from
+it ignores while it searches the notes; miss a real question and he answers from
 his own knowledge, which for this particular character is not nothing.
 
 An idea that did **not** work, recorded because it sounds right: gating on how
@@ -203,43 +217,57 @@ pool size, the number kept, and the per-chapter cap were never swept. Pushing
 
 ## Tools
 
-The brief requires one. There are four, and retrieval is deliberately **not**
+The brief requires one. There are three, and retrieval is deliberately **not**
 among them (see above).
 
 | Tool | Does | Fits the story because |
 |---|---|---|
 | `look_up_modern_thing` | web search | he has been dead 1,900 years and nothing is familiar |
-| `read_my_calendar` | Google Calendar | he asks what is actually on your plate |
-| `read_my_notes` | Notion | the same, for what you have written down |
+| `search_my_notion` | Notion search — free-text, then reads the page it found | he asks what you have written down when nobody was listening |
 | `write_to_journal` | Notion write-back | Stoics ended the day writing down what they resolved |
 
-All four return prose, not JSON, because the model is about to say the result out
-loud. All four publish a line to the browser before they run, so a second of
+All three return prose, not JSON, because the model is about to say the result out
+loud. All three publish a line to the browser before they run, so a second of
 silence reads as him doing something rather than as a broken call.
+
+**Notes are searched, not read from a fixed page.** `search_my_notion` takes
+whatever the conversation has turned to and calls Notion's `POST /v1/search`,
+which needs no database id and reaches any page shared with the integration; a
+second call reads that page's blocks. The write is the exception — it appends to
+one pinned page id, because a bad title match on a *write* puts text somewhere
+the caller did not expect, which is worse than a read that simply misses.
+
+**Google Calendar was cut.** An earlier version had a fourth tool reading my
+calendar. It was the most setup in the project (OAuth consent screens, redirect
+URIs, a verification flow) for the least character: Epictetus asking what you
+have *written down* is closer to the Stoic evening review than Epictetus reading
+your meeting schedule. Cutting it removed the only OAuth here.
 
 ### The personal tools have two backends, and why one is behind a passphrase
 
-My calendar and notes are useless to a grader, and pointing a public URL at my
-real accounts is worse than useless. So each personal tool sits behind one
-interface with two implementations:
+My notes are useless to a grader, and pointing a public URL at my real account is
+worse than useless. So each personal tool sits behind one interface with two
+implementations:
 
-- **demo** — a seeded, plausible hard week (a performance review, a call to a
-  parent about test results, a dinner with a father after an argument). This is
-  what every visitor gets, and it is what the demo was always going to show.
-- **live** — my real calendar and notes.
+- **demo** — seeded, plausible notes from a hard week (a performance review
+  being rehearsed at 3am, a friend who only ever asks for favours, a parent's
+  test results). This is what every visitor gets, and it is what the demo was
+  always going to show.
+- **live** — my real Notion.
 
 **The switch is a passphrase, not a name.** The first design compared the
 caller's display name to mine. That is not a credential: this project is
 described in a public README and a public video, and the link stays up for two
-weeks, so anyone who read either could type my name and read my real calendar.
+weeks, so anyone who read either could type my name and read my real notes.
 
 Instead the passphrase is entered on the start screen, sent to the Vercel token
 endpoint, and compared **there** against an environment variable, in constant
 time, hashed first so the comparison does not leak length. The verdict is written
 into the participant's **signed** access token, which the worker reads and the
 caller cannot forge. Demo is the default and every failure path — no passphrase,
-wrong passphrase, missing credential, expired OAuth grant, API timeout mid-call —
-lands on demo. A grader never sees an error; they see a plausible week.
+wrong passphrase, missing credential, a page never shared with the integration,
+API timeout mid-call — lands on demo. A grader never sees an error; they see
+plausible notes.
 
 It fails closed: if the server has no passphrase configured, the live backend is
 unreachable rather than unlocked by an empty string. That is tested.
@@ -396,9 +424,10 @@ LiveKit Cloud → AWS Fargate (above) → any host that runs a long-lived contai
 
 ## Limitations
 
-1. **No live call has been completed.** Speech-to-text, text-to-speech and web
-   search keys are unset. Every claim about retrieval is measured; no claim about
-   how he *sounds* has been verified.
+1. **The worker runs wherever someone started it**, and right now that is a
+   laptop. A spoken call has been completed end to end, but the link is only live
+   while that process is. *Deploying* has the one command that moves it to
+   LiveKit Cloud.
 2. **"my flight got cancelled and I lost the whole day"** scores 0.19 and goes
    ungrounded — far below every other real question. Modern concrete nouns with no
    abstract vocabulary are the worst case here, and no threshold that also
@@ -440,7 +469,7 @@ direction. Worth naming specifically, since the brief asks:
 ```
 agent/           the worker
   main.py          pipeline: speech, model, voice, and the session
-  persona/         who he is, and the four tools
+  persona/         who he is, and the three tools
   grounding/       the per-turn retrieval hook
   retrieval/       PDF parsing, chunking, hybrid search, the gate
   tools/           web search; personal tools with demo and live backends

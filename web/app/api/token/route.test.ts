@@ -6,7 +6,7 @@
  * same secret LiveKit would use, because the thing that matters is not what the
  * decision was but what ended up inside the signed token. A correct decision
  * written into the wrong field would pass every test in backend-choice.test.ts
- * and still hand a stranger a live calendar.
+ * and still hand a stranger live notes.
  *
  * No network: minting and verifying a token is local signing, so this costs
  * nothing and runs in milliseconds.

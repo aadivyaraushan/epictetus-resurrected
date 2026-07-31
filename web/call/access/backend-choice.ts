@@ -14,7 +14,7 @@
  * name against the author's. That is not a credential: this project is described
  * in a public README and a public video, and the deployed link stays up for two
  * weeks, so anyone who read either could type that name and reach a real
- * calendar and real notes. A secret compared on the server is the smallest thing
+ * Notion. A secret compared on the server is the smallest thing
  * that actually works.
  *
  * Demo is the default and every failure path leads to it. Nothing here throws.

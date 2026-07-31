@@ -68,7 +68,7 @@ export function CallView({
           <p className="sub">Nicopolis, c. 108 &mdash; and now</p>
         </div>
         <span className="badge">
-          {backend === "live" ? "live calendar & notes" : "example week"}
+          {backend === "live" ? "live Notion" : "example notes"}
         </span>
       </header>
 

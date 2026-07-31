@@ -77,10 +77,11 @@ export function StartScreen({
                 autoComplete="off"
               />
               <p className="hint">
-                Leave this empty. Without it, his tools read a seeded example week
-                &mdash; which is what a visitor is meant to see. The passphrase
-                only exists so the author can point the same deployed link at a
-                real calendar without putting anyone else&rsquo;s link near it.
+                Leave this empty. Without it, his tools read a seeded set of
+                notes &mdash; which is what a visitor is meant to see. The
+                passphrase only exists so the author can point the same deployed
+                link at real notes without putting anyone else&rsquo;s link near
+                it.
               </p>
             </>
           )}

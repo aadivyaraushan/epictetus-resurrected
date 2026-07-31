@@ -4,7 +4,7 @@ Three things in the worker make a decision that can be wrong in a way nobody
 would notice on a call:
 
   1. Which personal backend a caller gets. Getting this wrong means a stranger
-     on a public link reads my real calendar (plan section 4).
+     on a public link reads my real notes (plan section 4).
   2. Whether a turn gets grounded in the Discourses. Getting this wrong means
      Epictetus recites philosophy at "hello" (plan sections 3 and 5).
   3. What the demo backend says. It has to look like a real week, because the
@@ -230,13 +230,27 @@ def test_nothing_reads_a_calendar_any_more():
 def test_the_demo_week_is_the_same_every_time():
     """A grader watching the video and a grader on the link should see the same
     notes, or the demo looks broken rather than seeded."""
-    assert DemoLife().notes() == DemoLife().notes()
+    assert DemoLife().search_notes("work") == DemoLife().search_notes("work")
 
 
 def test_the_demo_notes_read_like_a_person_wrote_them():
-    notes = DemoLife().notes()
+    notes = DemoLife().search_notes("review")
     assert notes, "demo notes cannot be empty"
     assert all(len(n["text"].split()) >= 5 for n in notes)
+
+
+def test_searching_the_demo_notes_narrows_them():
+    """If every query returned the whole set, the search tool would be a fixed
+    read wearing a query parameter."""
+    everything = DemoLife().search_notes("")
+    about_sophia = DemoLife().search_notes("Sophia")
+    assert len(about_sophia) < len(everything)
+    assert all("sophia" in n["text"].lower() for n in about_sophia)
+
+
+def test_a_demo_search_that_matches_nothing_still_says_something():
+    """An empty answer reads as a broken tool on a call, not an honest miss."""
+    assert DemoLife().search_notes("xylophone quarterly velocipede") == DemoLife().search_notes("")
 
 
 def test_a_journal_entry_can_be_written_and_read_back():

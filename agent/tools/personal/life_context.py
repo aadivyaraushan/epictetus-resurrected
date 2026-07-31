@@ -1,11 +1,11 @@
 """Where Epictetus's questions about your life get answered from.
 
-Plan section 4. Three of the four tools read or write personal data, and the
-grader is not me: my calendar and my Notion return nothing useful to them, and
-pointing a public link at my real accounts would be handing a company access to
-both. So each personal tool sits behind one interface with two implementations
--- live (my accounts) and a seeded demo week that everyone else gets. The agent
-cannot tell which it is talking to.
+Plan section 4. Two of the three tools read or write personal data, and the
+grader is not me: my Notion returns nothing useful to them, and pointing a
+public link at my real account would be handing a company access to it. So each
+personal tool sits behind one interface with two implementations -- live (my
+account) and seeded demo notes that everyone else gets. The agent cannot tell
+which it is talking to.
 
 Input:  the caller's participant record from LiveKit, and whether live
         credentials are configured at all
@@ -15,7 +15,7 @@ How the switch works, and why it is a secret rather than a name. The first idea
 was to check the caller's display name against mine. That is not safe: this
 design is described in a public README and a public video, and the link stays
 live for two weeks, so anyone who read either could type my name in and read my
-real calendar. A guessable string is not a credential.
+real notes. A guessable string is not a credential.
 
 Instead the caller types a passphrase on the start screen. The token endpoint
 compares it against an environment variable and writes the verdict into the

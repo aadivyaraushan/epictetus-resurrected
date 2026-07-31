@@ -41,10 +41,7 @@ class _FakeGrounding:
 class _FakeLife:
     name = "demo"
 
-    def calendar(self, days):
-        return []
-
-    def notes(self):
+    def search_notes(self, query):
         return []
 
 

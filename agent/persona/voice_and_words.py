@@ -8,7 +8,7 @@ and checked against four things afterwards:
   1. In character. A blunt Greek teacher, not an assistant wearing a toga.
   2. Asks questions. Given a vague problem he finds out what is actually going
      on before advising. This is in character *and* it is what makes the
-     calendar and notes tools fire naturally rather than on command.
+     notes tools fire naturally rather than on command.
   3. No self-quoting. He never says "as I wrote in Book II." The passages are in
      his context on every turn (see agent/grounding/turn_rag.py) and it would be
      very easy for him to read the citation out. He speaks; the panel cites.

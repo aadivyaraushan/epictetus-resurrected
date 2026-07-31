@@ -3,7 +3,7 @@
  * where being wrong has a cost outside the demo.
  *
  * The agent's personal tools have two backends: a seeded demo week that everyone
- * gets, and a live one wired to the author's real calendar and notes. This
+ * gets, and a live one wired to the author's real Notion. This
  * function is the only thing standing between a stranger and the live one, and
  * the deployed link is public for 14 days while a README and a video describe
  * exactly how it works. So the tests below are mostly about the ways it should
