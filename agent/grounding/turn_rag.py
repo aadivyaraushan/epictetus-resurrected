@@ -44,7 +44,7 @@ import json
 import logging
 from typing import Awaitable, Callable, Protocol
 
-from agent.retrieval.search.passage_search import Retrieval
+from agent.retrieval.search.passage_search import MIN_COSINE_TO_GROUND, Retrieval
 
 log = logging.getLogger("agent.grounding")
 
@@ -70,6 +70,8 @@ class TurnFilter(Protocol):
 
 
 Publisher = Callable[[str, str], Awaitable[None]]
+
+RAG_METHOD = "vector + BM25, merged by reciprocal rank fusion"
 
 
 def worth_searching(text: str) -> bool:
@@ -103,7 +105,13 @@ class Grounding:
 
         if not worth_searching(text):
             log.debug("[agent.grounding] %r is too short to search; skipping", text)
-            await self._show([])
+            await self._show(
+                [],
+                status="skipped",
+                method="word-count check before retrieval",
+                decision="turn too short",
+                reason=f"fewer than {MIN_WORDS_TO_SEARCH} words",
+            )
             return ""
 
         try:
@@ -112,12 +120,25 @@ class Grounding:
             # A broken index must not end the call. He answers from the persona
             # alone, ungrounded, and the panel shows nothing -- which is honest.
             log.exception("[agent.grounding] retrieval failed; answering ungrounded")
-            await self._show([])
+            await self._show(
+                [],
+                status="error",
+                method=RAG_METHOD,
+                decision="retrieval error",
+                reason="retrieval failed; answered without passages",
+            )
             return ""
 
         if not retrieval.grounded:
             log.info("[agent.grounding] not grounding this turn: %s", retrieval.reason)
-            await self._show([])
+            await self._show(
+                [],
+                status="rejected",
+                method=RAG_METHOD,
+                decision="below minimum cosine",
+                reason=retrieval.reason,
+                best_cosine=retrieval.best_cosine,
+            )
             return ""
 
         if retrieval.best_cosine < LUNA_FILTER_MAX_COSINE:
@@ -141,7 +162,14 @@ class Grounding:
                     "showing no sources because production error hiding is enabled",
                     retrieval.best_cosine,
                 )
-                await self._show([])
+                await self._show(
+                    [],
+                    status="error",
+                    method=RAG_METHOD,
+                    decision="Luna error",
+                    reason="Luna timed out or failed; answered without passages",
+                    best_cosine=retrieval.best_cosine,
+                )
                 return ""
             else:
                 log.info(
@@ -150,18 +178,44 @@ class Grounding:
                     retrieval.best_cosine,
                 )
                 if not should_retrieve:
-                    await self._show([])
+                    await self._show(
+                        [],
+                        status="rejected",
+                        method=RAG_METHOD,
+                        decision="Luna rejected",
+                        reason=retrieval.reason,
+                        best_cosine=retrieval.best_cosine,
+                    )
                     return ""
+                decision = "Luna approved"
+        else:
+            decision = "accepted automatically"
 
         log.info(
             "[agent.grounding] grounded on %s (best cosine %.3f)",
             [p.citation for p in retrieval.passages],
             retrieval.best_cosine,
         )
-        await self._show([p.as_panel_entry() for p in retrieval.passages])
+        await self._show(
+            [p.as_panel_entry() for p in retrieval.passages],
+            status="grounded",
+            method=RAG_METHOD,
+            decision=decision,
+            reason=retrieval.reason,
+            best_cosine=retrieval.best_cosine,
+        )
         return retrieval.prompt_block()
 
-    async def _show(self, sources: list[dict]) -> None:
+    async def _show(
+        self,
+        sources: list[dict],
+        *,
+        status: str,
+        method: str,
+        decision: str,
+        reason: str,
+        best_cosine: float | None = None,
+    ) -> None:
         """Update the source panel -- including clearing it.
 
         Clearing matters as much as filling. A panel left showing the last
@@ -171,6 +225,23 @@ class Grounding:
         if self._publish is None:
             return
         try:
-            await self._publish(json.dumps({"sources": sources}), self.PANEL_TOPIC)
+            await self._publish(
+                json.dumps(
+                    {
+                        "sources": sources,
+                        "rag": {
+                            "status": status,
+                            "method": method,
+                            "bestCosine": best_cosine,
+                            "minimumCosine": MIN_COSINE_TO_GROUND,
+                            "automaticCosine": LUNA_FILTER_MAX_COSINE,
+                            "decision": decision,
+                            "reason": reason,
+                            "selected": len(sources),
+                        },
+                    }
+                ),
+                self.PANEL_TOPIC,
+            )
         except Exception:
             log.exception("[agent.grounding] could not update the source panel")

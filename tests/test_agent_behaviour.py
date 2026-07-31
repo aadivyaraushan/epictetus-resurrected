@@ -153,7 +153,21 @@ async def test_luna_rejects_an_acknowledgment_inside_the_new_score_range():
     assert turn_filter.asked == [
         ("Does the waiting feel less heavy now?", "That helps. Okay. All right. Thanks.")
     ]
-    assert published == [{"sources": []}]
+    assert published == [
+        {
+            "sources": [],
+            "rag": {
+                "status": "rejected",
+                "method": "vector + BM25, merged by reciprocal rank fusion",
+                "bestCosine": 0.2451,
+                "minimumCosine": 0.2315,
+                "automaticCosine": 0.36,
+                "decision": "Luna rejected",
+                "reason": "inside Luna range",
+                "selected": 0,
+            },
+        }
+    ]
 
 
 @pytest.mark.asyncio
@@ -215,7 +229,21 @@ async def test_production_luna_failure_is_logged_and_keeps_the_panel_empty(caplo
         block = await grounding.for_turn("I think I will walk away")
 
     assert block == ""
-    assert published == [{"sources": []}]
+    assert published == [
+        {
+            "sources": [],
+            "rag": {
+                "status": "error",
+                "method": "vector + BM25, merged by reciprocal rank fusion",
+                "bestCosine": 0.2451,
+                "minimumCosine": 0.2315,
+                "automaticCosine": 0.36,
+                "decision": "Luna error",
+                "reason": "Luna timed out or failed; answered without passages",
+                "selected": 0,
+            },
+        }
+    ]
     assert "Luna filter failed" in caplog.text
     assert "showing no sources" in caplog.text
 
@@ -259,6 +287,16 @@ async def test_the_source_panel_is_told_what_was_used():
     assert topic == Grounding.PANEL_TOPIC
     assert body["sources"][0]["citation"] == "Book 1, Chapter 1"
     assert body["sources"][0]["text"].startswith("Of things some are")
+    assert body["rag"] == {
+        "status": "grounded",
+        "method": "vector + BM25, merged by reciprocal rank fusion",
+        "bestCosine": 0.51,
+        "minimumCosine": 0.2315,
+        "automaticCosine": 0.36,
+        "decision": "accepted automatically",
+        "reason": "above gate",
+        "selected": 1,
+    }
 
 
 @pytest.mark.asyncio
@@ -274,7 +312,48 @@ async def test_the_panel_is_cleared_when_a_turn_is_not_grounded():
     grounding = Grounding(FakeSearch(ungrounded_result()), publish=publish)
     await grounding.for_turn("what's on my calendar tomorrow?")
 
-    assert published == [{"sources": []}]
+    assert published == [
+        {
+            "sources": [],
+            "rag": {
+                "status": "rejected",
+                "method": "vector + BM25, merged by reciprocal rank fusion",
+                "bestCosine": 0.11,
+                "minimumCosine": 0.2315,
+                "automaticCosine": 0.36,
+                "decision": "below minimum cosine",
+                "reason": "below gate",
+                "selected": 0,
+            },
+        }
+    ]
+
+
+@pytest.mark.asyncio
+async def test_a_short_turn_publishes_a_visible_skip_decision():
+    published: list[dict] = []
+
+    async def publish(payload: str, topic: str) -> None:
+        published.append(json.loads(payload))
+
+    grounding = Grounding(FakeSearch(grounded_result()), publish=publish)
+    await grounding.for_turn("okay thanks")
+
+    assert published == [
+        {
+            "sources": [],
+            "rag": {
+                "status": "skipped",
+                "method": "word-count check before retrieval",
+                "bestCosine": None,
+                "minimumCosine": 0.2315,
+                "automaticCosine": 0.36,
+                "decision": "turn too short",
+                "reason": "fewer than 4 words",
+                "selected": 0,
+            },
+        }
+    ]
 
 
 @pytest.mark.asyncio
@@ -285,8 +364,28 @@ async def test_a_failing_index_does_not_end_the_call():
         def search(self, question: str) -> Retrieval:
             raise RuntimeError("index unreadable")
 
-    grounding = Grounding(BrokenSearch())
+    published: list[dict] = []
+
+    async def publish(payload: str, topic: str) -> None:
+        published.append(json.loads(payload))
+
+    grounding = Grounding(BrokenSearch(), publish=publish)
     assert await grounding.for_turn("what is in our power") == ""
+    assert published == [
+        {
+            "sources": [],
+            "rag": {
+                "status": "error",
+                "method": "vector + BM25, merged by reciprocal rank fusion",
+                "bestCosine": None,
+                "minimumCosine": 0.2315,
+                "automaticCosine": 0.36,
+                "decision": "retrieval error",
+                "reason": "retrieval failed; answered without passages",
+                "selected": 0,
+            },
+        }
+    ]
 
 
 # --- 2. which tools exist at all ---------------------------------------------

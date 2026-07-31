@@ -93,6 +93,19 @@ describe("POST /api/token", () => {
     expect(body.serverUrl).toBe("wss://example.livekit.cloud");
   });
 
+  it("returns safe admission facts for the proof timeline without copying the token", async () => {
+    const body = await (await ask({})).json();
+
+    expect(body.proof).toEqual({
+      roomName: body.roomName,
+      lifetime: "30 minutes",
+      agentName: "epictetus",
+      permissions: ["join this room", "publish microphone and data", "subscribe"],
+    });
+    expect(body.proof).not.toHaveProperty("token");
+    expect(JSON.stringify(body.proof)).not.toContain(SECRET);
+  });
+
   it("issues a short-lived HttpOnly permit for one review draft", async () => {
     const response = await ask();
     expect(response.headers.get("set-cookie")).toContain("review_permit=");

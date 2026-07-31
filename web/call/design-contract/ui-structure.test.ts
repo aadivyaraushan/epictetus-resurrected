@@ -23,11 +23,11 @@ describe("the three call stages preserve their approved design contracts", () =>
   });
 
   it("places call and Notion alerts inside their own recovery sections", () => {
-    const page = read("app/page.tsx");
+    const experience = read("call/experience/call-experience.tsx");
     const start = read("call/start-screen/start-screen.tsx");
 
-    expect(page).toContain("callFailure={callFailure}");
-    expect(page).toContain("notionFailure={notionFailure}");
+    expect(experience).toContain("callFailure={callFailure}");
+    expect(experience).toContain("notionFailure={notionFailure}");
     expect(start).toContain("callFailure: string | null");
     expect(start).toContain("notionFailure: string | null");
     expect(start).toMatch(/className="primary"[\s\S]*\{callFailure && \(/);
@@ -38,9 +38,24 @@ describe("the three call stages preserve their approved design contracts", () =>
     const live = read("call/live/call-view.tsx");
 
     expect(live).toContain('className="live-masthead"');
-    expect(live).toContain('className="call live-layout"');
+    expect(live).toContain("call live-layout");
+    expect(live).toContain("<Transcript onTurnsChange={onTurnsChange} />");
     expect(live).toContain('className="evidence-rail"');
     expect(live).toContain('className="controls live-controls"');
+  });
+
+  it("keeps the recording-only proof route separate from the public page", () => {
+    const publicPage = read("app/page.tsx");
+    const proofPage = read("app/proof/page.tsx");
+    const experience = read("call/experience/call-experience.tsx");
+    const timeline = read("call/proof/proof-timeline.tsx");
+
+    expect(publicPage).toContain("<CallExperience />");
+    expect(publicPage).not.toContain("proofMode");
+    expect(proofPage).toContain("<CallExperience proofMode />");
+    expect(experience).toContain("proofMode?: boolean");
+    expect(timeline).toContain("Proof timeline");
+    expect(timeline).toContain("Room admitted");
   });
 
   it("gives the completed review a context rail and an emphasized next step", () => {
@@ -71,10 +86,10 @@ describe("the three call stages preserve their approved design contracts", () =>
   });
 
   it("confines the desktop live stage while both reading columns scroll independently", () => {
-    const page = read("app/page.tsx");
+    const experience = read("call/experience/call-experience.tsx");
     const css = read("app/globals.css");
 
-    expect(page).toContain('className="shell live-shell"');
+    expect(experience).toContain("shell live-shell");
     expect(css).toMatch(/@media \(min-width: 900px\)[\s\S]*\.live-shell\s*\{[^}]*height: 100dvh;[^}]*overflow: hidden;/);
     expect(css).toMatch(/@media \(min-width: 900px\)[\s\S]*\.live-shell \.live-layout\s*\{[^}]*min-height: 0;[^}]*overflow: hidden;/);
     expect(css).toMatch(/@media \(min-width: 900px\)[\s\S]*\.live-shell \.scroller\s*\{[^}]*min-height: 0;[^}]*overflow-y: auto;/);

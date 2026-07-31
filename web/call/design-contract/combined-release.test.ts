@@ -20,11 +20,15 @@ describe("the proof route keeps the current call and review behavior", () => {
 
   it("keeps chapter evidence from the call through the completed review", () => {
     const experience = read("call/experience/call-experience.tsx");
+    const callView = read("call/live/call-view.tsx");
+    const timeline = read("call/proof/proof-timeline.tsx");
 
     expect(experience).toContain("chaptersReferenced: []");
     expect(experience).toContain("source.current.chaptersReferenced");
     expect(experience).toContain("onChaptersChange={rememberChapters}");
     expect(experience).toContain("finishCallReview(");
+    expect(callView).toContain("onChaptersChange={onChaptersChange}");
+    expect(timeline).toContain("mergeReferencedChapters");
   });
 
   it("gives only proof mode the safe admission facts and combined timeline", () => {
