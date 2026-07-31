@@ -21,6 +21,7 @@ the citing and he does the talking.
 > | Web front end + token endpoint | **done, 18 tests pass, deployed** |
 > | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
 > | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
+> | Hosted worker | **live** — LiveKit Cloud, US East, registered as `epictetus` |
 > | Spoken call, end to end | **done** — see the transcript of the gate below |
 > | Video | **not yet** |
 >
@@ -49,10 +50,8 @@ the citing and he does the talking.
 > persona holds, with the tools firing, nothing cited out loud, and no philosophy
 > at "hello".
 >
-> **What is still open:** the worker runs on a laptop, so the link is only live
-> while that laptop is — see *Deploying* for the one command that fixes it. And
-> the video is not recorded. Everything claimed with a number was measured;
-> everything not run says so.
+> **What is still open:** the video is not recorded. Everything claimed with a
+> number was measured; everything not run says so.
 
 ---
 
@@ -446,10 +445,10 @@ LiveKit Cloud → AWS Fargate (above) → any host that runs a long-lived contai
 
 ## Limitations
 
-1. **The worker runs wherever someone started it**, and right now that is a
-   laptop. A spoken call has been completed end to end, but the link is only live
-   while that process is. *Deploying* has the one command that moves it to
-   LiveKit Cloud.
+1. **The free LiveKit plan allows one hosted worker and 1,000 session minutes a
+   month.** That is roughly two hundred five-minute calls, which is plenty for a
+   review and nothing like production. There is one replica in one region, so a
+   restart is a few seconds of dead link.
 2. **"my flight got cancelled and I lost the whole day"** scores 0.19 and goes
    ungrounded — far below every other real question. Modern concrete nouns with no
    abstract vocabulary are the worst case here, and no threshold that also
