@@ -60,3 +60,11 @@ GAN design + public Notion flow        bind exactly one shared database
 - Do not start a paid voice call.
 - Do not create a Git remote, force-push, or modify unrelated worktrees.
 - If production checks fail, restore the previous Ready deployment before debugging further.
+
+## Execution Record
+
+Completed on 2026-07-31. Merge commit `35ab68e` passed 23 focused tests,
+55 full-suite tests, TypeScript, the local production build, and an independent
+judge. Vercel deployment `dpl_9DnaBHfarxzsnuMUJkTuPiYVqnxF` reached Ready and
+was assigned to the stable production alias. Desktop, mobile, token, and Notion
+redirect canaries passed without starting a voice call or granting Notion access.
