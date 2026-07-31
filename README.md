@@ -367,12 +367,16 @@ secret must be server-side environment variables — anything prefixed
 `NEXT_PUBLIC_` ships to the browser, and this secret can sign a token for any
 room.
 
-**Worker → AWS**, from `deploy/worker/Dockerfile`. It is a plain long-running
-process; it does not care where it runs, as long as it *keeps* running.
+**Worker → anywhere that runs a container**, from the root `Dockerfile`. It is a
+plain long-running process; it does not care where it runs, as long as it
+*keeps* running.
 
 ```bash
-docker build -f deploy/worker/Dockerfile -t epictetus-worker .
+docker build -t epictetus-worker .
 ```
+
+The Dockerfile sits at the root rather than beside the rest of the deploy config
+because LiveKit Cloud looks for it there — see below.
 
 The image ships the index and pre-downloads the local voice-activity model, and
 the build fails if the index is missing or incomplete — better a failed deploy
@@ -404,17 +408,32 @@ mismatch shows up as the container exiting instantly with an exec format error.
 of a call and registers with LiveKit to wait for dispatch. Per-request serverless
 cannot do that. If the worker is off, the link is dead.
 
-**The short path: LiveKit Cloud agent hosting.** It takes the same image and is
-one command. Run it from the repo root once the image above has been built:
+**The short path: LiveKit Cloud agent hosting.** One command from the repo root:
 
 ```bash
-set -a && . ./.env && set +a && lk agent create --image epictetus-worker:test --secrets-file .env .
+set -a && . ./.env && set +a && lk agent create --secrets-file .env .
 ```
 
 `--secrets-file .env` uploads the API keys to LiveKit so the hosted worker has
 them; that upload is the reason this command is left for a human to run rather
-than run from an agent session. Check it afterwards with `lk agent list` — the
-dispatch name should read `epictetus`, which is the name the token asks for.
+than run from an agent session. Afterwards, `lk agent deploy .` pushes a new
+version and `lk agent list` shows it — the dispatch name should read
+`epictetus`, which is the name the token asks for.
+
+**Three things this cost an hour, all worth knowing before you start:**
+
+1. **LiveKit builds the image; you cannot hand it one you built.** `--image` and
+   `--image-tar` exist but return `PERMISSION_DENIED: Bring Your Own Container is
+   only available for Enterprise projects`. So LiveKit needs a `Dockerfile` in the
+   directory you point it at, which is why ours is at the repo root.
+2. **The free plan allows exactly one hosted agent.** A second `create` fails
+   with a max-agents error. If the slot is already taken by something made in
+   LiveKit's web builder, the CLI cannot remove it — `lk agent delete` answers
+   `This action isn't available for Builder agents` and you have to do it from
+   the dashboard.
+3. **`create` writes `livekit.toml` with the agent id, and it must be committed.**
+   Without it the next `deploy` has nothing to update and makes a second agent —
+   which, per (2), fails.
 
 Cost: LiveKit's free Build plan includes 1,000 agent session minutes a month, and
 it bills session minutes rather than idle hosting, so a deployed worker sitting

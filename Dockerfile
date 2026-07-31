@@ -8,6 +8,12 @@
 # The built image carries the index with it. Downloading a vector store at boot
 # would mean a cold worker takes seconds to become useful and can fail for
 # reasons that have nothing to do with this project.
+#
+# This file sits at the repo root rather than beside the rest of the deploy
+# config, and not by preference. LiveKit Cloud builds the image itself on the
+# free plan -- pushing one you built locally is an Enterprise feature -- and it
+# looks for a Dockerfile in the directory it is given. Since the build context
+# has to be the repo root anyway (see the COPY lines), root is where it goes.
 
 FROM python:3.12-slim
 
