@@ -179,14 +179,19 @@ button:disabled {
   background: #2a1712;
 }
 
-.passphrase {
+.notion-connect {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  border-top: 1px solid var(--stone-edge);
+  padding-top: 18px;
+  width: min(100%, 28rem);
 }
 
-.passphrase input {
+.notion-connect select,
+.review-form input,
+.review-form textarea {
   background: var(--stone-raised);
   border: 1px solid var(--stone-edge);
   border-radius: 8px;
@@ -194,11 +199,12 @@ button:disabled {
   font-family: var(--sans);
   font-size: 14px;
   padding: 9px 13px;
-  width: 15rem;
-  text-align: center;
+  width: 100%;
 }
 
-.passphrase input:focus-visible,
+.notion-connect select:focus-visible,
+.review-form input:focus-visible,
+.review-form textarea:focus-visible,
 .primary:focus-visible,
 .quiet:focus-visible,
 .danger:focus-visible {
@@ -206,12 +212,41 @@ button:disabled {
   outline-offset: 2px;
 }
 
-.passphrase .hint {
+.hint {
   color: var(--ink-faint);
   font-family: var(--sans);
   font-size: 12px;
   max-width: 26rem;
   line-height: 1.5;
+}
+
+.button-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.connection-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 13px;
+}
+
+.connection-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6fae6a;
+}
+
+.notion-connect label {
+  align-self: flex-start;
+  color: var(--ink-faint);
+  font-family: var(--sans);
+  font-size: 12px;
 }
 
 .failure {
@@ -396,4 +431,72 @@ button:disabled {
   border: 1px solid var(--stone-edge);
   border-radius: 999px;
   padding: 3px 9px;
+}
+
+/* --- completed review -------------------------------------------------- */
+
+.review-shell {
+  max-width: 900px;
+}
+
+.review-form {
+  display: grid;
+  gap: 20px;
+  padding: 32px 0;
+}
+
+.review-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.review-form textarea {
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.review-transcript {
+  color: var(--ink-soft) !important;
+  font-family: var(--serif) !important;
+}
+
+.drafting {
+  color: var(--lamp);
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.review-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.review-actions .hint {
+  margin-right: auto;
+}
+
+.saved {
+  color: #86bd80;
+  font-family: var(--sans);
+  font-size: 14px;
+}
+
+@media (max-width: 620px) {
+  .review-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .review-actions button {
+    width: 100%;
+  }
 }

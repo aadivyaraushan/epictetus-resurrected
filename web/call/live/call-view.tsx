@@ -22,6 +22,7 @@ import { useCallback, useState } from "react";
 import { SourcePanel } from "./panels/source-panel";
 import { ToolActivity } from "./panels/tool-activity";
 import { Transcript } from "./transcript";
+import type { TranscriptTurn } from "../review/review-data";
 
 // LiveKit reports more states than a caller needs to distinguish. Anything not
 // named here is "connecting", which is what it looks like from the outside.
@@ -32,10 +33,14 @@ const SAID_PLAINLY: Record<string, { label: string; tone: string }> = {
 };
 
 export function CallView({
-  backend,
+  reviewDestination,
+  onTurnsChange,
+  onCommitment,
   onEndCall,
 }: {
-  backend: "live" | "demo";
+  reviewDestination: string | null;
+  onTurnsChange: (turns: TranscriptTurn[]) => void;
+  onCommitment: (text: string) => void;
   onEndCall: () => void;
 }) {
   const { state, audioTrack } = useVoiceAssistant();
@@ -45,12 +50,11 @@ export function CallView({
 
   const hangUp = useCallback(async () => {
     setLeaving(true);
+    onEndCall();
     try {
       await room.disconnect();
     } catch (error) {
       console.error("[call-view] disconnect failed", error);
-    } finally {
-      onEndCall();
     }
   }, [room, onEndCall]);
 
@@ -78,15 +82,15 @@ export function CallView({
           </div>
         </div>
         <span className="badge">
-          {backend === "live" ? "live Notion" : "example notes"}
+          {reviewDestination ? `reviews → ${reviewDestination}` : "review after call"}
         </span>
       </header>
 
       <div className="call">
-        <Transcript />
+        <Transcript onTurnsChange={onTurnsChange} />
         <div className="column">
           <SourcePanel />
-          <ToolActivity />
+          <ToolActivity onCommitment={onCommitment} />
         </div>
       </div>
 

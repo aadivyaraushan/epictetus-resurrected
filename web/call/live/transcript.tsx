@@ -12,13 +12,31 @@
  */
 
 import { useLocalParticipant, useTranscriptions } from "@livekit/components-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
-export function Transcript() {
+import type { TranscriptTurn } from "../review/review-data";
+
+export function Transcript({ onTurnsChange }: { onTurnsChange: (turns: TranscriptTurn[]) => void }) {
   const turns = useTranscriptions();
   const { localParticipant } = useLocalParticipant();
   const scroller = useRef<HTMLDivElement>(null);
   const bottom = useRef<HTMLDivElement>(null);
+  const reviewTurns = useMemo(
+    () =>
+      turns.map((turn) => ({
+        id: turn.streamInfo.id,
+        speaker:
+          turn.participantInfo.identity === localParticipant?.identity
+            ? ("you" as const)
+            : ("epictetus" as const),
+        text: turn.text,
+      })),
+    [turns, localParticipant?.identity],
+  );
+
+  useEffect(() => {
+    onTurnsChange(reviewTurns);
+  }, [onTurnsChange, reviewTurns]);
 
   // Follow the conversation down, but only while the reader is already at the
   // bottom -- yanking the view away from someone scrolling back is worse than
@@ -40,11 +58,11 @@ export function Transcript() {
             works better than a test question.
           </p>
         ) : (
-          turns.map((turn) => {
-            const mine = turn.participantInfo.identity === localParticipant?.identity;
+          reviewTurns.map((turn) => {
+            const mine = turn.speaker === "you";
             return (
               <p
-                key={turn.streamInfo.id}
+                key={turn.id}
                 className={`turn ${mine ? "you" : "him"}`}
               >
                 <span className="who">{mine ? "You" : "Epictetus"}</span>

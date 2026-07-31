@@ -7,8 +7,7 @@ Output: a voice in that room, a live transcript, and two side channels to the
 Steps:
   1. Once per process, before any call: load the voice-activity model and the
      Discourses index into memory.
-  2. On dispatch: join the room, wait for the caller, and work out which
-     personal backend their token entitles them to.
+  2. On dispatch: join the room and wait for the caller.
   3. Wire the four swappable pieces the brief asks to see -- STT, LLM, TTS, VAD.
   4. Start the session and greet them.
 
@@ -49,7 +48,6 @@ from agent.persona.epictetus_agent import Epictetus  # noqa: E402
 from agent.persona.voice_and_words import DEFAULT_VOICE_ENV, GREETING  # noqa: E402
 from agent.retrieval.search.index_store import load_index  # noqa: E402
 from agent.retrieval.search.passage_search import PassageSearch  # noqa: E402
-from agent.tools.personal.life_context import build_life_context  # noqa: E402
 
 load_dotenv(REPO / ".env")
 
@@ -150,9 +148,6 @@ async def entrypoint(ctx: JobContext) -> None:
     search = ctx.proc.userdata.get("search")
     grounding = Grounding(search, publish=publish) if search else _NoGrounding()
 
-    life = build_life_context(caller)
-    log.info("[agent.main] personal tools are on the %s backend", life.name)
-
     session = AgentSession(
         stt=build_stt(),
         llm=build_llm(),
@@ -165,7 +160,7 @@ async def entrypoint(ctx: JobContext) -> None:
     )
 
     await session.start(
-        agent=Epictetus(grounding, life, publish=publish),
+        agent=Epictetus(grounding, publish=publish),
         room=ctx.room,
         room_input_options=RoomInputOptions(),
     )

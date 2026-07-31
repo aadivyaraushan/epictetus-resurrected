@@ -22,19 +22,19 @@ noticing that someone has just said more than they meant to.
 import asyncio
 import logging
 import sys
+from pathlib import Path
 
-sys.path.insert(0, "/Users/aadivyar/Documents/Internships/Bluejay Take Home")
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO))
 
 from dotenv import load_dotenv
 
-load_dotenv("/Users/aadivyar/Documents/Internships/Bluejay Take Home/.env")
+load_dotenv(REPO / ".env")
 
 from livekit.agents import AgentSession
 
 from agent.main import build_llm
 from agent.persona.epictetus_agent import Epictetus
-from agent.tools.personal.demo_life import DemoLife
-from agent.tools.personal.life_context import LifeSource
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -56,25 +56,24 @@ class _NoGrounding:
 
 
 async def main():
-    demo = DemoLife()
-    life = LifeSource(demo, demo, name="demo")
     session = AgentSession(llm=build_llm())
-    await session.start(agent=Epictetus(_NoGrounding(), life))
+    agent = Epictetus(_NoGrounding())
+    await session.start(agent=agent)
 
     for turn, said in enumerate(TURNS, start=1):
-        before = len(demo.session_log())
+        before = len(agent._record.entries())
         result = await session.run(user_input=said)
         wrote = [
             e.item.name
             for e in result.events
             if getattr(e, "type", "") == "function_call"
         ].count("write_to_session_log")
-        after = len(demo.session_log())
+        after = len(agent._record.entries())
         mark = f"wrote {wrote}" if wrote else "-"
         print(f"turn {turn}  [{mark:>7}]  {said[:64]}")
-        assert after == before + wrote, "a tool call that did not reach the backend"
+        assert after == before + wrote, "a tool call that did not reach the call record"
 
-    entries = demo.session_log()
+    entries = agent._record.entries()
     print(f"\nlog has {len(entries)} entries after {len(TURNS)} turns:")
     for i, entry in enumerate(entries, start=1):
         print(f"  {i}. {entry['text']}")

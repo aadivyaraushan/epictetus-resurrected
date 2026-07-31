@@ -1,4 +1,4 @@
-"""Epictetus as a LiveKit agent: the persona, the four tools, and the RAG hook.
+"""Epictetus as a LiveKit agent: the persona, the two tools, and the RAG hook.
 
 Input:  a caller's speech, one turn at a time
 Output: his speech, plus two side channels to the browser -- which passages
@@ -7,7 +7,7 @@ Output: his speech, plus two side channels to the browser -- which passages
 The one structural thing to notice here is what is *not* in the tool list.
 Retrieval is not a tool. It runs in `on_user_turn_completed`, before the model
 is asked anything, on every turn -- the reasoning is in
-agent/grounding/turn_rag.py and plan section 3. The four tools below are the
+agent/grounding/turn_rag.py and plan section 3. The two tools below are the
 narrative ones: the things he genuinely cannot know, rather than the thing he
 must never be allowed to skip.
 
@@ -28,7 +28,7 @@ from livekit.agents import Agent, ChatContext, ChatMessage, RunContext, function
 from agent.grounding.turn_rag import Grounding
 from agent.persona.voice_and_words import INSTRUCTIONS
 from agent.tools.modern_world import web_search
-from agent.tools.personal.life_context import LifeSource
+from agent.session.record import EntryKind, SessionRecord
 
 log = logging.getLogger("agent.persona")
 
@@ -39,10 +39,10 @@ ACTIVITY_TOPIC = "epictetus.activity"
 
 
 class Epictetus(Agent):
-    def __init__(self, grounding: Grounding, life: LifeSource, publish=None):
+    def __init__(self, grounding: Grounding, publish=None):
         super().__init__(instructions=INSTRUCTIONS)
         self._grounding = grounding
-        self._life = life
+        self._record = SessionRecord()
         self._publish = publish
 
     # --- retrieval: every turn, not by his choice ---------------------------
@@ -62,7 +62,7 @@ class Epictetus(Agent):
         if block:
             turn_ctx.add_message(role="assistant", content=block)
 
-    # --- the three tools ----------------------------------------------------
+    # --- the two tools ------------------------------------------------------
 
     @function_tool
     async def look_up_modern_thing(self, context: RunContext, thing: str) -> str:
@@ -81,29 +81,9 @@ class Epictetus(Agent):
         return found
 
     @function_tool
-    async def search_my_notion(self, context: RunContext, about: str) -> str:
-        """Search what this person has written down, for anything you want.
-
-        Use this when you want to know what they think when nobody is listening,
-        rather than what they are telling you now. Search for whatever the
-        conversation has turned to -- a person's name, the thing they are
-        dreading, the decision they keep circling. Do not read it back to them
-        word for word; use it to ask a better question.
-
-        Args:
-            about: what to look for, in plain words -- for example "the
-                performance review" or "my father"
-        """
-        await self._say_doing("looking through their notes", about)
-        notes = await asyncio.to_thread(self._life.search_notes, about)
-        if not notes:
-            return f"They have written nothing down about {about}, or nothing could be read."
-        return "What they have written to themselves:\n" + "\n".join(
-            f"- {note['text']}" for note in notes
-        )
-
-    @function_tool
-    async def write_to_session_log(self, context: RunContext, note: str) -> str:
+    async def write_to_session_log(
+        self, context: RunContext, note: str, kind: EntryKind
+    ) -> str:
         """Write one line into the record you are keeping of this conversation.
 
         Keep it as you go, not only at the end. Write a line whenever something
@@ -117,22 +97,34 @@ class Epictetus(Agent):
 
         Args:
             note: the thing worth keeping, in their words
+            kind: "commitment" only when the person clearly says they will do
+                an action; otherwise "reflection"
         """
-        await self._say_doing("writing in the session log", note)
+        await self._say_doing("writing in the session log", note, kind)
         try:
-            written = await asyncio.to_thread(self._life.write_session_log, note)
+            written = self._record.write(kind, note)
         except ValueError:
             return "There was nothing worth writing yet. Keep listening."
-        return f"Entry {written['entry']} in {written['where']}: {written['text']}"
+        return f"Entry {written['entry']} in this call: {written['text']}"
 
     # --- telling the browser what he just did -------------------------------
 
-    async def _say_doing(self, action: str, detail: str) -> None:
+    async def _say_doing(
+        self, action: str, detail: str, kind: EntryKind | None = None
+    ) -> None:
         if self._publish is None:
             return
         try:
             await self._publish(
-                json.dumps({"action": action, "detail": detail[:120]}), ACTIVITY_TOPIC
+                json.dumps(
+                    {
+                        "action": action,
+                        "detail": detail[:120],
+                        "kind": kind,
+                        "commitment": detail if kind == "commitment" else None,
+                    }
+                ),
+                ACTIVITY_TOPIC,
             )
         except Exception:
             log.exception("[agent.persona] could not report tool activity to the browser")
