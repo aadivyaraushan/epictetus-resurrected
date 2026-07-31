@@ -82,7 +82,7 @@ export function ReviewScreen({
 
   return (
     <main className="shell review-shell">
-      <header className="masthead">
+      <header className="masthead review-masthead">
         <div className="brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="mark" src="/epictetus.png" alt="" width={512} height={512} />
@@ -91,56 +91,69 @@ export function ReviewScreen({
             <p className="sub">Read it once. Change anything that is not yours.</p>
           </div>
         </div>
-        <span className="badge">call complete</span>
+        <span className="destination">call complete</span>
       </header>
 
-      <form className="review-form" onSubmit={save}>
-        <label>
-          Title
-          <input value={title} onChange={(event) => setTitle(event.target.value)} />
-        </label>
-        <label>
-          Summary {drafting && <span className="drafting">drafting…</span>}
-          <textarea
-            rows={6}
-            value={summary}
-            onChange={(event) => setSummary(event.target.value)}
-            placeholder={drafting ? "Drafting from the call…" : "What became clearer?"}
-          />
-        </label>
-        <label>
-          Next step
-          <textarea
-            rows={3}
-            value={nextStep}
-            onChange={(event) => setNextStep(event.target.value)}
-            placeholder="Leave blank if you made no commitment."
-          />
-        </label>
-        <label>
-          Transcript
-          <textarea
-            className="review-transcript"
-            rows={14}
-            value={transcript}
-            onChange={(event) => setTranscript(event.target.value)}
-          />
-        </label>
+      <form className="review-layout" onSubmit={save}>
+        <aside className="review-context">
+          <p className="section-index">Review note / 01</p>
+          <h2>Your record</h2>
+          <p>
+            Keep what is accurate. Change anything that sounds more certain, tidy,
+            or resolved than the conversation was.
+          </p>
+        </aside>
 
-        {failure && <p className="failure" role="alert">{failure}</p>}
-        {saved && <p className="saved" role="status">Saved to {databaseName}.</p>}
+        <div className="review-form">
+          <label>
+            Title
+            <input value={title} onChange={(event) => setTitle(event.target.value)} />
+          </label>
+          <label>
+            <span className="field-label">
+              Summary {drafting && <span className="drafting">drafting…</span>}
+            </span>
+            <textarea
+              rows={6}
+              value={summary}
+              onChange={(event) => setSummary(event.target.value)}
+              placeholder={drafting ? "Drafting from the call…" : "What became clearer?"}
+            />
+          </label>
+          <label className="next-step-field">
+            Next step
+            <textarea
+              rows={3}
+              value={nextStep}
+              onChange={(event) => setNextStep(event.target.value)}
+              placeholder="Leave blank if you made no commitment."
+            />
+          </label>
+          <label>
+            Transcript
+            <textarea
+              className="review-transcript"
+              rows={14}
+              value={transcript}
+              onChange={(event) => setTranscript(event.target.value)}
+            />
+          </label>
 
-        <div className="review-actions">
-          <button className="quiet" type="button" onClick={onNewCall}>
-            New call
-          </button>
-          {databaseName ? (
-            <button className="primary" type="submit" disabled={saving || saved || drafting}>
-              {saved ? "Saved" : saving ? "Saving…" : `Save to ${databaseName}`}
+          {failure && <p className="failure" role="alert">{failure}</p>}
+          {saved && <p className="saved" role="status">Saved to {databaseName}.</p>}
+
+          <div className="review-actions">
+            {databaseName ? (
+              <button className="primary" type="submit" disabled={saving || saved || drafting}>
+                {saved ? "Saved" : saving ? "Saving…" : `Save to ${databaseName}`}
+              </button>
+            ) : (
+              <span className="hint">Connect Notion before your next call to save reviews.</span>
+            )}
+            <button className="quiet" type="button" onClick={onNewCall}>
+              New call
             </button>
-          ) : (
-            <span className="hint">Connect Notion before your next call to save reviews.</span>
-          )}
+          </div>
         </div>
       </form>
     </main>

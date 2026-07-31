@@ -27,6 +27,7 @@ import {
   StartScreen,
   type NotionConnection,
 } from "../call/start-screen/start-screen";
+import { callRecoveryMessage } from "../call/start-screen/recovery/call-recovery";
 
 type Admission = {
   serverUrl: string;
@@ -41,7 +42,8 @@ export default function Page() {
   const [notion, setNotion] = useState<NotionConnection>(EMPTY_NOTION);
   const [notionBusy, setNotionBusy] = useState(true);
   const [connecting, setConnecting] = useState(false);
-  const [failure, setFailure] = useState<string | null>(null);
+  const [callFailure, setCallFailure] = useState<string | null>(null);
+  const [notionFailure, setNotionFailure] = useState<string | null>(null);
   const source = useRef<CallReviewSource>({ turns: [], capturedCommitment: "" });
 
   const loadNotion = useCallback(async () => {
@@ -53,7 +55,7 @@ export default function Page() {
       setNotion(body);
     } catch (error) {
       console.error("[page.notion] status failed", error);
-      setFailure("Could not load the Notion connection.");
+      setNotionFailure("Could not load the Notion connection. Please try again.");
     } finally {
       setNotionBusy(false);
     }
@@ -63,7 +65,10 @@ export default function Page() {
     void loadNotion();
     const params = new URLSearchParams(window.location.search);
     const notionError = params.get("notion_error");
-    if (notionError) setFailure(notionError);
+    if (notionError) {
+      console.error("[page.notion] callback failed", notionError);
+      setNotionFailure("Could not connect Notion. Try connecting again.");
+    }
     if (params.has("notion")) {
       window.history.replaceState({}, "", window.location.pathname);
     }
@@ -71,7 +76,7 @@ export default function Page() {
 
   const startCall = useCallback(async () => {
     setConnecting(true);
-    setFailure(null);
+    setCallFailure(null);
     source.current = { turns: [], capturedCommitment: "" };
     try {
       const response = await fetch("/api/token", { method: "POST" });
@@ -80,11 +85,7 @@ export default function Page() {
       setAdmission({ serverUrl: body.serverUrl, token: body.token });
     } catch (error) {
       console.error("[page] could not start the call", error);
-      setFailure(
-        error instanceof Error
-          ? error.message
-          : "Could not reach the server that lets you into the room.",
-      );
+      setCallFailure(callRecoveryMessage("admission", error));
       setConnecting(false);
     }
   }, []);
@@ -112,7 +113,7 @@ export default function Page() {
   const chooseDatabase = useCallback(async (dataSourceId: string) => {
     if (!dataSourceId) return;
     setNotionBusy(true);
-    setFailure(null);
+    setNotionFailure(null);
     try {
       const response = await fetch("/api/notion", {
         method: "POST",
@@ -124,7 +125,7 @@ export default function Page() {
       setNotion((current) => ({ ...current, selectedDatabase: body.selectedDatabase }));
     } catch (error) {
       console.error("[page.notion] database selection failed", error);
-      setFailure(error instanceof Error ? error.message : "Could not choose that database.");
+      setNotionFailure("Could not choose that database. Please try again.");
     } finally {
       setNotionBusy(false);
     }
@@ -132,12 +133,13 @@ export default function Page() {
 
   const disconnectNotion = useCallback(async () => {
     setNotionBusy(true);
+    setNotionFailure(null);
     try {
       await fetch("/api/notion", { method: "DELETE" });
       setNotion(EMPTY_NOTION);
     } catch (error) {
       console.error("[page.notion] disconnect failed", error);
-      setFailure("Could not disconnect Notion.");
+      setNotionFailure("Could not disconnect Notion. Please try again.");
     } finally {
       setNotionBusy(false);
     }
@@ -150,7 +152,8 @@ export default function Page() {
         databaseName={notion.selectedDatabase?.name ?? null}
         onNewCall={() => {
           setReview(null);
-          setFailure(null);
+          setCallFailure(null);
+          setNotionFailure(null);
           void loadNotion();
         }}
       />
@@ -162,7 +165,8 @@ export default function Page() {
       <StartScreen
         onStart={startCall}
         connecting={connecting}
-        failure={failure}
+        callFailure={callFailure}
+        notionFailure={notionFailure}
         notion={notion}
         notionBusy={notionBusy}
         onChooseDatabase={chooseDatabase}
@@ -181,10 +185,10 @@ export default function Page() {
       onDisconnected={leaveCall}
       onError={(error) => {
         console.error("[page] room error", error);
-        setFailure(error.message);
+        setCallFailure(callRecoveryMessage("room", error));
         leaveCall();
       }}
-      className="shell"
+      className="shell live-shell"
     >
       {/* Without this nothing he says is audible -- it renders the audio elements. */}
       <RoomAudioRenderer />

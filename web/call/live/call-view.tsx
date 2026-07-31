@@ -66,35 +66,35 @@ export function CallView({
 
   return (
     <>
-      <header className="masthead">
+      <header className="live-masthead">
         <div className="brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="mark"
             src="/epictetus.png"
             alt=""
-            width={396}
-            height={560}
+            width={512}
+            height={512}
           />
           <div>
             <h1>Epictetus, Resurrected</h1>
             <p className="sub">Nicopolis, c. 108 &mdash; and now</p>
           </div>
         </div>
-        <span className="badge">
+        <span className="destination">
           {reviewDestination ? `reviews → ${reviewDestination}` : "review after call"}
         </span>
       </header>
 
-      <div className="call">
+      <div className="call live-layout">
         <Transcript onTurnsChange={onTurnsChange} />
-        <div className="column">
+        <aside className="evidence-rail">
           <SourcePanel />
           <ToolActivity onCommitment={onCommitment} />
-        </div>
+        </aside>
       </div>
 
-      <footer className="controls">
+      <footer className="controls live-controls">
         <span className="status">
           <span className={`dot ${said.tone}`} aria-hidden="true" />
           {said.label}
