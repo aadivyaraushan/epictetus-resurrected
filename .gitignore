@@ -1,0 +1,24 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Secrets. Never commit these.
+.env
+.env.*
+!.env.example
+
+# Frontend
+web/node_modules/
+web/dist/
+web/.vercel/
+
+# Local scratch
+*.log
+.DS_Store
+
+# NOT ignored, on purpose -- these are graded deliverables (plan section 9):
+#   corpus/discourses.pdf   the PDF itself
+#   corpus/source/          the verified text the PDF is built from
+#   index/                  the vector store

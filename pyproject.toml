@@ -1,0 +1,21 @@
+[project]
+name = "epictetus-voice-agent"
+version = "1.0.0"
+description = "A RAG-enabled LiveKit voice agent that speaks as Epictetus, grounded in his Discourses."
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+include = ["agent*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q --strict-markers"
+markers = [
+    "needs_index: requires the built vector index (run corpus + index build first)",
+    "needs_openai: requires OPENAI_API_KEY and spends money",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
