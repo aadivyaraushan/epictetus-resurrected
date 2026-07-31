@@ -89,6 +89,28 @@ def test_unreadable_metadata_gets_the_demo_backend():
     assert choose_life_backend(FakeParticipant("live"), live_available=True) == "demo"
 
 
+def test_the_live_backend_reads_the_key_name_that_is_actually_in_the_env(monkeypatch):
+    """The env file names this key NOTION_API_KEY, like every other vendor key
+    here. If the code reads a different name, nothing errors -- the live backend
+    just silently reports itself unconfigured and every caller lands on the demo
+    notes, including me with a valid token sitting right there."""
+    from agent.tools.personal.live_life import _notion_headers, live_credentials_present
+
+    monkeypatch.delenv("NOTION_TOKEN", raising=False)
+    monkeypatch.setenv("NOTION_API_KEY", "secret_abc123")
+
+    assert live_credentials_present() is True
+    assert _notion_headers()["Authorization"] == "Bearer secret_abc123"
+
+
+def test_no_notion_key_means_no_live_backend(monkeypatch):
+    from agent.tools.personal.live_life import live_credentials_present
+
+    monkeypatch.delenv("NOTION_API_KEY", raising=False)
+    monkeypatch.delenv("NOTION_TOKEN", raising=False)
+    assert live_credentials_present() is False
+
+
 # --- 2. whether a turn gets grounded ----------------------------------------
 
 

@@ -17,27 +17,30 @@ the citing and he does the talking.
 > | | |
 > |---|---|
 > | Corpus, index, retrieval, evaluation | **done and measured** |
-> | Agent worker (speech, language model, voice, 3 tools, RAG) | **done, 45 tests pass** |
+> | Agent worker (speech, language model, voice, 3 tools, RAG) | **done, 50 tests pass** |
 > | Web front end + token endpoint | **done, 18 tests pass, deployed** |
 > | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
 > | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
 > | Spoken call, end to end | **done** — see the transcript of the gate below |
 > | Video | **not yet** |
 >
-> **A real spoken call has now been made through the deployed link**, and the
-> retrieval gate behaved on live speech exactly as it did on the test set. Four
-> turns, and the log for each one:
+> **A real spoken call has now been made through the deployed link** — thirteen
+> turns over six minutes, no errors. Retrieval ran on every one of them, and
+> **three cleared the 0.36 gate**:
 >
-> | turn | best cosine | what happened |
+> | turn | cosine | grounded on |
 > |---|---|---|
-> | 1 | 0.318 | below 0.36 — answered ungrounded |
-> | 2 | 0.379 | grounded on Book 2 Ch. 1 and Book 1 Ch. 27 |
-> | 3 | 0.388 | grounded on Book 2 Ch. 5, Book 2 Ch. 1, Book 1 Ch. 28 |
-> | 4 | 0.227 | below 0.36 — answered ungrounded |
+> | *"...I'm chasing certainty, honestly"* | 0.379 | Book 2 Ch. 1, Book 1 Ch. 27 |
+> | *"...things are uncertain, or difficult"* | 0.388 | Book 2 Ch. 5, Book 2 Ch. 1, Book 1 Ch. 28 |
+> | *"...the opportunity cost, I'm losing time"* | 0.363 | Book 4 Ch. 3, 10, 12; Book 2 Ch. 10 |
 >
-> That is the whole design working in the open: retrieval ran on every turn
-> without being asked, and the threshold picked out the two turns that were
-> really questions about how to live from the two that were not.
+> Three out of thirteen reads as far too strict until you look at the other ten.
+> A real conversation is two or three questions with short replies hanging off
+> them — *"feeling stuck"*, *"two weeks at most"* — and those are answers to
+> something **he** just asked, with nothing of their own to retrieve against. The
+> written question sets could never contain a turn of that shape. The full
+> turn-by-turn reading, including two honest near-misses at 0.310 and 0.328, is
+> in [`saved-results/first-live-call.md`](saved-results/first-live-call.md).
 >
 > **Also verified with the real keys:** the worker registers with LiveKit as
 > `agent_name: epictetus`; the production token endpoint mints a token with a

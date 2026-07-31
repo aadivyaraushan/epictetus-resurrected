@@ -32,6 +32,10 @@ log = logging.getLogger("agent.tools.personal")
 NOTION_API = "https://api.notion.com/v1"
 NOTION_VERSION = "2026-03-11"
 
+# Named once, because a typo here does not raise -- it makes the live backend
+# report itself unconfigured and every caller quietly gets the demo notes.
+NOTION_KEY_ENV = "NOTION_API_KEY"
+
 TIMEOUT = 6.0  # a voice call cannot wait longer than this for a note lookup
 
 
@@ -41,13 +45,13 @@ def live_credentials_present() -> bool:
     Checked before the passphrase is honoured, so an unlocked call with no
     credentials configured lands on the demo notes rather than on an error.
     """
-    return bool(os.environ.get("NOTION_TOKEN"))
+    return bool(os.environ.get(NOTION_KEY_ENV))
 
 
 def _notion_headers() -> dict:
-    token = os.environ.get("NOTION_TOKEN")
+    token = os.environ.get(NOTION_KEY_ENV)
     if not token:
-        raise RuntimeError("NOTION_TOKEN is not set")
+        raise RuntimeError(f"{NOTION_KEY_ENV} is not set")
     return {
         "Authorization": f"Bearer {token}",
         "Notion-Version": NOTION_VERSION,
