@@ -1,0 +1,384 @@
+/* Ink on stone. A dark, quiet page so the transcript reads like a page of text
+   rather than a chat app, and the source panel looks like a margin note. */
+
+:root {
+  --stone: #14130f;
+  --stone-raised: #1c1a15;
+  --stone-edge: #2e2b23;
+  --ink: #e8e2d4;
+  --ink-soft: #a49c88;
+  --ink-faint: #6d6656;
+  --lamp: #c9a227; /* the one warm accent: his lamp */
+  --lamp-dim: #7a6417;
+  --alarm: #c4573f;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--stone);
+  color: var(--ink);
+  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* --- shared shell ------------------------------------------------------- */
+
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--stone-edge);
+  padding-bottom: 14px;
+}
+
+.masthead h1 {
+  margin: 0;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.masthead .sub {
+  margin: 4px 0 0;
+  color: var(--ink-faint);
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* --- start screen ------------------------------------------------------- */
+
+.start {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 22px;
+  padding: 40px 0;
+}
+
+.start blockquote {
+  margin: 0;
+  max-width: 30rem;
+  font-size: clamp(19px, 2.6vw, 25px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.start blockquote cite {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+  font-style: normal;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.start p.lede {
+  margin: 0;
+  max-width: 34rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.primary {
+  background: var(--lamp);
+  color: #17150f;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 34px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: filter 120ms ease;
+}
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.quiet {
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--stone-edge);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-size: 14px;
+}
+
+.quiet:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--ink-faint);
+}
+
+.quiet[aria-pressed="true"] {
+  color: var(--lamp);
+  border-color: var(--lamp-dim);
+}
+
+.danger {
+  background: transparent;
+  color: var(--alarm);
+  border: 1px solid #4a2a22;
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-size: 14px;
+}
+
+.danger:hover:not(:disabled) {
+  background: #2a1712;
+}
+
+.passphrase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.passphrase input {
+  background: var(--stone-raised);
+  border: 1px solid var(--stone-edge);
+  border-radius: 8px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  padding: 9px 13px;
+  width: 15rem;
+  text-align: center;
+}
+
+.passphrase input:focus-visible,
+.primary:focus-visible,
+.quiet:focus-visible,
+.danger:focus-visible {
+  outline: 2px solid var(--lamp);
+  outline-offset: 2px;
+}
+
+.passphrase .hint {
+  color: var(--ink-faint);
+  font-family: var(--sans);
+  font-size: 12px;
+  max-width: 26rem;
+  line-height: 1.5;
+}
+
+.failure {
+  color: var(--alarm);
+  font-family: var(--sans);
+  font-size: 14px;
+  max-width: 32rem;
+  line-height: 1.5;
+}
+
+/* --- live call ---------------------------------------------------------- */
+
+.call {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(16px, 2.5vw, 30px);
+  padding: 20px 0;
+  min-height: 0;
+}
+
+@media (max-width: 860px) {
+  .call {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 12px;
+}
+
+.column h2 {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.scroller {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 220px;
+  padding-right: 6px;
+}
+
+.empty {
+  color: var(--ink-faint);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* transcript */
+
+.turn {
+  margin: 0 0 18px;
+  line-height: 1.62;
+}
+
+.turn .who {
+  display: block;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 3px;
+}
+
+.turn.him .what {
+  font-size: 18px;
+}
+
+.turn.you .what {
+  color: var(--ink-soft);
+}
+
+/* source panel */
+
+.source {
+  border-left: 2px solid var(--lamp-dim);
+  padding: 2px 0 2px 13px;
+  margin-bottom: 16px;
+}
+
+.source .cite {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--lamp);
+}
+
+.source .title {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 2px 0 5px;
+}
+
+.source .quote {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.source .score {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 5px;
+}
+
+/* tool activity */
+
+.deed {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-soft);
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--stone-edge);
+}
+
+.deed .mark {
+  color: var(--lamp);
+}
+
+/* footer controls */
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--stone-edge);
+  padding-top: 14px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-right: auto;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.dot.listening {
+  background: var(--lamp);
+}
+
+.dot.speaking {
+  background: #6fae6a;
+}
+
+.dot.thinking {
+  background: #7d8fc4;
+}
+
+.badge {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border: 1px solid var(--stone-edge);
+  border-radius: 999px;
+  padding: 3px 9px;
+}

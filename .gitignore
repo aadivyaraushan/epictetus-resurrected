@@ -22,3 +22,6 @@ web/.vercel/
 #   corpus/discourses.pdf   the PDF itself
 #   corpus/source/          the verified text the PDF is built from
 #   index/                  the vector store
+web/.next/
+web/next-env.d.ts
+web/*.tsbuildinfo
