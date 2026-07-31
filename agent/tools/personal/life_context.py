@@ -41,9 +41,7 @@ log = logging.getLogger("agent.tools.personal")
 class LifeContext(Protocol):
     """What Epictetus can find out about the caller's life, and write back."""
 
-    def calendar(self, days: int) -> list[dict]: ...
-
-    def notes(self) -> list[dict]: ...
+    def search_notes(self, query: str) -> list[dict]: ...
 
     def journal(self) -> list[dict]: ...
 
@@ -102,11 +100,8 @@ class LifeSource:
             )
             return getattr(self._fallback, method)(*args)
 
-    def calendar(self, days: int) -> list[dict]:
-        return self._try("calendar", days)
-
-    def notes(self) -> list[dict]:
-        return self._try("notes")
+    def search_notes(self, query: str) -> list[dict]:
+        return self._try("search_notes", query)
 
     def journal(self) -> list[dict]:
         return self._try("journal")

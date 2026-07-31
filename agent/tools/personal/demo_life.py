@@ -1,46 +1,30 @@
 """The week everyone who is not me gets.
 
 This is what makes the personal tools demonstrable to a stranger. A grader
-clicking the public link has no calendar and no notes that this worker can read,
-so without a seeded week the three personal tools would be dead weight in the
-one call that gets graded.
+clicking the public link has no notes that this worker can read, so without
+seeded notes the two personal tools would be dead weight in the one call that
+gets graded.
 
 Input:  nothing -- it is fixed
-Output: a calendar, some notes, and a journal that can be written to
+Output: some notes, and a journal that can be written to
 
-It is deliberately a *hard* week rather than a pleasant one, because Epictetus
-has nothing to say about an easy Tuesday. A performance review the caller is
-dreading, a favour asked by someone who never returns them, a parent's illness,
-a job offer that flatters -- every one of those is something the Discourses
-actually addresses, so the retrieval has real work to do when he asks about it.
+The notes are deliberately about a *hard* week rather than a pleasant one,
+because Epictetus has nothing to say about an easy Tuesday. A performance review
+the caller is dreading, a favour asked by someone who never returns them, a
+parent's illness, a job offer that flatters -- every one of those is something
+the Discourses actually addresses, so the retrieval has real work to do when he
+asks about it.
 
-Dates are computed from today so "tomorrow" means tomorrow, but the contents
-never change: the same week appears in the video and on the deployed link, which
-is what makes a seeded demo read as designed rather than broken.
+The contents never change: the same notes appear in the video and on the
+deployed link, which is what makes a seeded demo read as designed rather than
+broken.
 """
 
 from __future__ import annotations
 
 import logging
-from datetime import date, timedelta
 
 log = logging.getLogger("agent.tools.personal")
-
-# (day offset, time, what, who else)
-WEEK = [
-    (0, "09:30", "Standup", "the team"),
-    (0, "14:00", "1:1 with Marcus", "Marcus, my manager"),
-    (0, "19:00", "Call Mum about her test results", "Mum"),
-    (1, "08:00", "Gym — third week of saying I will", ""),
-    (1, "11:00", "Performance review", "Marcus and someone from HR"),
-    (1, "16:30", "Coffee with Sophia — she wants a favour again", "Sophia"),
-    (2, "10:00", "Deadline: the migration doc nobody has read", ""),
-    (2, "13:00", "Lunch with the recruiter from Halcyon", "a recruiter"),
-    (2, "18:00", "Dinner with Dad — first time since the argument", "Dad"),
-    (3, "09:00", "All-hands: reorg announcement", "everyone"),
-    (3, "15:00", "Dentist", ""),
-    (4, "12:00", "Nothing scheduled", ""),
-]
 
 NOTES = [
     "I keep rehearsing the review in my head at 3am and winning every version of it.",
@@ -56,36 +40,27 @@ SEED_JOURNAL = [
 ]
 
 
-def _label(offset: int) -> str:
-    if offset == 0:
-        return "today"
-    if offset == 1:
-        return "tomorrow"
-    return (date.today() + timedelta(days=offset)).strftime("%A")
-
-
 class DemoLife:
     def __init__(self) -> None:
         self._journal = list(SEED_JOURNAL)
 
-    def calendar(self, days: int) -> list[dict]:
-        today = date.today()
-        entries = [
-            {
-                "day": _label(offset),
-                "date": (today + timedelta(days=offset)).isoformat(),
-                "time": time,
-                "what": what,
-                "with": who,
-            }
-            for offset, time, what, who in WEEK
-            if offset < max(1, days)
-        ]
-        log.info("[agent.tools.personal] demo calendar: %d entries over %d days", len(entries), days)
-        return entries
+    def search_notes(self, query: str) -> list[dict]:
+        """Matches on shared words, and returns everything when nothing matches.
 
-    def notes(self) -> list[dict]:
-        return [{"text": text} for text in NOTES]
+        A demo search that returns nothing looks like a broken tool rather than
+        a seeded one, and the grader cannot tell the difference. Falling back to
+        the whole set means Epictetus always has something to react to.
+        """
+        wanted = {word for word in (query or "").lower().split() if len(word) > 3}
+        hits = [text for text in NOTES if wanted & set(text.lower().split())]
+        chosen = hits or NOTES
+        log.info(
+            "[agent.tools.personal] demo notes: %d of %d matched %r",
+            len(hits),
+            len(NOTES),
+            query,
+        )
+        return [{"text": text} for text in chosen]
 
     def journal(self) -> list[dict]:
         return [{"text": text} for text in self._journal]

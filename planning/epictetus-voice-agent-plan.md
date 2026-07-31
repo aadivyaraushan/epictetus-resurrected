@@ -10,8 +10,8 @@ Written 2026-07-30 · Deadline **Fri 2026-07-31 23:59 PT** (~32h from writing, ~
 A voice call with Epictetus — the actual Stoic, pulled into 2026 — who gives you
 counsel on how to live, grounded in his own *Discourses*. He asks you questions
 when he doesn't have context. He can look up modern things he's never heard of,
-read your calendar and notes to know what's actually going on in your life, and
-write down what you resolved at the end of the call.
+search your notes to know what's actually going on in your life, and write down
+what you resolved at the end of the call.
 
 The personal problem: I want the Stoics' actual advice on how to live, in
 conversation, instead of digging through a 450-page book.
@@ -39,17 +39,16 @@ conversation, instead of digging through a 450-page book.
           │                             │                  │  NOT a tool (see §3) │──> index
           │  POST /api/token            │                  │          +           │   (in image,
           └─────────────────────────────┘                  │  ┌────────────────┐  │    in repo)
-             Vercel serverless fn                          │  │ 4 TOOLS        │  │
+             Vercel serverless fn                          │  │ 3 TOOLS        │  │
              mints JWT w/ LiveKit                          │  │ look_up_modern │──┼──> web
-             API key+secret (server-side only)             │  │ read_calendar  │──┼──> GCal
-                                                           │  │ read_notes     │──┼──> Notion
+             API key+secret (server-side only)             │  │ search_notion  │──┼──> Notion
                                                            │  │ write_journal  │──┼──> Notion
                                                            │  └────────────────┘  │
                                                            └──────────────────────┘
 ```
 
 **Inputs:** user's voice; the *Discourses* (fixed, pre-indexed); optionally the
-user's calendar + Notion.
+user's Notion.
 **Outputs:** Epictetus's voice; a live transcript; a visible source panel naming
 the book + chapter behind each answer; a journal entry written back to Notion.
 
@@ -222,7 +221,7 @@ as the faster of the two — it skips the tool round-trip — which matters on a
 voice call.
 
 **"Always" needs a relevance gate, or he becomes a fortune cookie.** If passages
-get appended on literally every turn, then "what's on my calendar tomorrow?" and
+get appended on literally every turn, then "what did I write about work?" and
 "hey, can you hear me?" both get Stoic philosophy stapled to them, and Epictetus
 starts quoting himself at nothing. The brief grades personality and storytelling
 explicitly — *"I will consider the creativity / story-telling to be your
@@ -281,7 +280,7 @@ on the large majority of questions. **Chosen params get recorded in
 
 ---
 
-## 4. Tools (the brief requires ≥1; we ship 4)
+## 4. Tools (the brief requires ≥1; we ship 3)
 
 Retrieval is **not** in this list — it runs on every turn, see §3. These are the
 narrative tools, the thing the brief actually asks for.
@@ -289,7 +288,6 @@ narrative tools, the thing the brief actually asks for.
 | Tool | What it does | Fits the story because |
 |---|---|---|
 | `look_up_modern_thing` | web search | he's been dead 1,900 years and everything is unfamiliar |
-| `read_my_calendar` | Google Calendar | he asks what's actually on your plate |
 | `search_my_notion` | Notion search — free-text query across whatever I've shared with the integration, then reads the matching page | the same, for what you've written down |
 | `write_to_journal` | Notion write-back | Stoics ended the day writing down what they resolved |
 
@@ -311,8 +309,8 @@ read that misses.
 shared with the integration, so the scope is set in Notion's UI, not in code —
 which also makes it the natural privacy control.
 
-**Grader problem:** the grader isn't me. My calendar and Notion return nothing
-for them, and I'd be handing a company a public URL wired to my real accounts.
+**Grader problem:** the grader isn't me. My Notion returns nothing for them, and
+I'd be handing a company a public URL wired to my real account.
 
 **Answer, designed in rather than bolted on:** each personal tool sits behind one
 interface with two backends — live (my credentials, my session) and a seeded
@@ -322,15 +320,15 @@ can't tell which it's talking to.
 **How it switches — and this has to be a secret, not a name.** My first instinct
 was "check the participant's name against mine." That's unsafe: the design gets
 described in a public README and a public video, so anyone who knows my name
-could type it into a link that stays live for 14 days and read my real calendar
-and notes. Guessable is not a credential.
+could type it into a link that stays live for 14 days and read my real notes.
+Guessable is not a credential.
 
 So: **the live backend is unlocked by a passphrase**, entered on the start screen
 and compared server-side against an env var. No passphrase, wrong passphrase,
 missing credential, or a failed API call → **demo backend**. Demo is the default
-and the fallback, so a revoked token or an expired OAuth grant degrades to a
-working demo instead of a dead tool mid-call. The grader never sees an error;
-they see Epictetus reading a plausible week. I reach the live path on the same
+and the fallback, so a revoked token or an unshared page degrades to a working
+demo instead of a dead tool mid-call. The grader never sees an error; they see
+Epictetus reading a plausible set of notes. I reach the live path on the same
 deployed link everyone else uses, so there's no separate build and no local-only
 path that goes untested.
 
@@ -338,10 +336,17 @@ path that goes untested.
 deployment demo-only and never wire the real accounts to it at all. That costs
 nothing that's graded — the grader was always going to see the demo backend.
 
-**Scope note:** the brief requires *one* tool call. Four is my own choice, made
+**Scope note:** the brief requires *one* tool call. Three is my own choice, made
 knowing the schedule is tight. Web search sits **above** the cut line so the
-requirement survives every cut path; the other three are where the schedule
-buffer actually lives (§6).
+requirement survives every cut path; the other two are where the schedule buffer
+actually lives (§6).
+
+**Google Calendar was cut on purpose, not for time.** An earlier draft had a
+fourth tool reading my calendar. It was the most setup (OAuth consent screens,
+redirect URIs, a verification flow) for the least character — Epictetus asking
+what you've *written down* is closer to the Stoic evening review than Epictetus
+reading your meeting schedule. Dropping it also removes the only OAuth in the
+project.
 
 ---
 
@@ -349,7 +354,7 @@ buffer actually lives (§6).
 
 Epictetus, a lame former slave who taught in Nicopolis, now in 2026. Blunt,
 warm, Socratic. Asks a lot of questions when he lacks context — that's both
-in character and the thing that makes the calendar/notes tools fire naturally.
+in character and the thing that makes the notes tools fire naturally.
 
 ElevenLabs TTS, chosen over lower-latency options for character fidelity, on
 ElevenLabs' fastest model tier to claw the latency back. Latency budget lives or
@@ -405,22 +410,21 @@ but only if I've actually listened to a call before recording the video.
  │
  │        ── at this point the submission is COMPLETE and passing ──
  │
- OPTIONAL — 3.5h, cut from the bottom up
- ├─ 0.5h  journal write-back                                    17.5  ◄── cut 3rd
- ├─ 1.0h  Notion read (incl. its demo backend)                  18.5  ◄── cut 2nd
- ├─ 2.0h  Google Calendar OAuth (incl. its demo backend)        20.5  ◄── cut 1st
+ OPTIONAL — 1.5h, cut from the bottom up
+ ├─ 0.5h  journal write-back                                    17.5  ◄── cut 2nd
+ ├─ 1.0h  Notion search (incl. its demo backend)                18.5  ◄── cut 1st
  │
  WRITE-UP — 3.0h, never cut
  ├─ 1.5h  README + design document
  └─ 1.5h  YouTube video, from the hour-17 outline
-                                              TOTAL 23.5h vs ~20h available
+                                              TOTAL 21.5h vs ~20h available
 ```
 
 **Web search is on the required path, and that's the whole reason it moved.**
 The brief's tool-call requirement is not a bonus — *"In the call, make a tool
 call of your choice"* — so a cut path that removes every tool would fail an
-explicit requirement. Web search is the cheapest of the four (no OAuth, no
-account, no demo backend needed — a search API works the same for everyone), so
+explicit requirement. Web search is the cheapest of the three (no account, no
+demo backend needed — a search API works the same for everyone), so
 it's the one that belongs above the cut line. **Every cut scenario now still
 ships at least one working, in-story tool call.**
 
@@ -429,12 +433,14 @@ four mandated topics is a tight edit, and drafting it cold at the end of a
 20-hour sprint is how a required topic gets dropped. Half an hour while the
 system is fresh in mind buys back more than it costs.
 
-**The arithmetic doesn't close, and that's the point.** 23.5h against ~20h means
-Calendar (2h) gets cut and I land at 21.5h; cut Notion read too and it's 20.5h.
-The optional tools aren't a stretch goal — they *are* the buffer, spent only if
-the required path came in under estimate. **If the required path itself overruns,
-all three optional tools go and the submission still passes at 20h** — with the
-web search tool, because that one is above the cut line.
+**The arithmetic is now close, but it isn't slack.** 21.5h against ~20h means
+Notion search (1h) gets cut and I land at 20.5h; cut the journal too and it's
+20h exactly. The optional tools aren't a stretch goal — they *are* the buffer,
+spent only if the required path came in under estimate. **If the required path
+itself overruns, both optional tools go and the submission still passes at 20h**
+— with the web search tool, because that one is above the cut line. Dropping
+Calendar bought back 2h of the worst-estimated work in the plan, which is the
+single biggest schedule change since the first draft.
 
 **Honest read on slack: there is about an hour of it, and that's thin.** The
 required path plus the never-cut write-up is 20h against ~20h available. That's
@@ -442,7 +448,7 @@ survivable only because the three biggest unknowns each have a written abort
 rule (deploy spike §7, retrieval tuning below, host fallback §7) rather than an
 open-ended "keep going until it works." **Nothing can start until the API keys
 land** (§11) — if those arrive late, real available time is smaller than 20h and
-Calendar and Notion go immediately rather than eventually.
+both Notion tools go immediately rather than eventually.
 
 **The 2am scenario, decided now while I'm rested.** If it's hour 18 and the full
 deploy still isn't working, I do not keep debugging into the deadline. I ship, in
@@ -479,9 +485,9 @@ different from the last one:**
   the video *as* the first full end-to-end run. One complete call — voice in,
   cited answer out, transcript rendering — before the frontend is polished.
 
-**Cut order:** Google Calendar → Notion read → journal write-back → web search.
-All four sit behind the same tool interface, so cutting one deletes a
-registration, not a refactor. Never cut: README or video (both are graded
+**Cut order:** Notion search → journal write-back → web search. All three sit
+behind the same tool interface, so cutting one deletes a registration, not a
+refactor. Never cut: README or video (both are graded
 deliverables).
 
 ---
@@ -579,10 +585,9 @@ $25 billing alarm as the backstop. See §7 for the 14-day window.
 | Voice round-trip too slow | ElevenLabs chosen for character, not speed; **and** per-turn retrieval now sits inside the response loop, embedding call included | timed at the integration checkpoint (§6); levers in order: fewer chunks (3, not 4), faster ElevenLabs model, cache embeddings for repeated turns |
 | GPT answers from memory, not retrieval | Epictetus is famous enough that the LLM can answer correctly without looking | retrieval runs on every turn, not by LLM choice (§3); offline harness proves findability, integration checkpoint + link smoke test prove it fires live |
 | LiveKit Cloud hosting used instead of AWS | costs the AWS bonus point | only after the timeboxed spike fails (§7); a working link beats a bonus point |
-| Public link exposes my real calendar/notes | link stays live 14 days and the design is public | live backend gated on a passphrase, not a guessable name (§4); demo-only deployment is a standing option |
+| Public link exposes my real notes | link stays live 14 days and the design is public | live backend gated on a passphrase, not a guessable name (§4); demo-only deployment is a standing option; Notion's search only reaches pages I explicitly share with the integration, so the blast radius is set in Notion's UI |
 | Everything optional gets cut → no tool call | tool call is a hard requirement, not a bonus | web search moved **above** the cut line (§6) |
 | Epictetus quotes scripture at "hello" | per-turn retrieval with no gate hurts the graded personality | score threshold + skip on tool-call turns (§3), checked at the integration checkpoint |
-| Google OAuth rabbit hole | consent screens, verification, redirect URIs | last in order, first to cut |
 | The 3 giant chapters (up to 9,271 words) | ~23 chunks from one chapter can crowd out the pool | watched in the eval harness; per-chapter cap on retrieved chunks if it shows up |
 
 ---
@@ -601,7 +606,7 @@ without these. Everything after hour 0.5 waits.
    | hour 2.5 | LiveKit Cloud, AWS |
    | hour 3.5 | Deepgram, ElevenLabs |
    | hour 16 | Tavily (web search) |
-   | optional | Notion, Google |
+   | optional | Notion |
 
    Account confirmation happens per key, before first use — I'll name the literal
    account each one resolves to and wait for your OK. All are personal accounts

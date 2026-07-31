@@ -192,19 +192,45 @@ async def test_a_failing_index_does_not_end_the_call():
     assert await grounding.for_turn("what is in our power") == ""
 
 
-# --- 3. what the demo backend says ------------------------------------------
+# --- 3. which tools exist at all ---------------------------------------------
+
+
+EXPECTED_TOOLS = {"look_up_modern_thing", "search_my_notion", "write_to_journal"}
+
+
+def test_the_agent_exposes_exactly_the_three_planned_tools():
+    """Plan section 4. A tool that is registered but half-removed still shows up
+    in the LLM's tool list, so it can still be called mid-call and fail."""
+    from agent.persona.epictetus_agent import Epictetus
+
+    registered = {
+        name
+        for name in dir(Epictetus)
+        if getattr(getattr(Epictetus, name, None), "__livekit_tool_info", None) is not None
+    }
+    assert registered == EXPECTED_TOOLS
+
+
+def test_nothing_reads_a_calendar_any_more():
+    """Google Calendar was cut (plan section 4). The tool, the protocol method
+    and both backends go together -- leaving the backend behind is how a dead
+    code path survives a deletion."""
+    from agent.persona.epictetus_agent import Epictetus
+    from agent.tools.personal.life_context import LifeContext, LifeSource
+
+    assert not hasattr(Epictetus, "read_my_calendar")
+    assert not hasattr(LifeSource, "calendar")
+    assert not hasattr(DemoLife(), "calendar")
+    assert "calendar" not in LifeContext.__protocol_attrs__
+
+
+# --- 4. what the demo backend says ------------------------------------------
 
 
 def test_the_demo_week_is_the_same_every_time():
     """A grader watching the video and a grader on the link should see the same
-    week, or the demo looks broken rather than seeded."""
-    assert DemoLife().calendar(days=3) == DemoLife().calendar(days=3)
-
-
-def test_the_demo_calendar_covers_the_days_it_was_asked_for():
-    entries = DemoLife().calendar(days=3)
-    assert entries, "the demo week cannot be empty -- the grader will hear it"
-    assert len({e["day"] for e in entries}) <= 3
+    notes, or the demo looks broken rather than seeded."""
+    assert DemoLife().notes() == DemoLife().notes()
 
 
 def test_the_demo_notes_read_like_a_person_wrote_them():

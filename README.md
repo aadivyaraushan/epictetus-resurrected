@@ -373,9 +373,24 @@ mismatch shows up as the container exiting instantly with an exec format error.
 of a call and registers with LiveKit to wait for dispatch. Per-request serverless
 cannot do that. If the worker is off, the link is dead.
 
-**Fallback order if AWS fights back**, decided in advance rather than at 2am:
-AWS → LiveKit Cloud's own agent hosting (one command, same Dockerfile) → any host
-that runs a long-lived container.
+**The short path: LiveKit Cloud agent hosting.** It takes the same image and is
+one command. Run it from the repo root once the image above has been built:
+
+```bash
+set -a && . ./.env && set +a && lk agent create --image epictetus-worker:test --secrets-file .env .
+```
+
+`--secrets-file .env` uploads the API keys to LiveKit so the hosted worker has
+them; that upload is the reason this command is left for a human to run rather
+than run from an agent session. Check it afterwards with `lk agent list` — the
+dispatch name should read `epictetus`, which is the name the token asks for.
+
+Cost: LiveKit's free Build plan includes 1,000 agent session minutes a month, and
+it bills session minutes rather than idle hosting, so a deployed worker sitting
+between calls costs nothing.
+
+**Fallback order if that fights back**, decided in advance rather than at 2am:
+LiveKit Cloud → AWS Fargate (above) → any host that runs a long-lived container.
 
 ---
 

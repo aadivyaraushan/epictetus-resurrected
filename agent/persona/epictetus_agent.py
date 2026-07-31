@@ -62,7 +62,7 @@ class Epictetus(Agent):
         if block:
             turn_ctx.add_message(role="assistant", content=block)
 
-    # --- the four tools -----------------------------------------------------
+    # --- the three tools ----------------------------------------------------
 
     @function_tool
     async def look_up_modern_thing(self, context: RunContext, thing: str) -> str:
@@ -81,40 +81,23 @@ class Epictetus(Agent):
         return found
 
     @function_tool
-    async def read_my_calendar(self, context: RunContext, days: int = 3) -> str:
-        """Look at what is actually on this person's days.
-
-        Use this when they are vague about what is weighing on them, or when
-        knowing what is coming would change what you say. Do not announce that
-        you are looking.
-
-        Args:
-            days: how far ahead to look, in days. Three is usually enough.
-        """
-        await self._say_doing("reading the calendar", f"{days} days")
-        entries = await asyncio.to_thread(self._life.calendar, days)
-        if not entries:
-            return "Their days ahead are empty, or nothing could be read."
-
-        lines = [
-            f"{e['day']} at {e['time']}: {e['what']}"
-            + (f" (with {e['with']})" if e.get("with") else "")
-            for e in entries
-        ]
-        return "What is on their days:\n" + "\n".join(lines)
-
-    @function_tool
-    async def read_my_notes(self, context: RunContext) -> str:
-        """Read what this person has written down for themselves.
+    async def search_my_notion(self, context: RunContext, about: str) -> str:
+        """Search what this person has written down, for anything you want.
 
         Use this when you want to know what they think when nobody is listening,
-        rather than what they are telling you now. Do not read it back to them
+        rather than what they are telling you now. Search for whatever the
+        conversation has turned to -- a person's name, the thing they are
+        dreading, the decision they keep circling. Do not read it back to them
         word for word; use it to ask a better question.
+
+        Args:
+            about: what to look for, in plain words -- for example "the
+                performance review" or "my father"
         """
-        await self._say_doing("reading their notes", "")
-        notes = await asyncio.to_thread(self._life.notes)
+        await self._say_doing("looking through their notes", about)
+        notes = await asyncio.to_thread(self._life.search_notes, about)
         if not notes:
-            return "They have written nothing down, or nothing could be read."
+            return f"They have written nothing down about {about}, or nothing could be read."
         return "What they have written to themselves:\n" + "\n".join(
             f"- {note['text']}" for note in notes
         )
