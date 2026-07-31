@@ -15,7 +15,7 @@ hybrid search -> best cosine
        |                                |
        |                                +-- substantive --> retrieved passages
        |                                +-- acknowledgment --> no sources
-       |                                +-- production error --> log + passages
+       |                                +-- production error --> log + no sources
        |                                +-- dev/test error ---> raise visibly
        |
        +-- 0.36 or above ---------> retrieved passages

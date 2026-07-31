@@ -88,9 +88,9 @@ Those values match the recorded ranking quality. Its raw-score check correctly n
 ## Production deployment and browser-driven proof
 
 The LiveKit worker that serves the public Vercel app was deployed from commit
-`e33acf6` as production version `ABmMP3MoPGAx`. After deployment,
+`b1e649d` as production version `ks4e4xEAwhbj`. After deployment,
 `lk agent status .` reported `Running` with `1 / 1 / 1` replicas. The previous
-version, `78butuRAMa32`, remains the rollback target.
+version, `ABmMP3MoPGAx`, remains the rollback target.
 
 A headless Chrome run opened
 `https://epictetus-resurrected.vercel.app/`, granted the public page a fake
@@ -100,7 +100,7 @@ page errors were recorded.
 For “I think I will walk away, if I am being honest,” the production log showed:
 
 ```text
-Luna decision=retrieve latency_ms=2688 input_tokens=219 output_tokens=14
+Luna decision=retrieve latency_ms=1271 input_tokens=219 output_tokens=14
 Luna range decision=retrieve best_cosine=0.2608
 ```
 
@@ -112,21 +112,18 @@ captured UI state is in
 The first acknowledgment recording was split by transcription into “That
 helps,” “Okay,” “Alright,” and “Thanks.” The browser still verified that the
 source panel cleared, but those fragments did not prove the Luna range path.
-A second live call therefore used the single acknowledgment “That helps me
-understand what you mean, and I am okay now.” The production log showed:
+A second live call therefore used the acknowledgment “That helps me understand
+what you mean, and I am okay now.” Its first attempt exercised the production
+timeout path at cosine `0.3124`: the worker logged the complete error and the
+public page showed zero source cards. A retry returned normally and logged:
 
 ```text
-Luna decision=skip latency_ms=3392 input_tokens=223 output_tokens=14
-Luna range decision=skip best_cosine=0.3124
+Luna decision=skip latency_ms=1691 input_tokens=223 output_tokens=14
 ```
 
-That score is inside the `0.2315 <= cosine < 0.36` Luna-only range. The public
-page contained zero source cards and kept the existing empty-source display.
+The identical phrase's measured `0.3124` score is inside the
+`0.2315 <= cosine < 0.36` Luna-only range. The public page contained zero source
+cards and kept the existing empty-source display on both the timeout and normal
+skip attempts.
 The earlier source-clearing UI state is in
 `saved-results/rag-luna-filter/live-sources-cleared.png`.
-
-The observed 3.392-second Luna measurement was longer than the configured
-three-second SDK timeout. The verified fact is that it returned normally and
-did not exercise the production error-hiding path. I infer that the SDK timeout is not a
-strict wall-clock deadline for the complete parsed call; that explanation was
-not separately instrumented in production.
