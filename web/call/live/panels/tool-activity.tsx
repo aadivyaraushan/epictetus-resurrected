@@ -16,13 +16,15 @@
 import { useDataChannel } from "@livekit/components-react";
 import { useCallback, useState } from "react";
 
+import { readCommitmentActivity } from "../../review/flow/call-review-flow";
+
 const TOPIC = "epictetus.activity";
 // Old entries are scrollback nobody reads; this is a live indicator.
 const KEEP = 6;
 
-type Deed = { action: string; detail: string; at: number };
+type Deed = { action: string; detail: string; kind?: string; at: number };
 
-export function ToolActivity() {
+export function ToolActivity({ onCommitment }: { onCommitment: (text: string) => void }) {
   const [deeds, setDeeds] = useState<Deed[]>([]);
 
   const receive = useCallback((message: { payload: Uint8Array }) => {
@@ -32,13 +34,16 @@ export function ToolActivity() {
       const deed: Deed = {
         action: body.action,
         detail: typeof body.detail === "string" ? body.detail : "",
+        kind: typeof body.kind === "string" ? body.kind : undefined,
         at: Date.now(),
       };
+      const commitment = readCommitmentActivity(body);
+      if (commitment) onCommitment(commitment);
       setDeeds((previous) => [...previous, deed].slice(-KEEP));
     } catch (error) {
       console.error("[tool-activity] could not read an activity message", error);
     }
-  }, []);
+  }, [onCommitment]);
 
   useDataChannel(TOPIC, receive);
 

@@ -3,29 +3,40 @@
 /**
  * What you see before the call: one line of his, an explanation, and a button.
  *
- * The passphrase field is deliberately unobtrusive and honest about what it
- * does. Hiding it would be security by obscurity, and the design is described in
- * a public README anyway -- so it says plainly that it exists and that leaving it
- * empty is the normal case.
+ * A Notion connection is optional for the call and required only when the
+ * caller chooses to save their completed review.
  */
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+
+import { DISCOURSES_QUOTES, pickDiscourseQuote } from "./quotes";
 
 export function StartScreen({
   onStart,
   connecting,
   failure,
+  notion,
+  notionBusy,
+  onChooseDatabase,
+  onDisconnectNotion,
 }: {
-  onStart: (passphrase: string) => void;
+  onStart: () => void;
   connecting: boolean;
   failure: string | null;
+  notion: NotionConnection;
+  notionBusy: boolean;
+  onChooseDatabase: (id: string) => void;
+  onDisconnectNotion: () => void;
 }) {
-  const [passphrase, setPassphrase] = useState("");
-  const [showPassphrase, setShowPassphrase] = useState(false);
+  const [frontQuote, setFrontQuote] = useState(DISCOURSES_QUOTES[0]);
+
+  useEffect(() => {
+    setFrontQuote(pickDiscourseQuote(Math.random()));
+  }, []);
 
   function submit(event: FormEvent) {
     event.preventDefault();
-    if (!connecting) onStart(passphrase);
+    if (!connecting) onStart();
   }
 
   return (
@@ -49,9 +60,8 @@ export function StartScreen({
 
       <form className="start" onSubmit={submit}>
         <blockquote>
-          &ldquo;Men are disturbed not by the things which happen, but by the
-          opinions about the things.&rdquo;
-          <cite>Discourses, Book I</cite>
+          &ldquo;{frontQuote.text}&rdquo;
+          <cite>{frontQuote.citation}</cite>
         </blockquote>
 
         <p className="lede">
@@ -60,41 +70,54 @@ export function StartScreen({
           recorded teaching first, and the passages he drew on appear beside the
           conversation as he speaks. He also keeps a written record of the call
           as it goes &mdash; the way Arrian kept one of his &mdash; so sessions
-          are recorded, and you can ask him at any point to read back what he
-          has written.
+          end with an editable transcript, summary, and next step. Nothing is
+          saved to Notion until you review it and press Save.
         </p>
 
         <button className="primary" type="submit" disabled={connecting}>
           {connecting ? "Waking him…" : "Start Call"}
         </button>
 
-        <div className="passphrase">
-          <button
-            type="button"
-            className="quiet"
-            aria-pressed={showPassphrase}
-            onClick={() => setShowPassphrase((shown) => !shown)}
-          >
-            {showPassphrase ? "Hide passphrase" : "I have a passphrase"}
-          </button>
-
-          {showPassphrase && (
+        <div className="notion-connect">
+          {!notion.connected ? (
             <>
-              <input
-                type="password"
-                value={passphrase}
-                onChange={(event) => setPassphrase(event.target.value)}
-                placeholder="passphrase"
-                aria-label="Passphrase for the live personal backend"
-                autoComplete="off"
-              />
+              <a className="quiet button-link" href="/api/notion/connect">
+                Connect Notion
+              </a>
               <p className="hint">
-                Leave this empty. Without it, his tools read a seeded set of
-                notes &mdash; which is what a visitor is meant to see. The
-                passphrase only exists so the author can point the same deployed
-                link at real notes without putting anyone else&rsquo;s link near
-                it.
+                Optional. Connect the workspace where you want completed reviews saved.
+                Epictetus never reads your Notion pages during a call.
               </p>
+            </>
+          ) : (
+            <>
+              <p className="connection-line">
+                <span className="connection-dot" aria-hidden="true" />
+                Connected to {notion.workspaceName}
+              </p>
+              <label htmlFor="review-database">Evening reviews database</label>
+              <select
+                id="review-database"
+                value={notion.selectedDatabase?.id ?? ""}
+                onChange={(event) => onChooseDatabase(event.target.value)}
+                disabled={notionBusy}
+              >
+                <option value="">Choose a database…</option>
+                {notion.databases.map((database) => (
+                  <option key={database.id} value={database.id}>
+                    {database.name}
+                  </option>
+                ))}
+              </select>
+              <button className="quiet" type="button" onClick={onDisconnectNotion}>
+                Disconnect Notion
+              </button>
+              {notion.databases.length === 0 && (
+                <p className="hint">
+                  No databases are shared with this connection yet. Reconnect and choose
+                  the page that contains your reviews database.
+                </p>
+              )}
             </>
           )}
         </div>
@@ -108,3 +131,10 @@ export function StartScreen({
     </main>
   );
 }
+
+export type NotionConnection = {
+  connected: boolean;
+  workspaceName?: string;
+  databases: { id: string; name: string }[];
+  selectedDatabase?: { id: string; name: string; titleProperty: string } | null;
+};

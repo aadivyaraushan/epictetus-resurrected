@@ -1,12 +1,9 @@
 /**
  * What the token endpoint actually signs.
  *
- * The unit tests next to chooseBackend cover the passphrase decision on its own.
  * These run the real route handler and then verify the token it returns with the
- * same secret LiveKit would use, because the thing that matters is not what the
- * decision was but what ended up inside the signed token. A correct decision
- * written into the wrong field would pass every test in backend-choice.test.ts
- * and still hand a stranger live notes.
+ * same secret LiveKit would use. No browser input should select a private data
+ * backend or become trusted participant metadata.
  *
  * No network: minting and verifying a token is local signing, so this costs
  * nothing and runs in milliseconds.
@@ -19,9 +16,7 @@ import { POST } from "./route";
 
 const KEY = "APItestkey";
 const SECRET = "a-test-secret-long-enough-to-sign-with";
-const PASSPHRASE = "the lamp is iron";
-
-function ask(body: unknown) {
+function ask(body: unknown = {}) {
   return POST(
     new Request("http://localhost/api/token", {
       method: "POST",
@@ -42,7 +37,7 @@ beforeEach(() => {
   process.env.LIVEKIT_URL = "wss://example.livekit.cloud";
   process.env.LIVEKIT_API_KEY = KEY;
   process.env.LIVEKIT_API_SECRET = SECRET;
-  process.env.LIVE_BACKEND_PASSPHRASE = PASSPHRASE;
+  process.env.REVIEW_SESSION_SECRET = "review-session-secret";
 });
 
 afterEach(() => {
@@ -50,39 +45,21 @@ afterEach(() => {
 });
 
 describe("POST /api/token", () => {
-  it("signs the demo verdict into the token when no passphrase is sent", async () => {
+  it("does not sign a private backend into a caller token", async () => {
     const body = await (await ask({})).json();
-    expect(body.backend).toBe("demo");
+    expect(body.backend).toBeUndefined();
 
     const claims = await claimsIn(body.token);
-    expect(JSON.parse(claims.metadata!)).toEqual({ life_backend: "demo" });
+    expect(claims.metadata).toBeFalsy();
   });
 
-  it("signs the live verdict for the right passphrase", async () => {
-    const body = await (await ask({ passphrase: PASSPHRASE })).json();
-    expect(body.backend).toBe("live");
-
-    const claims = await claimsIn(body.token);
-    expect(JSON.parse(claims.metadata!)).toEqual({ life_backend: "live" });
-  });
-
-  it("does not sign the live verdict for a wrong passphrase", async () => {
-    const body = await (await ask({ passphrase: "the lamp is gold" })).json();
-    expect(body.backend).toBe("demo");
-
-    const claims = await claimsIn(body.token);
-    expect(JSON.parse(claims.metadata!)).toEqual({ life_backend: "demo" });
-  });
-
-  // The metadata field is what the worker reads. If a caller could set it
-  // directly, the passphrase would be decoration.
-  it("ignores a metadata field the caller tries to supply", async () => {
+  it("ignores old passphrase and metadata fields", async () => {
     const body = await (
-      await ask({ metadata: JSON.stringify({ life_backend: "live" }) })
+      await ask({ passphrase: "old-secret", metadata: JSON.stringify({ life_backend: "live" }) })
     ).json();
 
     const claims = await claimsIn(body.token);
-    expect(JSON.parse(claims.metadata!)).toEqual({ life_backend: "demo" });
+    expect(claims.metadata).toBeFalsy();
   });
 
   it("scopes the token to one room, and to that room only", async () => {
@@ -116,13 +93,18 @@ describe("POST /api/token", () => {
     expect(body.serverUrl).toBe("wss://example.livekit.cloud");
   });
 
+  it("issues a short-lived HttpOnly permit for one review draft", async () => {
+    const response = await ask();
+    expect(response.headers.get("set-cookie")).toContain("review_permit=");
+    expect(response.headers.get("set-cookie")).toContain("HttpOnly");
+  });
+
   it("survives a body that is not JSON at all", async () => {
     const response = await POST(
       new Request("http://localhost/api/token", { method: "POST", body: "not json" }),
     );
     const body = await response.json();
     expect(response.status).toBe(200);
-    expect(body.backend).toBe("demo");
   });
 
   it("refuses to mint anything when the server is not configured", async () => {
@@ -132,12 +114,4 @@ describe("POST /api/token", () => {
     expect((await response.json()).error).toContain("LIVEKIT_API_SECRET");
   });
 
-  // Fail closed: an unset secret must not make the empty passphrase a key.
-  it("cannot be unlocked when the deployment has no passphrase set", async () => {
-    delete process.env.LIVE_BACKEND_PASSPHRASE;
-    for (const passphrase of ["", undefined, PASSPHRASE]) {
-      const body = await (await ask({ passphrase })).json();
-      expect(body.backend).toBe("demo");
-    }
-  });
 });

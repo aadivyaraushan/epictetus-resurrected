@@ -71,15 +71,14 @@ the citing and he does the talking.
  │ │ Book II Ch. 5  │ │          │              │          │  └────────────────┘  │
  │ │ "..."          │ │          └──────────────┘          │          │           │
  │ └────────────────┘ │                 ^                  │          v           │
- │ [End Call]         │                 │                  │  RETRIEVAL runs on   │
+ │ [End → review]     │                 │                  │  RETRIEVAL runs on   │
  └────────┬───────────┘                 │                  │  EVERY turn — it is  │──> index
           │                             │                  │  NOT a tool          │   (in image,
           │  POST /api/token            │                  │          +           │    in repo)
           └─────────────────────────────┘                  │  ┌────────────────┐  │
-             Vercel serverless function                    │  │ 3 TOOLS        │  │
+             Vercel serverless function                    │  │ 2 TOOLS        │  │
              signs the JWT with the LiveKit                │  │ look_up_modern │──┼──> web
-             API secret (server-side only)                 │  │ search_notion  │──┼──> Notion
-                                                           │  │ write_log      │──┼──> Notion
+             API secret (server-side only)                 │  │ write_log      │  │
                                                            │  └────────────────┘  │
                                                            └──────────────────────┘
 ```
@@ -217,79 +216,43 @@ pool size, the number kept, and the per-chapter cap were never swept. Pushing
 
 ---
 
-## Tools
+## Tools and completed reviews
 
-The brief requires one. There are three, and retrieval is deliberately **not**
-among them (see above).
+Retrieval is deliberately **not** a tool (see above). The call has two tools:
 
 | Tool | Does | Fits the story because |
 |---|---|---|
 | `look_up_modern_thing` | web search | he has been dead 1,900 years and nothing is familiar |
-| `search_my_notion` | Notion search — free-text, then reads the page it found | he asks what you have written down when nobody was listening |
-| `write_to_session_log` | Notion write-back | Arrian kept a record of these conversations; that record *is* the Discourses |
+| `write_to_session_log` | keeps an in-memory line from this call | Arrian kept a record of these conversations; that record *is* the Discourses |
 
-All three return prose, not JSON, because the model is about to say the result out
-loud. All three publish a line to the browser before they run, so a second of
-silence reads as him doing something rather than as a broken call.
+The session log starts empty. Each entry is tagged as either a reflection or a
+commitment, and the browser keeps the latest commitment as the proposed next
+step. No worker tool can search or write anyone's Notion account.
 
-**Notes are searched, not read from a fixed page.** `search_my_notion` takes
-whatever the conversation has turned to and calls Notion's `POST /v1/search`,
-which needs no database id and reaches any page shared with the integration; a
-second call reads that page's blocks. The write is the exception — it appends to
-one pinned page id, because a bad title match on a *write* puts text somewhere
-the caller did not expect, which is worse than a read that simply misses.
+Ending a call opens an editable review with the transcript, a Luna-drafted
+summary, and the committed next step. The review is not written anywhere until
+the caller presses Save. That action creates exactly one page inside the Notion
+database they chose before the call; it uses the database's existing title
+property and puts the review sections in the page body, so it does not change the
+database schema.
 
-**The write tool logs the whole conversation, not just a resolution at the end.**
-It began as a journal: use it once the caller has said what they will actually
-do. That fired almost never. The first real call ran thirteen turns and wrote
-nothing, because nobody had reached a resolution by the end — the tool was
-correct and useless at the same time. Now it is a running log he adds to
-whenever something is worth keeping, which fires several times in a normal call.
+### Public Notion connection
 
-Two things fell out of that change. The log **starts empty on every call**,
-where the demo notes stay seeded, so a non-empty log is proof the write ran —
-there is no other way for a line to get in. And each write comes back **numbered**,
-so he says "that is the third thing I have written down", which a listener can
-check against the panel.
+Each caller connects their own Notion workspace through the integration's public
+OAuth flow and chooses which shared database receives reviews. Access and refresh
+tokens are encrypted in an HttpOnly, same-site browser cookie; they never enter
+browser JavaScript, LiveKit metadata, worker logs, or the transcript. The cookie
+keeps the selection available in the same browser and refreshes an expired token.
 
-It is also better in character, not worse. Arrian sat in these lectures taking
-notes; the *Discourses* are that record. A session log is the thing the corpus
-literally is.
+The old author passphrase and fixed Notion page path were removed. Notion is
+optional for speaking with Epictetus, but a connected database is required to
+save the completed review.
 
-**Google Calendar was cut.** An earlier version had a fourth tool reading my
-calendar. It was the most setup in the project (OAuth consent screens, redirect
-URIs, a verification flow) for the least character: Epictetus asking what you
-have *written down* is closer to the Stoic evening review than Epictetus reading
-your meeting schedule. Cutting it removed the only OAuth here.
-
-### The personal tools have two backends, and why one is behind a passphrase
-
-My notes are useless to a grader, and pointing a public URL at my real account is
-worse than useless. So each personal tool sits behind one interface with two
-implementations:
-
-- **demo** — seeded, plausible notes from a hard week (a performance review
-  being rehearsed at 3am, a friend who only ever asks for favours, a parent's
-  test results). This is what every visitor gets, and it is what the demo was
-  always going to show.
-- **live** — my real Notion.
-
-**The switch is a passphrase, not a name.** The first design compared the
-caller's display name to mine. That is not a credential: this project is
-described in a public README and a public video, and the link stays up for two
-weeks, so anyone who read either could type my name and read my real notes.
-
-Instead the passphrase is entered on the start screen, sent to the Vercel token
-endpoint, and compared **there** against an environment variable, in constant
-time, hashed first so the comparison does not leak length. The verdict is written
-into the participant's **signed** access token, which the worker reads and the
-caller cannot forge. Demo is the default and every failure path — no passphrase,
-wrong passphrase, missing credential, a page never shared with the integration,
-API timeout mid-call — lands on demo. A grader never sees an error; they see
-plausible notes.
-
-It fails closed: if the server has no passphrase configured, the live backend is
-unreachable rather than unlocked by an empty string. That is tested.
+The paid summary route accepts only a short-lived, server-signed permit issued
+when a call starts. It caps transcript and commitment size, consumes the permit
+after a successful draft, and limits repeated attempts from one forwarded
+network address. Deployment-level rate limiting should remain enabled as the
+outer protection when the app is public.
 
 ---
 
@@ -378,8 +341,11 @@ To rebuild the corpus and index from scratch (about $0.003 of embeddings):
 
 **Front end and token endpoint → Vercel.** Point a Vercel project at this repo
 with **Root Directory set to `web`**, and set `LIVEKIT_URL`, `LIVEKIT_API_KEY`,
-`LIVEKIT_API_SECRET`, and optionally `LIVE_BACKEND_PASSPHRASE`. The API key and
-secret must be server-side environment variables — anything prefixed
+`LIVEKIT_API_SECRET`, `OPENAI_API_KEY`, `NOTION_OAUTH_CLIENT_ID`,
+`NOTION_OAUTH_CLIENT_SECRET`, `NOTION_OAUTH_REDIRECT_URI`, and
+`NOTION_SESSION_SECRET`, plus a separate `REVIEW_SESSION_SECRET`. Add the deployed `/api/notion/callback` URL to the
+public Notion integration as an allowed redirect URI. The keys and secrets must
+be server-side environment variables — anything prefixed
 `NEXT_PUBLIC_` ships to the browser, and this secret can sign a token for any
 room.
 
@@ -533,14 +499,15 @@ direction. Worth naming specifically, since the brief asks:
 ```
 agent/           the worker
   main.py          pipeline: speech, model, voice, and the session
-  persona/         who he is, and the three tools
+  persona/         who he is, and the two tools
+  session/         the per-call reflection and commitment record
   grounding/       the per-turn retrieval hook
   retrieval/       PDF parsing, chunking, hybrid search, the gate
-  tools/           web search; personal tools with demo and live backends
+  tools/           web search for unfamiliar modern things
 corpus/          the Discourses: fetch it, typeset it, and the PDF itself
 index/           the committed vector store and keyword index
 eval/            the retrieval harness and both question sets
-web/             Next.js front end and the token endpoint
+web/             Next.js call, OAuth, review, and save routes
 deploy/worker/   Dockerfile for the agent worker
 saved-results/   measurements, with the reasoning that used them
 planning/        the plan this was built from

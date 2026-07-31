@@ -56,9 +56,6 @@
         { "name": "ELEVENLABS_API_KEY", "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT:secret:epictetus/elevenlabs-api-key" },
         { "name": "TAVILY_API_KEY", "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT:secret:epictetus/tavily-api-key" }
       ],
-
-      "_optional_secrets_note": "The live personal backend (Notion) is optional. Leave its secrets out and every personal tool answers from the seeded demo notes, which is what a visitor sees anyway.",
-
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {

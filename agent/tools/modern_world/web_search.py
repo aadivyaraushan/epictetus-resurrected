@@ -6,7 +6,7 @@ Output: a short readable summary he can speak, or an honest admission that he
 
 This is the tool that satisfies the brief's requirement outright -- "in the
 call, make a tool call of your choice" -- which is why plan section 6 puts it
-above the cut line while the three personal tools sit below it. It needs one API
+above the cut line while the in-call session record stays local. It needs one API
 key, no OAuth, no account setup for the caller, and it behaves identically for
 me and for a grader, so nothing about it can go stale between submission and
 someone clicking the link.

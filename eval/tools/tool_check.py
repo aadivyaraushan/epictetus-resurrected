@@ -1,4 +1,4 @@
-"""Do the three tools actually fire, and what does a caller have to say to fire them?
+"""Do the two tools actually fire, and what does a caller have to say to fire them?
 
 The 13-turn live call fired none of them. That is not a bug -- it was a
 conversation about the caller's research, and none of the three came up -- but
@@ -12,27 +12,25 @@ exactly what is being measured.
 
 import asyncio
 import logging
-import os
 import sys
+from pathlib import Path
 
-sys.path.insert(0, "/Users/aadivyar/Documents/Internships/Bluejay Take Home")
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO))
 
 from dotenv import load_dotenv
 
-load_dotenv("/Users/aadivyar/Documents/Internships/Bluejay Take Home/.env")
+load_dotenv(REPO / ".env")
 
 from livekit.agents import AgentSession
 
 from agent.main import build_llm
 from agent.persona.epictetus_agent import Epictetus
-from agent.tools.personal.demo_life import DemoLife
-from agent.tools.personal.life_context import LifeSource
 
 logging.basicConfig(level=logging.WARNING)
 
 PROMPTS = [
     ("look_up_modern_thing", "my therapist keeps telling me to try something called cold plunging, what even is that"),
-    ("search_my_notion", "what did I write in my notes about work? can you look?"),
     # Deliberately not a resolution and not an instruction to write. The old
     # journal tool only fired on "I resolve to X, write that down"; a session
     # log has to fire on an ordinary admission in the middle of a conversation,
@@ -52,8 +50,6 @@ class _NoGrounding:
 
 
 async def main():
-    life = LifeSource(DemoLife(), DemoLife(), name="demo")
-
     # `python eval/tools/tool_check.py log` runs only the prompts whose tool name
     # contains "log". Iterating on one tool's wording should cost one model call,
     # not three.
@@ -63,7 +59,7 @@ async def main():
         if only and only not in expected:
             continue
         session = AgentSession(llm=build_llm())
-        agent = Epictetus(_NoGrounding(), life)
+        agent = Epictetus(_NoGrounding())
         await session.start(agent=agent)
         try:
             result = await session.run(user_input=said)
