@@ -207,7 +207,7 @@ costs one embedding call per question, no LLM calls, and a few seconds. Making o
 cheap is what made it reasonable to re-measure the gate three times.
 
 The index is committed, so none of this rebuilds it. To rebuild from the PDF:
-`.venv/bin/python -m agent.retrieval.build_index` (about $0.003 of embeddings).
+`.venv/bin/python -m agent.retrieval.search.index_store` (about $0.003 of embeddings).
 
 ---
 

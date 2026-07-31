@@ -1,0 +1,22 @@
+# The build context is the repo root. Keep out anything the worker does not run
+# with -- a 2 GB virtualenv in the context makes every build slow for no reason.
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.git/
+.env
+.env.*
+!.env.example
+
+web/
+tests/
+eval/
+planning/
+saved-results/
+corpus/build/
+corpus/source/
+corpus/discourses.pdf
+
+# index/ is deliberately NOT here. The worker needs it, and it ships in the image.

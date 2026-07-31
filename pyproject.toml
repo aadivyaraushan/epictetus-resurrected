@@ -4,6 +4,37 @@ version = "1.0.0"
 description = "A RAG-enabled LiveKit voice agent that speaks as Epictetus, grounded in his Discourses."
 requires-python = ">=3.11"
 
+# Pinned to what was actually run and measured, not to loose ranges. The whole
+# point of committing the index is that the numbers in saved-results/ can be
+# reproduced, and a retrieval stack that silently changes version does not
+# reproduce anything.
+dependencies = [
+    # the voice pipeline
+    "livekit-agents==1.6.7",
+    "livekit-plugins-deepgram==1.6.7",     # speech to text
+    "livekit-plugins-elevenlabs==1.6.7",   # text to speech
+    "livekit-plugins-openai==1.6.7",       # the language model
+    "livekit-plugins-silero==1.6.7",       # voice activity detection, runs locally
+    "livekit-plugins-turn-detector==1.6.7",
+    "livekit-plugins-noise-cancellation==0.3.0",
+    # retrieval
+    "llama-index-core==0.14.23",
+    "llama-index-embeddings-openai==0.6.0",
+    "llama-index-retrievers-bm25==0.7.1",
+    "tiktoken==0.13.0",
+    "openai==2.51.0",
+    # tools
+    "tavily-python==0.7.27",
+    "httpx==0.28.1",
+    # corpus build: fetch the text, typeset the PDF, read it back
+    "pypdf==6.14.2",
+    "reportlab==5.0.0",
+    "python-dotenv==1.2.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1", "pytest-asyncio==1.4.0", "ruff"]
+
 [tool.setuptools.packages.find]
 include = ["agent*"]
 
