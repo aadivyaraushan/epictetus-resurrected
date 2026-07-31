@@ -85,4 +85,48 @@ Those values match the recorded ranking quality. Its raw-score check correctly n
 - Focused checks: `pytest tests/test_agent_behaviour.py tests/test_turn_hook_grounds.py tests/test_worker_wiring.py tests/grounding/test_luna_turn_filter.py`
 - Full local suite: `pytest`
 
-Production deployment and browser-driven evidence will be appended after release verification.
+## Production deployment and browser-driven proof
+
+The LiveKit worker that serves the public Vercel app was deployed from commit
+`e33acf6` as production version `ABmMP3MoPGAx`. After deployment,
+`lk agent status .` reported `Running` with `1 / 1 / 1` replicas. The previous
+version, `78butuRAMa32`, remains the rollback target.
+
+A headless Chrome run opened
+`https://epictetus-resurrected.vercel.app/`, granted the public page a fake
+microphone, clicked **Start Call**, and supplied two spoken turns. No browser or
+page errors were recorded.
+
+For “I think I will walk away, if I am being honest,” the production log showed:
+
+```text
+Luna decision=retrieve latency_ms=2688 input_tokens=219 output_tokens=14
+Luna range decision=retrieve best_cosine=0.2608
+```
+
+The live source panel displayed four passages. The first was Book 4, Chapter 1,
+**About Freedom**; the DOM contained four `article.source` elements. The
+captured UI state is in
+`saved-results/rag-luna-filter/live-sources-visible.png`.
+
+The first acknowledgment recording was split by transcription into “That
+helps,” “Okay,” “Alright,” and “Thanks.” The browser still verified that the
+source panel cleared, but those fragments did not prove the Luna range path.
+A second live call therefore used the single acknowledgment “That helps me
+understand what you mean, and I am okay now.” The production log showed:
+
+```text
+Luna decision=skip latency_ms=3392 input_tokens=223 output_tokens=14
+Luna range decision=skip best_cosine=0.3124
+```
+
+That score is inside the `0.2315 <= cosine < 0.36` Luna-only range. The public
+page contained zero source cards and kept the existing empty-source display.
+The earlier source-clearing UI state is in
+`saved-results/rag-luna-filter/live-sources-cleared.png`.
+
+The observed 3.392-second Luna measurement was longer than the configured
+three-second SDK timeout. The verified fact is that it returned normally and
+did not exercise the fail-open path. I infer that the SDK timeout is not a
+strict wall-clock deadline for the complete parsed call; that explanation was
+not separately instrumented in production.
