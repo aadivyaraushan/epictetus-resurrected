@@ -1,6 +1,6 @@
 # Proof Call Dashboard Plan
 
-**Date:** 2026-07-31  
+**Date:** 2026-07-31
 **Purpose:** record one live call that visibly proves room admission, RAG decisions,
 tool use, and the normal conversation without changing the public home page.
 
@@ -22,9 +22,10 @@ worker -> epictetus.sources -> RAG decision + selected passages ----+
   between the turns where they happened.
 - The room event shows only safe facts: room name, 30-minute lifetime, allowed
   actions, and `epictetus` dispatch. It never renders the signed token or secrets.
-- Every searchable turn records the `0.36` gate decision, score, and selected
-  passages, including below-gate turns. Short turns and retrieval errors are also
-  visible instead of looking like missing instrumentation.
+- Every searchable turn records its score, the `0.2315` minimum, the `0.36`
+  automatic-accept boundary, any Luna decision, and the selected passages. Short
+  turns and retrieval errors are also visible instead of looking like missing
+  instrumentation.
 - Ending the proof call reaches the same review flow as the normal call.
 - Desktop and mobile layouts remain readable and match the existing visual system.
 
