@@ -72,8 +72,7 @@ button:disabled {
   gap: 14px;
 }
 
-/* A detail of the 1605 engraving, reduced to white on nothing, so the page
-   background shows through the paper and only the engraved lines are drawn. */
+/* A simple white-line portrait on transparency, kept legible at logo size. */
 .mark {
   height: 88px;
   width: auto;

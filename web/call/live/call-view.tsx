@@ -73,8 +73,8 @@ export function CallView({
             className="mark"
             src="/epictetus.png"
             alt=""
-            width={396}
-            height={560}
+            width={512}
+            height={512}
           />
           <div>
             <h1>Epictetus, Resurrected</h1>
