@@ -161,7 +161,7 @@ async def entrypoint(ctx: JobContext) -> None:
             search,
             publish=publish,
             turn_filter=build_turn_filter(),
-            fail_open_on_filter_error=not luna_errors_are_fatal(),
+            hide_filter_errors=not luna_errors_are_fatal(),
         )
         if search
         else _NoGrounding()

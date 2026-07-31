@@ -90,12 +90,12 @@ class Grounding:
         search: Searcher,
         publish: Publisher | None = None,
         turn_filter: TurnFilter | None = None,
-        fail_open_on_filter_error: bool = False,
+        hide_filter_errors: bool = False,
     ):
         self._search = search
         self._publish = publish
         self._turn_filter = turn_filter
-        self._fail_open_on_filter_error = fail_open_on_filter_error
+        self._hide_filter_errors = hide_filter_errors
 
     async def for_turn(self, text: str, prior_assistant: str = "") -> str:
         """The passages to append to this turn's context, or ""."""
@@ -129,7 +129,7 @@ class Grounding:
                     current_user=text,
                 )
             except Exception:
-                if not self._fail_open_on_filter_error:
+                if not self._hide_filter_errors:
                     log.exception(
                         "[agent.grounding] Luna filter failed at cosine %.4f; "
                         "stopping this non-production request",
@@ -138,9 +138,11 @@ class Grounding:
                     raise
                 log.exception(
                     "[agent.grounding] Luna filter failed at cosine %.4f; "
-                    "proceeding with retrieval because production fail-open is enabled",
+                    "showing no sources because production error hiding is enabled",
                     retrieval.best_cosine,
                 )
+                await self._show([])
+                return ""
             else:
                 log.info(
                     "[agent.grounding] Luna range decision=%s best_cosine=%.4f",

@@ -197,20 +197,27 @@ async def test_score_below_new_floor_bypasses_luna():
 
 
 @pytest.mark.asyncio
-async def test_production_luna_failure_is_logged_and_retrieval_proceeds(caplog):
+async def test_production_luna_failure_is_logged_and_keeps_the_panel_empty(caplog):
+    published: list[dict] = []
+
+    async def publish(payload: str, topic: str) -> None:
+        published.append(json.loads(payload))
+
     turn_filter = FakeTurnFilter(error=TimeoutError("Luna timed out"))
     grounding = Grounding(
         FakeSearch(ambiguous_result()),
+        publish=publish,
         turn_filter=turn_filter,
-        fail_open_on_filter_error=True,
+        hide_filter_errors=True,
     )
 
     with caplog.at_level("ERROR"):
         block = await grounding.for_turn("I think I will walk away")
 
-    assert "Of things some are in our power" in block
+    assert block == ""
+    assert published == [{"sources": []}]
     assert "Luna filter failed" in caplog.text
-    assert "proceeding with retrieval" in caplog.text
+    assert "showing no sources" in caplog.text
 
 
 @pytest.mark.asyncio
@@ -219,7 +226,7 @@ async def test_development_luna_failure_stops_the_request():
     grounding = Grounding(
         FakeSearch(ambiguous_result()),
         turn_filter=turn_filter,
-        fail_open_on_filter_error=False,
+        hide_filter_errors=False,
     )
 
     with pytest.raises(TimeoutError, match="Luna timed out"):

@@ -13,7 +13,7 @@ cosine >= 0.36         -> retrieval without Luna
 
 Luna receives only the previous Epictetus reply and current user turn. It returns one structured boolean with reasoning disabled, a 16-token output ceiling, a three-second timeout, response storage disabled, and automatic retries disabled.
 
-If Luna fails in the deployed `start` process, the worker logs the exception and proceeds with retrieval. In `dev`, `console`, and tests, the same failure is raised so it cannot pass unnoticed. A Luna rejection publishes the existing empty source payload; the Vercel interface does not need a new state.
+If Luna fails in the deployed `start` process, the worker logs the exception and publishes the existing empty source payload. In `dev`, `console`, and tests, the same failure is raised so it cannot pass unnoticed. The Vercel interface does not need a new error state.
 
 ## Test-first evidence
 
@@ -127,6 +127,6 @@ The earlier source-clearing UI state is in
 
 The observed 3.392-second Luna measurement was longer than the configured
 three-second SDK timeout. The verified fact is that it returned normally and
-did not exercise the fail-open path. I infer that the SDK timeout is not a
+did not exercise the production error-hiding path. I infer that the SDK timeout is not a
 strict wall-clock deadline for the complete parsed call; that explanation was
 not separately instrumented in production.
