@@ -61,13 +61,14 @@ export function ReviewScreen({
       const response = await fetch("/api/review/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          completed: true,
-          title,
-          summary,
-          nextStep,
-          transcript,
-        }),
+          body: JSON.stringify({
+            completed: true,
+            title,
+            summary,
+            nextStep,
+            transcript,
+            chaptersReferenced: source.chaptersReferenced,
+          }),
       });
       const body = await response.json();
       if (!response.ok) throw new Error(body?.error ?? "Could not save the review.");
@@ -96,7 +97,7 @@ export function ReviewScreen({
 
       <form className="review-layout" onSubmit={save}>
         <aside className="review-context">
-          <p className="section-index">Review note / 01</p>
+          <p className="section-index">Review note</p>
           <h2>Your record</h2>
           <p>
             Keep what is accurate. Change anything that sounds more certain, tidy,
@@ -129,6 +130,20 @@ export function ReviewScreen({
               placeholder="Leave blank if you made no commitment."
             />
           </label>
+          <section className="referenced-chapters" aria-labelledby="referenced-chapters-heading">
+            <h2 id="referenced-chapters-heading">Chapters referenced</h2>
+            {source.chaptersReferenced.length > 0 ? (
+              <ul>
+                {source.chaptersReferenced.map((chapter) => (
+                  <li key={chapter.citation}>
+                    {chapter.citation}{chapter.title && ` — ${chapter.title}`}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>None recorded during this call.</p>
+            )}
+          </section>
           <label>
             Transcript
             <textarea

@@ -17,23 +17,30 @@ the citing and he does the talking.
 > | | |
 > |---|---|
 > | Corpus, index, retrieval, evaluation | **done and measured** |
-> | Agent worker (speech, language model, voice, 3 tools, RAG) | **done, 54 tests pass** |
-> | Web front end + token endpoint | **done, 18 tests pass, deployed** |
+> | Agent worker (speech, GPT-5.6 Luna, voice, 2 tools, RAG) | **done and covered by the combined Python suite** |
+> | Web front end + token endpoint | **done, 67 tests pass** |
 > | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
 > | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
 > | Hosted worker | **live** — LiveKit Cloud, US East, registered as `epictetus` |
 > | Spoken call, end to end | **done** — see the transcript of the gate below |
 > | Video | **not yet** |
 >
-> **A real spoken call has now been made through the deployed link** — thirteen
+> **A real spoken call was made through the deployed link** — thirteen
 > turns over six minutes, no errors. Retrieval ran on every one of them, and
-> **three cleared the 0.36 gate**:
+> **three cleared the former 0.36-only gate**:
 >
 > | turn | cosine | grounded on |
 > |---|---|---|
 > | *"...I'm chasing certainty, honestly"* | 0.379 | Book 2 Ch. 1, Book 1 Ch. 27 |
 > | *"...things are uncertain, or difficult"* | 0.388 | Book 2 Ch. 5, Book 2 Ch. 1, Book 1 Ch. 28 |
 > | *"...the opportunity cost, I'm losing time"* | 0.363 | Book 4 Ch. 3, 10, 12; Book 2 Ch. 10 |
+>
+> That call first made the strict gate look acceptable. A later seven-turn
+> conversation falsified it: five relevant replies scored only 0.2315–0.3376,
+> while its closing acknowledgment scored 0.2451 in the exact transcript replay
+> and 0.2473 after punctuation cleanup. The current two-stage decision is
+> described below and measured in
+> [`saved-results/rag-luna-filter-2026-07-31.md`](saved-results/rag-luna-filter-2026-07-31.md).
 >
 > Three out of thirteen reads as far too strict until you look at the other ten.
 > A real conversation is two or three questions with short replies hanging off
@@ -66,7 +73,7 @@ the citing and he does the talking.
  │                    │  audio   │              │  audio   │  ┌────────────────┐  │
  │ live transcript    │<─────────┼──────────────┼─────────>│  │ STT  Deepgram  │  │
  │                    │  text    │              │          │  │ VAD  Silero    │  │
- │ ┌────────────────┐ │          │              │          │  │ LLM  gpt-4.1   │  │
+ │ ┌────────────────┐ │          │              │          │  │ LLM  5.6 Luna  │  │
  │ │ SOURCE PANEL   │ │<─────────┼── data ch ───┼──────────┤  │ TTS  11Labs    │  │
  │ │ Book II Ch. 5  │ │          │              │          │  └────────────────┘  │
  │ │ "..."          │ │          └──────────────┘          │          │           │
@@ -90,7 +97,7 @@ the passages behind each answer.
 |---|---|---|
 | Speech to text | Deepgram `nova-3` | fast and streaming |
 | Voice activity | Silero | runs inside the worker, no network hop |
-| Language model | OpenAI `gpt-4.1`, temperature 0.75 | holds a character while using tools |
+| Language model | OpenAI `gpt-5.6-luna`, reasoning `none`, temperature 0.75 | low latency for voice; explicit `none` keeps Chat Completions function tools available |
 | Text to speech | ElevenLabs `eleven_turbo_v2_5` | character over raw speed, on their fastest tier to claw the latency back |
 | Web search | Tavily | one key, no OAuth |
 
@@ -122,15 +129,16 @@ tool and let the model decide when to call it. This does not do that. Retrieval
 runs in `on_user_turn_completed`, on **every** turn, before the model produces
 anything.
 
-The reason is uncomfortable: **`gpt-4.1` already knows a great deal about
-Epictetus.** Hand it a retrieval tool and it can skip the tool, answer from
-memory, and sound completely right. The demo would look perfect and the graded
+The reason is uncomfortable: **a general language model may already know a great
+deal about Epictetus.** Hand it a retrieval tool and it can skip the tool,
+answer from memory, and sound completely right. The demo would look perfect and the graded
 system would be doing nothing. Running retrieval unconditionally means the
 passages are either in the prompt or provably were not, and there is no path
 where the model quietly routes around the thing being assessed.
 
-The cost is one embedding call per turn — about 20 tokens and roughly 250 ms,
-overlapping with speech that is still arriving.
+The cost is one embedding call per searchable turn — about 20 tokens and roughly
+250 ms, overlapping with speech that is still arriving. Matches from 0.2315 up
+to 0.36 also pay for one tiny GPT-5.6 Luna intent check; stronger matches do not.
 
 ### Hybrid search, and proof it earns its keep
 
@@ -177,7 +185,7 @@ and it wins on the set that matches how people actually speak.** That is the
 argument for paying for both, and it is not an argument I could have made from
 the first set alone.
 
-### The relevance gate, and the number that was wrong twice
+### The relevance gate, and why one number was not enough
 
 He should not quote philosophy at *"hey, can you hear me?"*. So passages are only
 used if the best vector match clears a similarity threshold; below it the turn
@@ -191,21 +199,31 @@ out at 0.354 and the weakest real question scores 0.494 — an apparently clean 
 artifact of questions borrowing the chapters' vocabulary. At 0.42, six of twelve
 real questions would have gone ungrounded.
 
-It is now **0.36** — the highest value that still rejects every small-talk turn.
-It grounds 61 of the 65 real questions across both sets. Headroom is about 0.006
-in each direction, which is thin, and the honest reason to accept it is that both
-failure modes are mild: ground a tool turn by mistake and the model gets passages
-it ignores while it searches the notes; miss a real question and he answers from
-his own knowledge, which for this particular character is not nothing.
+The current decision has three paths:
+
+- below **0.2315**: no passages;
+- from **0.2315** up to but not including **0.36**: GPT-5.6 Luna sees only the
+  previous Epictetus reply and current user turn, then returns one boolean;
+- **0.36** or above: passages are used without the extra model call.
+
+`0.2315` is the highest four-decimal value that retains the weakest required
+turn in the later production transcript: *“I think I will walk away.”* A cosine
+gate cannot solve the rest by itself because the closing thanks scored higher:
+0.2451 in the exact transcript replay and 0.2473 after punctuation cleanup. In
+the real-index check, Luna retained turns 1, 2, 3, 5, and 6,
+rejected the optional Turn 4 and closing Turn 7, and rejected all three earlier
+false matches: the connection check, calendar request, and journal request.
 
 An idea that did **not** work, recorded because it sounds right: gating on how
 far the best chunk *stands out* from the rest, rather than its absolute score.
 Small talk turns out to show a **larger** standout than real questions, because
 its candidates are uniformly poor and the top one wins a weak field. Raw
-similarity separates far better than any of the three variants tried.
+similarity remains the useful first stage, but the later conversation proved it
+cannot also decide whether a reply adds anything new.
 
 Full numbers, distributions and reproduction:
-**[`saved-results/retrieval-parameters.md`](saved-results/retrieval-parameters.md)**.
+**[`saved-results/retrieval-parameters.md`](saved-results/retrieval-parameters.md)**
+and **[`saved-results/rag-luna-filter-2026-07-31.md`](saved-results/rag-luna-filter-2026-07-31.md)**.
 
 ### What was deliberately not tuned
 
@@ -392,17 +410,31 @@ mismatch shows up as the container exiting instantly with an exec format error.
 of a call and registers with LiveKit to wait for dispatch. Per-request serverless
 cannot do that. If the worker is off, the link is dead.
 
-**The short path: LiveKit Cloud agent hosting.** One command from the repo root:
+**The short path: LiveKit Cloud agent hosting.** First make a gitignored
+`.env.worker` containing only the worker values from `.env`:
 
-```bash
-set -a && . ./.env && set +a && lk agent create --secrets-file .env .
+```text
+LIVEKIT_URL=
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
+OPENAI_API_KEY=
+DEEPGRAM_API_KEY=
+ELEVENLABS_API_KEY=
+ELEVENLABS_VOICE_ID=
+TAVILY_API_KEY=
 ```
 
-`--secrets-file .env` uploads the API keys to LiveKit so the hosted worker has
-them; that upload is the reason this command is left for a human to run rather
-than run from an agent session. Afterwards, `lk agent deploy .` pushes a new
-version and `lk agent list` shows it — the dispatch name should read
-`epictetus`, which is the name the token asks for.
+Then run this command from the repo root:
+
+```bash
+lk agent create --secrets-file .env.worker .
+```
+
+`--secrets-file` uploads those values to LiveKit so the hosted worker has them.
+Do not use the full `.env`: it also contains web-only Notion and review secrets
+that the worker does not need. Afterwards, `lk agent deploy .` pushes a new
+version and `lk agent list` shows it — the dispatch name should read `epictetus`,
+which is the name the token asks for.
 
 **Three things this cost an hour, all worth knowing before you start:**
 

@@ -1,14 +1,7 @@
 "use client";
 
 /**
- * The call itself: transcript on the left, what he is reading on the right.
- *
- * Input:  the connected room (from LiveKitRoom, one level up)
- * Output: the whole live screen, plus the controls that end it
- *
- * The agent's own state -- listening, thinking, speaking -- comes from
- * useVoiceAssistant and drives one coloured dot. On a voice call the single most
- * useful thing a screen can tell you is whose turn it is.
+ * The live call: the normal transcript and evidence rail, or the proof timeline.
  */
 
 import {
@@ -22,10 +15,10 @@ import { useCallback, useState } from "react";
 import { SourcePanel } from "./panels/source-panel";
 import { ToolActivity } from "./panels/tool-activity";
 import { Transcript } from "./transcript";
-import type { TranscriptTurn } from "../review/review-data";
+import type { ProofAdmission } from "../proof/proof-events";
+import { ProofTimeline } from "../proof/proof-timeline";
+import type { ReferencedChapter, TranscriptTurn } from "../review/review-data";
 
-// LiveKit reports more states than a caller needs to distinguish. Anything not
-// named here is "connecting", which is what it looks like from the outside.
 const SAID_PLAINLY: Record<string, { label: string; tone: string }> = {
   listening: { label: "Listening", tone: "listening" },
   thinking: { label: "Thinking", tone: "thinking" },
@@ -36,12 +29,16 @@ export function CallView({
   reviewDestination,
   onTurnsChange,
   onCommitment,
+  onChaptersChange,
   onEndCall,
+  proofAdmission = null,
 }: {
   reviewDestination: string | null;
   onTurnsChange: (turns: TranscriptTurn[]) => void;
   onCommitment: (text: string) => void;
+  onChaptersChange: (chapters: ReferencedChapter[]) => void;
   onEndCall: () => void;
+  proofAdmission?: ProofAdmission | null;
 }) {
   const { state, audioTrack } = useVoiceAssistant();
   const { localParticipant, isMicrophoneEnabled } = useLocalParticipant();
@@ -82,16 +79,31 @@ export function CallView({
           </div>
         </div>
         <span className="destination">
-          {reviewDestination ? `reviews → ${reviewDestination}` : "review after call"}
+          {proofAdmission
+            ? "recording proof view"
+            : reviewDestination
+              ? `reviews → ${reviewDestination}`
+              : "review after call"}
         </span>
       </header>
 
-      <div className="call live-layout">
-        <Transcript onTurnsChange={onTurnsChange} />
-        <aside className="evidence-rail">
-          <SourcePanel />
-          <ToolActivity onCommitment={onCommitment} />
-        </aside>
+      <div className={`call live-layout${proofAdmission ? " proof-layout" : ""}`}>
+        {proofAdmission ? (
+          <ProofTimeline
+            admission={proofAdmission}
+            onTurnsChange={onTurnsChange}
+            onCommitment={onCommitment}
+            onChaptersChange={onChaptersChange}
+          />
+        ) : (
+          <>
+            <Transcript onTurnsChange={onTurnsChange} />
+            <aside className="evidence-rail">
+              <SourcePanel onChaptersChange={onChaptersChange} />
+              <ToolActivity onCommitment={onCommitment} />
+            </aside>
+          </>
+        )}
       </div>
 
       <footer className="controls live-controls">

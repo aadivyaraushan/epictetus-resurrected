@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import pytest
 
-from agent.main import build_llm, build_stt, build_tts
+from agent.main import build_llm, build_stt, build_tts, build_turn_filter, luna_errors_are_fatal
 
 
 @pytest.fixture
@@ -76,7 +76,43 @@ def test_llm_builds_from_the_variable_we_document(clean_env):
     assert build_llm() is not None
 
 
+def test_llm_uses_luna_without_reasoning_for_voice_tools(clean_env):
+    """Chat Completions tools require effective reasoning ``none`` on GPT-5.6.
+
+    Luna keeps this spoken path in the family's low-latency, low-cost role; the
+    explicit reasoning setting keeps both function tools available.
+    """
+    llm = build_llm()
+
+    assert llm._opts.model == "gpt-5.6-luna"
+    assert llm._opts.reasoning_effort == "none"
+
+
 def test_llm_says_which_variable_is_missing(clean_env):
     clean_env.delenv("OPENAI_API_KEY", raising=False)
     with pytest.raises(RuntimeError, match="OPENAI_API_KEY"):
         build_llm()
+
+
+def test_luna_filter_builds_from_the_same_openai_key_without_hidden_retries(clean_env, monkeypatch):
+    received: dict = {}
+
+    class FakeOpenAIClient:
+        def __init__(self, **kwargs):
+            received.update(kwargs)
+
+    monkeypatch.setattr("agent.main.OpenAIClient", FakeOpenAIClient)
+
+    assert build_turn_filter() is not None
+    assert received == {"api_key": "test-openai-key", "max_retries": 0}
+
+
+def test_luna_failure_proceeds_only_under_the_production_start_command(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["agent/main.py", "start"])
+    assert luna_errors_are_fatal() is False
+
+
+@pytest.mark.parametrize("command", ["dev", "console"])
+def test_luna_failure_is_fatal_in_non_production(monkeypatch, command):
+    monkeypatch.setattr("sys.argv", ["agent/main.py", command])
+    assert luna_errors_are_fatal() is True

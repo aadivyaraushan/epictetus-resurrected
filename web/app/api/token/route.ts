@@ -86,6 +86,12 @@ export async function POST(_request: Request) {
     serverUrl: url,
     token: await at.toJwt(),
     roomName,
+    proof: {
+      roomName,
+      lifetime: "30 minutes",
+      agentName: AGENT_NAME,
+      permissions: ["join this room", "publish microphone and data", "subscribe"],
+    },
   });
   setReviewPermit(response);
   return response;

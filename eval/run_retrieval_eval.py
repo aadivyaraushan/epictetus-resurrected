@@ -42,9 +42,9 @@ log = logging.getLogger("eval.retrieval")
 
 QUESTIONS = REPO / "eval" / "questions.json"
 
-# Turns that should NOT drag philosophy into the conversation. Their scores are
-# the noise floor: the gate has to sit above whatever these produce, or
-# Epictetus starts quoting himself at "hello" (plan sections 3 and 5).
+# Turns that should NOT drag philosophy into the conversation. Their scores show
+# which controls reach the Luna range; the final decision is no longer made by
+# raw cosine alone.
 SMALL_TALK = [
     "hey, can you hear me?",
     "hello",
@@ -121,14 +121,12 @@ def evaluate(search: PassageSearch, questions: list[dict], top_k: int) -> dict:
 
 
 def gate_check(search: PassageSearch, real_cosines: list[float]) -> dict:
-    """Where the gate should sit: above small talk, below every real question."""
+    """Which turns reach the raw floor before the dialogue-intent check."""
     small_talk_cosines = [search.search(turn).best_cosine for turn in SMALL_TALK]
     return {
         "small_talk_max": max(small_talk_cosines, default=0.0),
         "small_talk_median": (
-            sorted(small_talk_cosines)[len(small_talk_cosines) // 2]
-            if small_talk_cosines
-            else 0.0
+            sorted(small_talk_cosines)[len(small_talk_cosines) // 2] if small_talk_cosines else 0.0
         ),
         "real_question_min": min(real_cosines, default=0.0),
         "current_threshold": passage_search.MIN_COSINE_TO_GROUND,
@@ -240,7 +238,7 @@ def main() -> int:
         f"{gate['small_talk_max']:.3f} .. {gate['real_question_min']:.3f}"
     )
     if gate["small_talk_max"] >= gate["current_threshold"]:
-        print("  WARNING: small talk clears the gate -- he will philosophise at 'hello'")
+        print("  NOTE: small talk reaches the raw floor -- Luna decides final grounding")
     if gate["real_question_min"] < gate["current_threshold"]:
         print("  WARNING: a real question falls below the gate -- it would go ungrounded")
 

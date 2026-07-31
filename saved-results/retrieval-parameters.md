@@ -1,5 +1,10 @@
 # Retrieval parameters for the Epictetus voice agent — and the numbers behind them
 
+> **Historical result:** this file records the original `0.36`-only gate. A
+> later production conversation disproved that choice. The current `0.2315`
+> floor plus Luna check is measured in
+> [`rag-luna-filter-2026-07-31.md`](rag-luna-filter-2026-07-31.md).
+
 **Date:** 2026-07-31
 **What this is for:** every tunable number in `agent/retrieval/search/passage_search.py`
 has a value. This records what each value is, what was measured to choose it, and what

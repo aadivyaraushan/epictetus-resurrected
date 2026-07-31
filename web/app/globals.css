@@ -446,6 +446,14 @@ body:has(.og-start-shell) {
   gap: 0;
 }
 
+.proof-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.live-layout.proof-layout > .column:first-child {
+  padding-right: 0;
+}
+
 .column {
   min-width: 0;
   min-height: 0;
@@ -603,6 +611,66 @@ body:has(.og-start-shell) {
   color: var(--lamp);
 }
 
+.proof-event {
+  max-width: 48rem;
+  margin: -8px 0 22px;
+  padding: var(--space-3) var(--space-4);
+  border-left: 2px solid var(--lamp);
+  background: var(--stone-1);
+  color: var(--ink-muted);
+  font-family: var(--font-interface);
+}
+
+.proof-event.room {
+  border-left-color: var(--thinking);
+}
+
+.proof-event.tool {
+  border-left-color: var(--success);
+}
+
+.proof-event-label {
+  color: var(--lamp-bright);
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.proof-event > p {
+  margin: var(--space-1) 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.proof-source {
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
+  font-family: var(--font-reading);
+}
+
+.proof-source summary {
+  cursor: pointer;
+  color: var(--lamp-bright);
+  font-family: var(--font-interface);
+  font-size: 0.75rem;
+}
+
+.proof-source .title {
+  margin-top: var(--space-2);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.proof-source p {
+  margin: var(--space-2) 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.58;
+}
+
 .controls {
   display: flex;
   align-items: center;
@@ -744,6 +812,34 @@ body:has(.og-start-shell) {
 .next-step-field textarea {
   border-color: var(--line-strong);
   background: var(--stone-1);
+}
+
+.referenced-chapters {
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--line);
+}
+
+.referenced-chapters h2 {
+  margin: 0 0 var(--space-3);
+  color: var(--ink-muted);
+  font-family: var(--font-interface);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.referenced-chapters ul,
+.referenced-chapters p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-family: var(--font-reading);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.referenced-chapters ul {
+  padding-left: 1.25rem;
 }
 
 .review-transcript {

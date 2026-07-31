@@ -1,0 +1,14 @@
+name: GPT-5.6 Luna deployed smoke test
+scenarios:
+  - label: Epictetus gives practical counsel
+    instructions: >
+      You are a caller who has been putting off one important piece of work.
+      Tell Epictetus that you keep waiting to feel motivated and ask what you
+      should do today. After he gives one useful answer, thank him and end the
+      conversation.
+    agent_expectations: >
+      The agent calls write_to_session_log to record the caller's admission,
+      answers as Epictetus, gives a concrete action the caller can take today,
+      and does not mention model names or break character.
+    tags:
+      purpose: deployed_luna_smoke
