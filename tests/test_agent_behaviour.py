@@ -125,6 +125,14 @@ async def test_the_source_panel_is_told_what_was_used():
     assert topic == Grounding.PANEL_TOPIC
     assert body["sources"][0]["citation"] == "Book 1, Chapter 1"
     assert body["sources"][0]["text"].startswith("Of things some are")
+    assert body["rag"] == {
+        "status": "grounded",
+        "method": "vector + BM25, merged by reciprocal rank fusion",
+        "bestCosine": 0.51,
+        "threshold": 0.36,
+        "reason": "above gate",
+        "selected": 1,
+    }
 
 
 @pytest.mark.asyncio
@@ -140,7 +148,44 @@ async def test_the_panel_is_cleared_when_a_turn_is_not_grounded():
     grounding = Grounding(FakeSearch(ungrounded_result()), publish=publish)
     await grounding.for_turn("what's on my calendar tomorrow?")
 
-    assert published == [{"sources": []}]
+    assert published == [
+        {
+            "sources": [],
+            "rag": {
+                "status": "rejected",
+                "method": "vector + BM25, merged by reciprocal rank fusion",
+                "bestCosine": 0.11,
+                "threshold": 0.36,
+                "reason": "below gate",
+                "selected": 0,
+            },
+        }
+    ]
+
+
+@pytest.mark.asyncio
+async def test_a_short_turn_publishes_a_visible_skip_decision():
+    published: list[dict] = []
+
+    async def publish(payload: str, topic: str) -> None:
+        published.append(json.loads(payload))
+
+    grounding = Grounding(FakeSearch(grounded_result()), publish=publish)
+    await grounding.for_turn("okay thanks")
+
+    assert published == [
+        {
+            "sources": [],
+            "rag": {
+                "status": "skipped",
+                "method": "word-count check before retrieval",
+                "bestCosine": None,
+                "threshold": 0.36,
+                "reason": "fewer than 4 words",
+                "selected": 0,
+            },
+        }
+    ]
 
 
 @pytest.mark.asyncio
@@ -151,8 +196,26 @@ async def test_a_failing_index_does_not_end_the_call():
         def search(self, question: str) -> Retrieval:
             raise RuntimeError("index unreadable")
 
-    grounding = Grounding(BrokenSearch())
+    published: list[dict] = []
+
+    async def publish(payload: str, topic: str) -> None:
+        published.append(json.loads(payload))
+
+    grounding = Grounding(BrokenSearch(), publish=publish)
     assert await grounding.for_turn("what is in our power") == ""
+    assert published == [
+        {
+            "sources": [],
+            "rag": {
+                "status": "error",
+                "method": "vector + BM25, merged by reciprocal rank fusion",
+                "bestCosine": None,
+                "threshold": 0.36,
+                "reason": "retrieval failed; answered without passages",
+                "selected": 0,
+            },
+        }
+    ]
 
 
 # --- 2. which tools exist at all ---------------------------------------------

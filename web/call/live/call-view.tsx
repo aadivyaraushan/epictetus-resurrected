@@ -22,6 +22,8 @@ import { useCallback, useState } from "react";
 import { SourcePanel } from "./panels/source-panel";
 import { ToolActivity } from "./panels/tool-activity";
 import { Transcript } from "./transcript";
+import { ProofTimeline } from "../proof/proof-timeline";
+import type { ProofAdmission } from "../proof/proof-events";
 import type { TranscriptTurn } from "../review/review-data";
 
 // LiveKit reports more states than a caller needs to distinguish. Anything not
@@ -37,11 +39,13 @@ export function CallView({
   onTurnsChange,
   onCommitment,
   onEndCall,
+  proofAdmission = null,
 }: {
   reviewDestination: string | null;
   onTurnsChange: (turns: TranscriptTurn[]) => void;
   onCommitment: (text: string) => void;
   onEndCall: () => void;
+  proofAdmission?: ProofAdmission | null;
 }) {
   const { state, audioTrack } = useVoiceAssistant();
   const { localParticipant, isMicrophoneEnabled } = useLocalParticipant();
@@ -82,16 +86,30 @@ export function CallView({
           </div>
         </div>
         <span className="destination">
-          {reviewDestination ? `reviews → ${reviewDestination}` : "review after call"}
+          {proofAdmission
+            ? "recording proof view"
+            : reviewDestination
+              ? `reviews → ${reviewDestination}`
+              : "review after call"}
         </span>
       </header>
 
-      <div className="call live-layout">
-        <Transcript onTurnsChange={onTurnsChange} />
-        <aside className="evidence-rail">
-          <SourcePanel />
-          <ToolActivity onCommitment={onCommitment} />
-        </aside>
+      <div className={`call live-layout${proofAdmission ? " proof-layout" : ""}`}>
+        {proofAdmission ? (
+          <ProofTimeline
+            admission={proofAdmission}
+            onTurnsChange={onTurnsChange}
+            onCommitment={onCommitment}
+          />
+        ) : (
+          <>
+            <Transcript onTurnsChange={onTurnsChange} />
+            <aside className="evidence-rail">
+              <SourcePanel />
+              <ToolActivity onCommitment={onCommitment} />
+            </aside>
+          </>
+        )}
       </div>
 
       <footer className="controls live-controls">
