@@ -24,6 +24,12 @@
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
 
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX",
+    "cpuArchitecture": "ARM64"
+  },
+  "_arch_note": "ARM64 because the image was built on an Apple Silicon Mac, so the wheels inside it are aarch64. This has to match the machine that built the image or the container exits immediately with an exec format error -- one of the easier ways to lose an hour. Fargate ARM64 is also cheaper. If you build on an x86 machine, or on a CI runner, change this to X86_64 -- or force the build with 'docker build --platform linux/amd64' and leave it as X86_64 either way.",
+
   "cpu": "1024",
   "memory": "2048",
   "_sizing_note": "1 vCPU / 2 GB. The local voice-activity and turn-detection models are small onnx models but they do run on CPU in-process, and the 18 MB index is held in memory. Below 2 GB the container has been known to be killed while loading.",

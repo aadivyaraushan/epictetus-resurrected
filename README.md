@@ -17,7 +17,7 @@ the citing and he does the talking.
 > | Corpus, index, retrieval, evaluation | **done and measured** |
 > | Agent worker (speech, language model, voice, 4 tools, RAG) | **written, tests pass** |
 > | Web front end + token endpoint | **written, 18 tests pass, builds clean** |
-> | Worker container | **build in progress** — see below |
+> | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
 > | Deployed link | **not yet** — needs the API keys below |
 > | Video | **not yet** |
 >
@@ -334,8 +334,30 @@ docker build -f deploy/worker/Dockerfile -t epictetus-worker .
 ```
 
 The image ships the index and pre-downloads the local voice-activity model, and
-the build fails if the index will not load — better a failed deploy than a worker
-that registers as healthy and answers everything ungrounded.
+the build fails if the index is missing or incomplete — better a failed deploy
+than a worker that registers as healthy and answers everything ungrounded. The
+build prints `index loads: 539 chunks, 1536 dims`, and the finished image is
+1.39 GB and runs as uid 10001, not root.
+
+Two things this build taught, both recorded in the Dockerfile itself: the
+stemmer under the BM25 index has no prebuilt wheel for `python:3.12-slim` and
+has to be compiled, so a compiler is installed and removed inside one layer; and
+the index check reads the index files directly rather than calling the real
+loader, because the loader constructs an embedding model and would need an
+OpenAI key — which has no business being in an image layer.
+
+`deploy/worker/ecs-task-definition.json` is the Fargate side: one service with
+one task, keys read from Secrets Manager rather than written into the task
+definition, and no inbound ports, because the worker dials out to LiveKit and
+nothing dials in. Fill in the account, region and secret ARNs, then:
+
+```bash
+aws ecs register-task-definition --cli-input-json file://deploy/worker/ecs-task-definition.json
+```
+
+One trap worth naming: the task definition's `cpuArchitecture` has to match the
+machine that built the image. Built on an Apple Silicon Mac it is `ARM64`, and a
+mismatch shows up as the container exiting instantly with an exec format error.
 
 **Why not serverless:** a LiveKit agent holds a WebRTC connection for the length
 of a call and registers with LiveKit to wait for dispatch. Per-request serverless

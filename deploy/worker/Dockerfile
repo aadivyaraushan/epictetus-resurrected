@@ -46,10 +46,23 @@ COPY index/ ./index/
 # every cold start and make startup depend on someone else's CDN.
 RUN python agent/main.py download-files
 
-# Fail the deploy rather than the first call: if the index cannot be loaded, the
-# worker would start, register as healthy, and answer every question ungrounded.
-RUN python -c "from agent.retrieval.search.index_store import load_index; \
-    i = load_index(); print('index loads:', len(i.docstore.docs), 'chunks')"
+# Fail the deploy rather than the first call: without its index the worker would
+# still start, still register as healthy, and answer every question ungrounded.
+# That is a worse failure than a red build, because nothing about it looks broken.
+#
+# This reads the index files directly instead of calling load_index(). The real
+# loader builds an embedding model first, which needs OPENAI_API_KEY -- and a key
+# has no business being in an image layer. What is worth checking here is what can
+# actually go wrong at build time: the index missing from the context, .dockerignore
+# quietly excluding it, or a half-written file. A truncated JSON file fails to
+# parse, and the counts catch an index that copied but is not the real one.
+RUN python -c "\
+import json; \
+d = json.load(open('index/docstore.json'))['docstore/data']; \
+v = json.load(open('index/default__vector_store.json'))['embedding_dict']; \
+assert len(d) == len(v), f'docstore has {len(d)} chunks, vector store has {len(v)}'; \
+assert len(d) > 500, f'only {len(d)} chunks -- that is not the whole Discourses'; \
+print('index loads:', len(d), 'chunks,', len(next(iter(v.values()))), 'dims')"
 
 # Not root. Nothing here needs it.
 RUN useradd --create-home --uid 10001 worker && chown -R worker:worker /app
