@@ -98,10 +98,50 @@ def _voice_id() -> str:
     return elevenlabs.TTS.__init__.__kwdefaults__["voice_id"]
 
 
+def _key(name: str) -> str:
+    """Read a key by the name this project documents, and say so if it is absent.
+
+    Every key is passed to its plugin explicitly rather than left to be picked up
+    from the environment, because the names do not all agree. The ElevenLabs
+    plugin looks for ELEVEN_API_KEY, while this repo's .env, .env.example, README
+    and container all say ELEVENLABS_API_KEY. Left implicit, the key sits there
+    perfectly valid and entirely unread, and the call dies the moment someone
+    connects. Passing it here means the name in .env is the name that is used.
+    """
+    value = os.environ.get(name, "").strip()
+    if not value:
+        raise RuntimeError(f"{name} is not set. The worker cannot start a call without it.")
+    return value
+
+
+def build_stt() -> deepgram.STT:
+    return deepgram.STT(model=STT_MODEL, language="en", api_key=_key("DEEPGRAM_API_KEY"))
+
+
+def build_llm() -> openai.LLM:
+    return openai.LLM(model=LLM_MODEL, temperature=0.75, api_key=_key("OPENAI_API_KEY"))
+
+
+def build_tts() -> elevenlabs.TTS:
+    return elevenlabs.TTS(
+        model=TTS_MODEL, voice_id=_voice_id(), api_key=_key("ELEVENLABS_API_KEY")
+    )
+
+
 @server.rtc_session(agent_name="epictetus")
 async def entrypoint(ctx: JobContext) -> None:
     await ctx.connect()
-    caller = await ctx.wait_for_participant()
+
+    # Someone can click Start Call and then deny the microphone prompt, or close
+    # the tab. The room empties before they ever arrive, and waiting for them
+    # raises. That is a person changing their mind, not a fault, and logging it
+    # as a crash is how a real fault gets missed later.
+    try:
+        caller = await ctx.wait_for_participant()
+    except RuntimeError as gone:
+        log.info("[agent.main] nobody joined, ending the job quietly (%s)", gone)
+        return
+
     log.info("[agent.main] call started with %s", caller.identity)
 
     async def publish(payload: str, topic: str) -> None:
@@ -114,9 +154,9 @@ async def entrypoint(ctx: JobContext) -> None:
     log.info("[agent.main] personal tools are on the %s backend", life.name)
 
     session = AgentSession(
-        stt=deepgram.STT(model=STT_MODEL, language="en"),
-        llm=openai.LLM(model=LLM_MODEL, temperature=0.75),
-        tts=elevenlabs.TTS(model=TTS_MODEL, voice_id=_voice_id()),
+        stt=build_stt(),
+        llm=build_llm(),
+        tts=build_tts(),
         vad=ctx.proc.userdata["vad"],
         # Start composing the reply while the caller is still finishing. On a
         # call where retrieval now sits inside the response loop, this is the
