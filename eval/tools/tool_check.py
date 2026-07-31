@@ -1,7 +1,7 @@
 """Do the two tools actually fire, and what does a caller have to say to fire them?
 
 The 13-turn live call fired none of them. That is not a bug -- it was a
-conversation about the caller's research, and none of the three came up -- but
+conversation about the caller's research, and neither tool came up -- but
 the brief grades tool calls and the video has to show one, so we need to know
 which sentences reliably trigger which tool.
 

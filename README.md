@@ -17,7 +17,7 @@ the citing and he does the talking.
 > | | |
 > |---|---|
 > | Corpus, index, retrieval, evaluation | **done and measured** |
-> | Agent worker (speech, language model, voice, 3 tools, RAG) | **done, 54 tests pass** |
+> | Agent worker (speech, language model, voice, 2 tools, RAG) | **done, 46 Python tests pass** |
 > | Web front end + token endpoint | **done, 18 tests pass, deployed** |
 > | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
 > | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
@@ -66,7 +66,7 @@ the citing and he does the talking.
  │                    │  audio   │              │  audio   │  ┌────────────────┐  │
  │ live transcript    │<─────────┼──────────────┼─────────>│  │ STT  Deepgram  │  │
  │                    │  text    │              │          │  │ VAD  Silero    │  │
- │ ┌────────────────┐ │          │              │          │  │ LLM  gpt-4.1   │  │
+ │ ┌────────────────┐ │          │              │          │  │ LLM  5.6 Luna  │  │
  │ │ SOURCE PANEL   │ │<─────────┼── data ch ───┼──────────┤  │ TTS  11Labs    │  │
  │ │ Book II Ch. 5  │ │          │              │          │  └────────────────┘  │
  │ │ "..."          │ │          └──────────────┘          │          │           │
@@ -90,7 +90,7 @@ the passages behind each answer.
 |---|---|---|
 | Speech to text | Deepgram `nova-3` | fast and streaming |
 | Voice activity | Silero | runs inside the worker, no network hop |
-| Language model | OpenAI `gpt-4.1`, temperature 0.75 | holds a character while using tools |
+| Language model | OpenAI `gpt-5.6-luna`, reasoning `none`, temperature 0.75 | low latency for voice; explicit `none` keeps Chat Completions function tools available |
 | Text to speech | ElevenLabs `eleven_turbo_v2_5` | character over raw speed, on their fastest tier to claw the latency back |
 | Web search | Tavily | one key, no OAuth |
 
@@ -122,9 +122,9 @@ tool and let the model decide when to call it. This does not do that. Retrieval
 runs in `on_user_turn_completed`, on **every** turn, before the model produces
 anything.
 
-The reason is uncomfortable: **`gpt-4.1` already knows a great deal about
-Epictetus.** Hand it a retrieval tool and it can skip the tool, answer from
-memory, and sound completely right. The demo would look perfect and the graded
+The reason is uncomfortable: **a general language model may already know a great
+deal about Epictetus.** Hand it a retrieval tool and it can skip the tool,
+answer from memory, and sound completely right. The demo would look perfect and the graded
 system would be doing nothing. Running retrieval unconditionally means the
 passages are either in the prompt or provably were not, and there is no path
 where the model quietly routes around the thing being assessed.
