@@ -189,7 +189,6 @@ button:disabled {
   width: min(100%, 28rem);
 }
 
-.notion-connect select,
 .review-form input,
 .review-form textarea {
   background: var(--stone-raised);
@@ -202,7 +201,6 @@ button:disabled {
   width: 100%;
 }
 
-.notion-connect select:focus-visible,
 .review-form input:focus-visible,
 .review-form textarea:focus-visible,
 .primary:focus-visible,
@@ -240,13 +238,6 @@ button:disabled {
   height: 7px;
   border-radius: 50%;
   background: #6fae6a;
-}
-
-.notion-connect label {
-  align-self: flex-start;
-  color: var(--ink-faint);
-  font-family: var(--sans);
-  font-size: 12px;
 }
 
 .failure {

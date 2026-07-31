@@ -21,7 +21,7 @@ function oauthClient() {
 
 export async function GET(request: Request) {
   const session = notionSessionFrom(request);
-  if (!session) return NextResponse.json({ connected: false, databases: [] });
+  if (!session) return NextResponse.json({ connected: false });
 
   try {
     const result = await listSharedDatabases(
@@ -29,53 +29,48 @@ export async function GET(request: Request) {
       fetch,
       oauthClient(),
     );
+    const databaseCount = result.databases.length;
+    console.info(`[notion.database] found ${databaseCount} accessible databases`);
+
+    if (databaseCount !== 1) {
+      const reconnectMessage =
+        databaseCount === 0
+          ? "No database was shared. Reconnect and choose the Evening Reviews database itself."
+          : "More than one database was shared. Reconnect and choose only the Evening Reviews database.";
+      const response = NextResponse.json({ connected: false, reconnectMessage });
+      clearNotionSession(response);
+      console.warn(`[notion.database] rejected connection with ${databaseCount} databases`);
+      return response;
+    }
+
+    const onlyDatabase = result.databases[0];
+    let credentials = result.credentials;
+    let selectedDatabase = session.selectedDatabase;
+    if (selectedDatabase?.id === onlyDatabase.id) {
+      selectedDatabase = { ...selectedDatabase, name: onlyDatabase.name };
+    } else {
+      const selection = await selectSharedDatabase(
+        onlyDatabase.id,
+        credentials,
+        fetch,
+        oauthClient(),
+      );
+      credentials = selection.credentials;
+      selectedDatabase = selection.database;
+    }
+
+    const nextSession = { ...session, ...credentials, selectedDatabase };
     const response = NextResponse.json({
       connected: true,
       workspaceName: session.workspaceName,
-      selectedDatabase: session.selectedDatabase ?? null,
-      databases: result.databases,
+      selectedDatabase,
     });
-    if (
-      result.credentials.accessToken !== session.accessToken ||
-      result.credentials.refreshToken !== session.refreshToken
-    ) {
-      storeNotionSession(response, { ...session, ...result.credentials });
-    }
-    console.info(`[notion.database] listed ${result.databases.length} accessible databases`);
+    storeNotionSession(response, nextSession);
+    console.info(`[notion.database] bound database ${selectedDatabase.id}`);
     return response;
   } catch (error) {
     console.error("[notion.database] listing failed", error);
     return NextResponse.json({ error: "Could not load Notion databases." }, { status: 502 });
-  }
-}
-
-export async function POST(request: Request) {
-  const session = notionSessionFrom(request);
-  if (!session) return NextResponse.json({ error: "Connect Notion first." }, { status: 401 });
-
-  try {
-    const body = (await request.json()) as { dataSourceId?: unknown };
-    if (typeof body.dataSourceId !== "string" || !body.dataSourceId.trim()) {
-      return NextResponse.json({ error: "Choose a Notion database." }, { status: 400 });
-    }
-    const result = await selectSharedDatabase(
-      body.dataSourceId,
-      { accessToken: session.accessToken, refreshToken: session.refreshToken },
-      fetch,
-      oauthClient(),
-    );
-    const nextSession = {
-      ...session,
-      ...result.credentials,
-      selectedDatabase: result.database,
-    };
-    const response = NextResponse.json({ selectedDatabase: result.database });
-    storeNotionSession(response, nextSession);
-    console.info(`[notion.database] selected database ${result.database.id}`);
-    return response;
-  } catch (error) {
-    console.error("[notion.database] selection failed", error);
-    return NextResponse.json({ error: "Could not select that Notion database." }, { status: 502 });
   }
 }
 

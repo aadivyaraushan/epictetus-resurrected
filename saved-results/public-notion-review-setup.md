@@ -4,14 +4,15 @@ Date: 2026-07-31
 
 ## What this is for
 
-This app lets each caller connect their own Notion workspace, choose one shared
+This app lets each caller connect their own Notion workspace, share exactly one
 database, complete a voice call, edit the resulting evening review, and save one
-Notion page. The worker never searches Notion during the call.
+Notion page. The worker never searches Notion during the call. The app binds the
+only shared database automatically and rejects grants with zero or multiple databases.
 
 ## Data path
 
 ```text
-Notion OAuth → encrypted HttpOnly browser cookie → chosen data source
+Notion OAuth → exactly one shared database → encrypted HttpOnly browser cookie
 complete call → transcript + latest tagged commitment → Luna summary draft
 editable review → explicit Save → one Notion page
 ```
@@ -59,22 +60,21 @@ tokens). Tests make no paid calls.
 ## Verification completed
 
 ```text
-web:    41 tests passed
-worker: 45 tests passed
+web:    46 tests passed
 types:  npx tsc --noEmit passed
-build:  next build --webpack passed; 8 application/API routes emitted
-visual: front page and editable review screen inspected in Chrome
+build:  next build passed; 8 application/API routes emitted
+visual: local front page inspected in the Codex browser
 ```
 
-OAuth, database listing/selection, token refresh, OpenAI drafting, and Notion
-page creation were exercised with local mock responses. No real Notion page was
-written, no OAuth grant was created, and no paid model call was made during
-verification.
+OAuth, automatic single-database binding and rejection, token refresh, OpenAI drafting, and Notion
+page creation were exercised with local mock responses. This change did not
+create or expand a real Notion grant, write a real Notion page, or make a paid
+model call during verification.
 
 ## Reuse
 
 1. Configure the public Notion integration and variables above.
 2. Deploy the `web` directory.
-3. Click **Connect Notion**, authorize the pages that contain the target
-   database, and choose that database on the start screen.
+3. Click **Connect Notion** and share only the target database itself. The app
+   binds it automatically; reconnect if Notion exposes zero or multiple databases.
 4. Complete a call, edit the review, and press **Save to ...**.

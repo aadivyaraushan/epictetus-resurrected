@@ -33,19 +33,17 @@ type Admission = {
   token: string;
 };
 
-const EMPTY_NOTION: NotionConnection = { connected: false, databases: [] };
+const EMPTY_NOTION: NotionConnection = { connected: false };
 
 export default function Page() {
   const [admission, setAdmission] = useState<Admission | null>(null);
   const [review, setReview] = useState<CallReviewSource | null>(null);
   const [notion, setNotion] = useState<NotionConnection>(EMPTY_NOTION);
-  const [notionBusy, setNotionBusy] = useState(true);
   const [connecting, setConnecting] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const source = useRef<CallReviewSource>({ turns: [], capturedCommitment: "" });
 
   const loadNotion = useCallback(async () => {
-    setNotionBusy(true);
     try {
       const response = await fetch("/api/notion", { cache: "no-store" });
       const body = await response.json();
@@ -54,8 +52,6 @@ export default function Page() {
     } catch (error) {
       console.error("[page.notion] status failed", error);
       setFailure("Could not load the Notion connection.");
-    } finally {
-      setNotionBusy(false);
     }
   }, []);
 
@@ -109,37 +105,13 @@ export default function Page() {
     source.current.capturedCommitment = text;
   }, []);
 
-  const chooseDatabase = useCallback(async (dataSourceId: string) => {
-    if (!dataSourceId) return;
-    setNotionBusy(true);
-    setFailure(null);
-    try {
-      const response = await fetch("/api/notion", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ dataSourceId }),
-      });
-      const body = await response.json();
-      if (!response.ok) throw new Error(body?.error ?? "Could not choose that database.");
-      setNotion((current) => ({ ...current, selectedDatabase: body.selectedDatabase }));
-    } catch (error) {
-      console.error("[page.notion] database selection failed", error);
-      setFailure(error instanceof Error ? error.message : "Could not choose that database.");
-    } finally {
-      setNotionBusy(false);
-    }
-  }, []);
-
   const disconnectNotion = useCallback(async () => {
-    setNotionBusy(true);
     try {
       await fetch("/api/notion", { method: "DELETE" });
       setNotion(EMPTY_NOTION);
     } catch (error) {
       console.error("[page.notion] disconnect failed", error);
       setFailure("Could not disconnect Notion.");
-    } finally {
-      setNotionBusy(false);
     }
   }, []);
 
@@ -147,7 +119,7 @@ export default function Page() {
     return (
       <ReviewScreen
         source={review}
-        databaseName={notion.selectedDatabase?.name ?? null}
+        databaseName={notion.connected ? notion.selectedDatabase.name : null}
         onNewCall={() => {
           setReview(null);
           setFailure(null);
@@ -164,8 +136,6 @@ export default function Page() {
         connecting={connecting}
         failure={failure}
         notion={notion}
-        notionBusy={notionBusy}
-        onChooseDatabase={chooseDatabase}
         onDisconnectNotion={disconnectNotion}
       />
     );
@@ -189,7 +159,7 @@ export default function Page() {
       {/* Without this nothing he says is audible -- it renders the audio elements. */}
       <RoomAudioRenderer />
       <CallView
-        reviewDestination={notion.selectedDatabase?.name ?? null}
+        reviewDestination={notion.connected ? notion.selectedDatabase.name : null}
         onTurnsChange={rememberTurns}
         onCommitment={rememberCommitment}
         onEndCall={completeCall}
