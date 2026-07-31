@@ -17,8 +17,8 @@ the citing and he does the talking.
 > | | |
 > |---|---|
 > | Corpus, index, retrieval, evaluation | **done and measured** |
-> | Agent worker (speech, GPT-5.6 Luna, voice, 3 tools, RAG) | **done and covered by the combined Python suite** |
-> | Web front end + token endpoint | **done, 18 tests pass, deployed** |
+> | Agent worker (speech, GPT-5.6 Luna, voice, 2 tools, RAG) | **done and covered by the combined Python suite** |
+> | Web front end + token endpoint | **done, 67 tests pass** |
 > | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
 > | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
 > | Hosted worker | **live** — LiveKit Cloud, US East, registered as `epictetus` |
