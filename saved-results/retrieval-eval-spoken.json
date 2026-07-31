@@ -1,0 +1,117 @@
+{
+  "questions": 12,
+  "top_k": 4,
+  "hit@1": 0.4166666666666667,
+  "hit@3": 0.5833333333333334,
+  "hit@4": 0.75,
+  "mrr": 0.5277777777777778,
+  "cosine_min": 0.19250267739234378,
+  "cosine_median": 0.42011977001632966,
+  "cosine_by_question": [
+    [
+      0.1925,
+      "my flight got cancelled and I lost the whole day and I am still furious about it, what do I even do with that"
+    ],
+    [
+      0.3374,
+      "my manager can fire me whenever he wants and I find myself agreeing with everything he says, how do I stop doing that"
+    ],
+    [
+      0.3454,
+      "everything has gone wrong this year and I keep asking why me, is there any use in a run of bad luck"
+    ],
+    [
+      0.3488,
+      "how do I stop reacting the second something upsets me, there is no gap between the thing happening and me losing it"
+    ],
+    [
+      0.3671,
+      "how do I stop being angry at my coworker every time he messes something up"
+    ],
+    [
+      0.397,
+      "I say I believe money does not matter and then I panic about money, why does what I say never match what I do"
+    ],
+    [
+      0.4201,
+      "my mum is sick and I have been avoiding calling her because I cannot handle it, is that love or is that cowardice"
+    ],
+    [
+      0.4245,
+      "I have read a lot about this stuff and I still behave exactly the same, what am I doing wrong"
+    ],
+    [
+      0.4781,
+      "what do I actually owe my father when he has not been good to me"
+    ],
+    [
+      0.4797,
+      "I keep wanting things I cannot have and it is making me miserable, is wanting itself the problem"
+    ],
+    [
+      0.4856,
+      "can I care a lot about how something turns out and still be calm about it, those feel like opposites"
+    ],
+    [
+      0.4952,
+      "I have a good salary and I still feel like I am not free, what would being free even mean"
+    ]
+  ],
+  "latency_ms_median": 294.7316670033615,
+  "misses": [
+    {
+      "question": "my flight got cancelled and I lost the whole day and I am still furious about it, what do I even do with that",
+      "expected": "Book 1, Chapter 1",
+      "got": [
+        "B4C10",
+        "B4C3",
+        "B2C6",
+        "B3C24"
+      ],
+      "best_cosine": 0.1925
+    },
+    {
+      "question": "everything has gone wrong this year and I keep asking why me, is there any use in a run of bad luck",
+      "expected": "Book 1, Chapter 24",
+      "got": [
+        "B3C17",
+        "B3C24",
+        "B2C21",
+        "B3C20"
+      ],
+      "best_cosine": 0.3454
+    },
+    {
+      "question": "I have read a lot about this stuff and I still behave exactly the same, what am I doing wrong",
+      "expected": "Book 3, Chapter 2",
+      "got": [
+        "B4C4",
+        "B1C25",
+        "B4C6",
+        "B2C18"
+      ],
+      "best_cosine": 0.4245
+    }
+  ],
+  "retrievers": "hybrid",
+  "gate": {
+    "small_talk_max": 0.3536077495461539,
+    "small_talk_median": 0.22624000254987645,
+    "real_question_min": 0.19250267739234378,
+    "current_threshold": 0.36,
+    "per_turn": {
+      "hey, can you hear me?": 0.2944,
+      "hello": 0.2121,
+      "sorry, one second": 0.2071,
+      "what's on my calendar tomorrow?": 0.3536,
+      "can you write that down in my journal?": 0.3043,
+      "yeah, exactly": 0.1918,
+      "okay, thanks": 0.2262,
+      "wait, say that again?": 0.2263,
+      "what time is it": 0.2125,
+      "cool": 0.1697,
+      "um, hold on": 0.24,
+      "can you look up what a smartphone is": 0.1661
+    }
+  }
+}

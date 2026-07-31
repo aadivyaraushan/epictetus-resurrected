@@ -109,6 +109,12 @@ def evaluate(search: PassageSearch, questions: list[dict], top_k: int) -> dict:
         "mrr": sum(reciprocal_ranks) / total,
         "cosine_min": min(cosines, default=0.0),
         "cosine_median": sorted(cosines)[len(cosines) // 2] if cosines else 0.0,
+        "cosines": cosines,
+        # Paired with the question, weakest first: the gate is only as good as
+        # its worst real question, and it helps to see which one that is.
+        "cosine_by_question": sorted(
+            ((round(c, 4), q["question"]) for c, q in zip(cosines, questions)),
+        ),
         "latency_ms_median": sorted(latencies)[len(latencies) // 2] if latencies else 0.0,
         "misses": misses,
     }
@@ -130,26 +136,59 @@ def gate_check(search: PassageSearch, real_cosines: list[float]) -> dict:
     }
 
 
+class _NoHits:
+    """A retriever that finds nothing, for measuring one side on its own.
+
+    The plan asserts that hybrid search beats either half. That is a claim about
+    this corpus, and it is cheap to check, so `--only vector` and `--only
+    keyword` turn one side off and the numbers settle it. Done here rather than
+    with a switch in passage_search.py, because the agent should have no
+    retrieval parameters it can get wrong at runtime.
+    """
+
+    def retrieve(self, _bundle):
+        return []
+
+
+def use_only(search: PassageSearch, side: str) -> None:
+    """Turn one half off, to measure the other on its own."""
+    if side == "vector":
+        search._bm25 = _NoHits()
+    elif side == "keyword":
+        search._vector = _NoHits()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--only",
+        choices=["vector", "keyword"],
+        help="measure one half of the hybrid on its own",
+    )
     parser.add_argument("--top-k", type=int, default=passage_search.KEEP_TOP)
     parser.add_argument("--candidates", type=int, default=passage_search.CANDIDATES_PER_SIDE)
     parser.add_argument("--max-per-chapter", type=int, default=passage_search.MAX_PER_CHAPTER)
+    parser.add_argument(
+        "--questions",
+        type=Path,
+        default=QUESTIONS,
+        help="which question set to run (see eval/spoken_questions.json)",
+    )
     parser.add_argument("--report", type=Path, help="write the full result as JSON here")
     parser.add_argument("--show-misses", type=int, default=8)
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.WARNING, format="%(message)s")
 
-    if not QUESTIONS.exists():
+    if not args.questions.exists():
         print(
-            f"No question set at {QUESTIONS}.\n"
+            f"No question set at {args.questions}.\n"
             f"Generate one with: python eval/generate_questions.py",
             file=sys.stderr,
         )
         return 1
 
-    questions = json.loads(QUESTIONS.read_text(encoding="utf-8"))["questions"]
+    questions = json.loads(args.questions.read_text(encoding="utf-8"))["questions"]
 
     # Tuning knobs are module-level constants so the agent has no parameters to
     # get wrong at runtime; the harness overrides them in-process for a sweep.
@@ -158,13 +197,29 @@ def main() -> int:
     passage_search.MAX_PER_CHAPTER = args.max_per_chapter
 
     search = PassageSearch(load_index())
+    if args.only:
+        use_only(search, args.only)
+
+    # Two separate questions, measured separately.
+    #
+    # 1. Ranking: does the right chapter come back, and how high? The gate has no
+    #    business here -- a gated-out turn returns an empty list, which counts as
+    #    a ranking miss when nothing was actually mis-ranked. Worse, the gate
+    #    reads cosine similarity, which only the vector side produces, so leaving
+    #    it on makes keyword-only score zero on everything for a reason that has
+    #    nothing to do with BM25. Off for every mode, so all three are comparable.
+    # 2. The gate: where should the threshold sit? That is gate_check below,
+    #    which reads the raw cosines and does not care about ranking at all.
+    threshold = passage_search.MIN_COSINE_TO_GROUND
+    passage_search.MIN_COSINE_TO_GROUND = 0.0
+
     result = evaluate(search, questions, args.top_k)
-    result["gate"] = gate_check(
-        search, [q for q in [result["cosine_min"], result["cosine_median"]]]
-    )
+    result["retrievers"] = args.only or "hybrid"
+    passage_search.MIN_COSINE_TO_GROUND = threshold
+    result["gate"] = gate_check(search, result.pop("cosines"))
 
     print(
-        f"\n  {result['questions']} questions | "
+        f"\n  {result['questions']} questions | {result['retrievers']} | "
         f"candidates/side {args.candidates}, keep {args.top_k}, "
         f"cap {args.max_per_chapter} per chapter"
     )
@@ -179,8 +234,15 @@ def main() -> int:
         f"\n  gate: small talk tops out at cosine {gate['small_talk_max']:.3f}; "
         f"threshold is {gate['current_threshold']}"
     )
+    print(
+        f"  the weakest real question scores {gate['real_question_min']:.3f}, "
+        f"so the gap the threshold sits in is "
+        f"{gate['small_talk_max']:.3f} .. {gate['real_question_min']:.3f}"
+    )
     if gate["small_talk_max"] >= gate["current_threshold"]:
         print("  WARNING: small talk clears the gate -- he will philosophise at 'hello'")
+    if gate["real_question_min"] < gate["current_threshold"]:
+        print("  WARNING: a real question falls below the gate -- it would go ungrounded")
 
     if result["misses"]:
         print(f"\n  {len(result['misses'])} misses; first {args.show_misses}:")

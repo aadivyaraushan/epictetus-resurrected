@@ -1,0 +1,77 @@
+{
+  "why": "The generated set in questions.json is biased toward keyword search. Its generator was told to name the specific people, examples and objects each chapter uses, because that specificity is what makes a question answerable from one chapter -- but it also hands BM25 the exact rare words it indexes on. So that set measures how well retrieval finds a question written by someone who has already read the chapter.\n\nThis set measures the opposite case, and it is the one the agent actually meets: a person describing their own life out loud, in their own words, using none of the chapter's vocabulary. No proper nouns, no ancient examples, no borrowed phrasing. If the vector side is earning its place in the hybrid, this is where it shows.\n\nWritten by hand rather than generated, because the whole point is that a model given the chapter cannot help borrowing its words. Gold labels are the chapter whose argument answers the question; where two chapters could serve, the more direct one is used.",
+  "questions": [
+    {
+      "question": "my flight got cancelled and I lost the whole day and I am still furious about it, what do I even do with that",
+      "book": 1,
+      "chapter": 1,
+      "title": "Of the Things which are in our Power, and not in our Power"
+    },
+    {
+      "question": "how do I stop being angry at my coworker every time he messes something up",
+      "book": 1,
+      "chapter": 18,
+      "title": "That we ought not to be Angry with the Errors (Faults) of others"
+    },
+    {
+      "question": "my mum is sick and I have been avoiding calling her because I cannot handle it, is that love or is that cowardice",
+      "book": 1,
+      "chapter": 11,
+      "title": "Of Natural Affection"
+    },
+    {
+      "question": "my manager can fire me whenever he wants and I find myself agreeing with everything he says, how do I stop doing that",
+      "book": 1,
+      "chapter": 19,
+      "title": "How we should behave to Tyrants"
+    },
+    {
+      "question": "everything has gone wrong this year and I keep asking why me, is there any use in a run of bad luck",
+      "book": 1,
+      "chapter": 24,
+      "title": "How we should struggle with Circumstances"
+    },
+    {
+      "question": "what do I actually owe my father when he has not been good to me",
+      "book": 2,
+      "chapter": 10,
+      "title": "How we may discover the Duties of Life from Names"
+    },
+    {
+      "question": "how do I stop reacting the second something upsets me, there is no gap between the thing happening and me losing it",
+      "book": 2,
+      "chapter": 18,
+      "title": "How we should struggle against Appearances"
+    },
+    {
+      "question": "I keep wanting things I cannot have and it is making me miserable, is wanting itself the problem",
+      "book": 3,
+      "chapter": 24,
+      "title": "That we ought not to be moved by a Desire of those Things which are not in our Power"
+    },
+    {
+      "question": "I have a good salary and I still feel like I am not free, what would being free even mean",
+      "book": 4,
+      "chapter": 1,
+      "title": "About Freedom"
+    },
+    {
+      "question": "can I care a lot about how something turns out and still be calm about it, those feel like opposites",
+      "book": 2,
+      "chapter": 5,
+      "title": "How Magnanimity is consistent with Care"
+    },
+    {
+      "question": "I have read a lot about this stuff and I still behave exactly the same, what am I doing wrong",
+      "book": 3,
+      "chapter": 2,
+      "title": "In what a Man ought to be exercised who has made Proficiency"
+    },
+    {
+      "question": "I say I believe money does not matter and then I panic about money, why does what I say never match what I do",
+      "book": 2,
+      "chapter": 16,
+      "title": "That we do not strive to use our Opinions about Good and Evil"
+    }
+  ]
+}

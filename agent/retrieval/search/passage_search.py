@@ -59,9 +59,45 @@ MAX_PER_CHAPTER = 2
 RRF_K = 60
 
 # Below this cosine similarity we treat the corpus as having nothing to say and
-# hand the model no passages. Set from the eval harness -- see
-# eval/run_retrieval_eval.py and saved-results/.
-MIN_COSINE_TO_GROUND = 0.34
+# hand the model no passages.
+#
+# Measured, not guessed, and the measurement is worth reading before anyone
+# moves this number. Two question sets, both in eval/:
+#
+#   questions.json         53 questions generated from the chapters. Every one
+#                          scores 0.494 or higher -- they borrow the chapter's
+#                          own vocabulary, so they look easy.
+#   spoken_questions.json  12 written by hand as a person would say them out
+#                          loud, no borrowed words. These score 0.19 to 0.50.
+#
+# The first set alone suggests a comfortable threshold around 0.42. The second
+# set shows that is wrong: real spoken questions reach down into the range where
+# small talk lives, and no threshold separates the two populations cleanly.
+#
+# So this is set to the highest value that still rejects every small-talk turn.
+# Of the twelve small-talk turns, six are too short to reach retrieval at all
+# (see worth_searching); the remaining six top out at 0.3536, for "what's on my
+# calendar tomorrow?". 0.36 clears that and grounds 61 of 65 real questions.
+#
+# Headroom is about 0.006 in each direction, which is thin, and the honest
+# reason to accept it is that both failure modes are mild. Ground a tool turn by
+# mistake and the model gets passages labelled "for your reference" that it
+# ignores while it calls the tool. Miss a real question and he answers from his
+# own knowledge of himself, which is not nothing. Neither breaks the call.
+#
+# One consequence worth keeping: the plan called for a separate rule to skip
+# retrieval on turns that dispatch a tool call. The two highest-scoring
+# small-talk turns are exactly the tool turns, and this gate already rejects
+# them, so that rule would be a second mechanism doing the first one's job.
+#
+# Things that were tried and did not work: gating on how far the best chunk
+# beats the rest of the candidate pool (margin, gap between first and second,
+# or ratio to the pool mean). The idea was that a corpus of one author on one
+# subject is mildly close to any philosophical question, so a standout chunk
+# should matter more than an absolute score. The numbers say the opposite --
+# small talk shows a *larger* margin than real questions, because its candidates
+# are uniformly poor. Raw cosine separates far better than any of them.
+MIN_COSINE_TO_GROUND = 0.36
 
 
 @dataclass(frozen=True)
