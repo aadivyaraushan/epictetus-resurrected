@@ -1,0 +1,1237 @@
+{
+  "generatedAt": "2026-07-31T22:07:34.531Z",
+  "appUrl": "https://epictetus-resurrected.vercel.app/proof",
+  "audioPath": "/tmp/epictetus-combined-release-proof.wav",
+  "finalCallState": {
+    "admitted": true,
+    "turns": [
+      {
+        "speaker": "Epictetus",
+        "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+      },
+      {
+        "speaker": "You",
+        "text": "Pictitas."
+      },
+      {
+        "speaker": "You",
+        "text": "Pictetas."
+      },
+      {
+        "speaker": "You",
+        "text": "Pictetas."
+      },
+      {
+        "speaker": "You",
+        "text": "When I feel"
+      },
+      {
+        "speaker": "You",
+        "text": "When I feel angry."
+      },
+      {
+        "speaker": "You",
+        "text": "When I feel angry."
+      },
+      {
+        "speaker": "You",
+        "text": "How should I think about"
+      },
+      {
+        "speaker": "You",
+        "text": "How should I think about what is in my"
+      },
+      {
+        "speaker": "You",
+        "text": "How should I think about what is in my control?"
+      },
+      {
+        "speaker": "You",
+        "text": "How should I think about what is in my control?"
+      },
+      {
+        "speaker": "Epictetus",
+        "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment"
+      },
+      {
+        "speaker": "You",
+        "text": "Please write to my"
+      },
+      {
+        "speaker": "You",
+        "text": "Please write to my session"
+      },
+      {
+        "speaker": "You",
+        "text": "Please write to my session log that I will"
+      },
+      {
+        "speaker": "You",
+        "text": "Please write to my session log that I will pause and examine my"
+      },
+      {
+        "speaker": "You",
+        "text": "Please write to my session log that I will pause and examine my judgment before I"
+      },
+      {
+        "speaker": "You",
+        "text": "Please write to my session log that I will pause and examine my judgment"
+      },
+      {
+        "speaker": "You",
+        "text": "Please write to my session log that I will pause and examine my judgment"
+      },
+      {
+        "speaker": "You",
+        "text": "I react."
+      },
+      {
+        "speaker": "You",
+        "text": "I react."
+      },
+      {
+        "speaker": "Epictetus",
+        "text": "Good. But make the promise exact.\n\nWhen anger rises, pause. Ask: “What did I see? What judgment did I add? What action is mine now?” You control the pause, the judgment, and your next act. You do not control the other person, the"
+      },
+      {
+        "speaker": "You",
+        "text": "Please look"
+      },
+      {
+        "speaker": "You",
+        "text": "Please look up a modern thing."
+      },
+      {
+        "speaker": "You",
+        "text": "Please look up a modern thing."
+      },
+      {
+        "speaker": "You",
+        "text": "Please look up a modern thing."
+      },
+      {
+        "speaker": "You",
+        "text": "Search the web and"
+      },
+      {
+        "speaker": "You",
+        "text": "Search the web and tell me what year the"
+      },
+      {
+        "speaker": "You",
+        "text": "Search the web and tell me what year the first iPhone was"
+      },
+      {
+        "speaker": "You",
+        "text": "Search the web and tell me what year the first iPhone was released."
+      },
+      {
+        "speaker": "Epictetus",
+        "text": "The first iPhone was released on June"
+      }
+    ],
+    "rag": [
+      "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen.",
+      "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.362 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 2, Chapter 2; Book 1, Chapter 22; Book 1, Chapter 1; Book 3, Chapter 9 · best cosine 0.362 >= 0.2315Book 2, Chapter 2Of Tranquillity (Freedom from Perturbation)For this reason also it is ridiculous to say, Suggest something to me (tell me what to do). What should I suggest to you? Well, form my mind so as to accommodate itself to any event. Why that is just the same as if a man who is ignorant of letters should say, Tell me what to write when any name is proposed to me. For if I should tell him to write Dion, and then another should come and propose to him not the name of Dion but that of Theon, what will be done? what will he write? But if you have practised writing, you are also prepared to write (or to do) any thing that is required. If you are not, what can I now suggest? For if circumstances require something else, what will you say, or what will you do? Remember then this general precept and you will need no suggestion. But if you gape after externals, you must of necessity ramble up and down in obedience to the will of your master. And who is the master? He who has the power over the things which you seek to gain or try to avoid.Book 1, Chapter 22Of PraecognitionsWhat should we do then? This is the inquiry of the true philosopher who is in labour. Now I do not see what the Good is nor the Bad. Am I not mad? Yes. But suppose that I place the good somewhere among the things which depend on the will: all will laugh at me. There will come some greyhead wearing many gold rings on his fingers, and he will shake his head and say, Hear, my child. It is right that you should philosophize; but you ought to have some brains also: all this that you are doing is silly. You learn the syllogism from philosophers; but you know how to act better than philosophers do.—Man, why then do you blame me, if I know? What shall I say to this slave? If I am silent, he will burst. I must speak in this way: Excuse me, as you would excuse lovers: I am not my own master: I am mad.Book 1, Chapter 1Of the Things which are in our Power, and not in our PowerLayout 1 BOOK I. CHAPTER I. of the things which are in our power, and not in our power. Of all the faculties (except that which I shall soon mention), you will find not one which is capable of contemplating itself, and, consequently, not capable either of approving or disapproving. How far does the grammatic art possess the contemplating power? As far as forming a judgment about what is written and spoken. And how far music? As far as judging about melody. Does either of them then contemplate itself? By no means. But when you must write something to your friend, grammar will tell you what words you should write; but whether you should write or not, grammar will not tell you. And so it is with music as to musical sounds; but whether you should sing at the present time and play on the lute, or do neither, music will not tell you. What faculty then will tell you? That which contemplates both itself and all other things. And what is this faculty? The rational faculty; for this is the only faculty that we have received which examines itself, what it is, and what power it has, and what is the value of this gift, and examines all other faculties: for what else is there which tells us that golden things are beautiful, for they do not say so themselves? Evidently it is the faculty which is capable of judging of appearances. What else judges of music, grammar, and the other faculties, proves their uses, and points out the occasions for using them? Nothing else.Book 3, Chapter 9To a certain Rhetorician who was going up to Rome on a SuitAnd how do you differ? But have you sounder opinions than your adversary? Why? You think so. And so does he think that his opinions are better; and so do madmen. This is a bad criterion. But show to me that you have made some inquiry into your opinions and have taken some pains about them. And as now you are sailing to Rome in order to become governor of the Cnossians, and you are not content to stay at home with tho honours which you had, but you desire something greater and more conspicuous, so when did you ever make a voyage for the purpose of examining your own opinions, and casting them out, if you have any that are bad? Whom have you approached for this purpose? What time have you fixed for it? What age? Go over the times of your life by yourself, if you are ashamed of me (knowing the fact) when you were a boy, did you examine your own opinions? and did you not then, as you do all things now, do as you did do? and when you were become a youth and attended the rhetoricians, and yourself practised rhetoric, what did you imagine that you were deficient in? And when you were a young man and engaged in public matters, and pleaded causes yourself, and were gaining reputation, who then seemed your equal? And when would you have submitted to any man examining and showing that your opinions are bad? What then do you wish me to say to you?—Help me in this matter.—I have no theorem (rule) for this.",
+      "RAG rejected this turnvector + BM25, merged by reciprocal rank fusion · 0.188 cosine · minimum 0.2315 · automatic at 0.360 · below minimum cosine · No passages added · best cosine 0.188 < 0.2315, not grounding this turn"
+    ],
+    "tools": [
+      "Tool callwriting in the session log: I will pause and examine my judgment when I react.",
+      "Tool calllooking up: the iPhone and the year the first iPhone was released"
+    ],
+    "audio": [
+      {
+        "paused": false,
+        "muted": false,
+        "readyState": 4,
+        "hasStream": true
+      }
+    ],
+    "status": "Speaking"
+  },
+  "review": {
+    "title": "Evening Review — August 1, 2026",
+    "summary": "You reflected on how to respond when anger arises and what is within your control. You concluded that you can pause, examine the judgment you added to an event, and choose your next action, while the other person and the event itself are outside your control.",
+    "nextStep": "I will pause and examine my judgment when I react.",
+    "transcript": "Epictetus: So. You found me. I am Epictetus — I taught at Nicopolis,\n\nYou: Pictetas.\n\nYou: When I feel angry.\n\nYou: How should I think about what is in my control?\n\nEpictetus: Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment\n\nYou: Please write to my session log that I will pause and examine my judgment\n\nYou: I react.\n\nEpictetus: Good. But make the promise exact.\n\nWhen anger rises, pause. Ask: “What did I see? What judgment did I add? What action is mine now?” You control the pause, the judgment, and your next act. You do not control the other person, the\n\nYou: Please look up a modern thing.\n\nYou: Search the web and tell me what year the first iPhone was released.\n\nEpictetus: The first iPhone was released on June 29, 2007. A small glowing tablet that people carry everywhere, it seems. Now tell",
+    "chapters": [
+      "Book 1, Chapter 18 — That we ought not to be Angry with the Errors (Faults) of others",
+      "Book 1, Chapter 28 — That we ought not to be Angry with Men; and what are the Small and the Great Things among Men",
+      "Book 1, Chapter 15 — What Philosophy promises",
+      "Book 2, Chapter 2 — Of Tranquillity (Freedom from Perturbation)",
+      "Book 1, Chapter 22 — Of Praecognitions",
+      "Book 1, Chapter 1 — Of the Things which are in our Power, and not in our Power",
+      "Book 3, Chapter 9 — To a certain Rhetorician who was going up to Rome on a Suit"
+    ],
+    "notionHint": "Connect Notion before your next call to save reviews.",
+    "failure": null
+  },
+  "browserErrors": [],
+  "observations": [
+    {
+      "atSeconds": 5,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught"
+        }
+      ],
+      "rag": [],
+      "tools": [],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Speaking"
+    },
+    {
+      "atSeconds": 10,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        }
+      ],
+      "rag": [],
+      "tools": [],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Listening"
+    },
+    {
+      "atSeconds": 15,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say"
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen."
+      ],
+      "tools": [],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Speaking"
+    },
+    {
+      "atSeconds": 20,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance:"
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen."
+      ],
+      "tools": [],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Speaking"
+    },
+    {
+      "atSeconds": 25,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The"
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen."
+      ],
+      "tools": [],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Speaking"
+    },
+    {
+      "atSeconds": 30,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session"
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen."
+      ],
+      "tools": [],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Listening"
+    },
+    {
+      "atSeconds": 35,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment before I"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen."
+      ],
+      "tools": [],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Listening"
+    },
+    {
+      "atSeconds": 40,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment before I"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Good. But make the promise exact.\n\nWhen anger rises, pause."
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen.",
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.362 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 2, Chapter 2; Book 1, Chapter 22; Book 1, Chapter 1; Book 3, Chapter 9 · best cosine 0.362 >= 0.2315Book 2, Chapter 2Of Tranquillity (Freedom from Perturbation)For this reason also it is ridiculous to say, Suggest something to me (tell me what to do). What should I suggest to you? Well, form my mind so as to accommodate itself to any event. Why that is just the same as if a man who is ignorant of letters should say, Tell me what to write when any name is proposed to me. For if I should tell him to write Dion, and then another should come and propose to him not the name of Dion but that of Theon, what will be done? what will he write? But if you have practised writing, you are also prepared to write (or to do) any thing that is required. If you are not, what can I now suggest? For if circumstances require something else, what will you say, or what will you do? Remember then this general precept and you will need no suggestion. But if you gape after externals, you must of necessity ramble up and down in obedience to the will of your master. And who is the master? He who has the power over the things which you seek to gain or try to avoid.Book 1, Chapter 22Of PraecognitionsWhat should we do then? This is the inquiry of the true philosopher who is in labour. Now I do not see what the Good is nor the Bad. Am I not mad? Yes. But suppose that I place the good somewhere among the things which depend on the will: all will laugh at me. There will come some greyhead wearing many gold rings on his fingers, and he will shake his head and say, Hear, my child. It is right that you should philosophize; but you ought to have some brains also: all this that you are doing is silly. You learn the syllogism from philosophers; but you know how to act better than philosophers do.—Man, why then do you blame me, if I know? What shall I say to this slave? If I am silent, he will burst. I must speak in this way: Excuse me, as you would excuse lovers: I am not my own master: I am mad.Book 1, Chapter 1Of the Things which are in our Power, and not in our PowerLayout 1 BOOK I. CHAPTER I. of the things which are in our power, and not in our power. Of all the faculties (except that which I shall soon mention), you will find not one which is capable of contemplating itself, and, consequently, not capable either of approving or disapproving. How far does the grammatic art possess the contemplating power? As far as forming a judgment about what is written and spoken. And how far music? As far as judging about melody. Does either of them then contemplate itself? By no means. But when you must write something to your friend, grammar will tell you what words you should write; but whether you should write or not, grammar will not tell you. And so it is with music as to musical sounds; but whether you should sing at the present time and play on the lute, or do neither, music will not tell you. What faculty then will tell you? That which contemplates both itself and all other things. And what is this faculty? The rational faculty; for this is the only faculty that we have received which examines itself, what it is, and what power it has, and what is the value of this gift, and examines all other faculties: for what else is there which tells us that golden things are beautiful, for they do not say so themselves? Evidently it is the faculty which is capable of judging of appearances. What else judges of music, grammar, and the other faculties, proves their uses, and points out the occasions for using them? Nothing else.Book 3, Chapter 9To a certain Rhetorician who was going up to Rome on a SuitAnd how do you differ? But have you sounder opinions than your adversary? Why? You think so. And so does he think that his opinions are better; and so do madmen. This is a bad criterion. But show to me that you have made some inquiry into your opinions and have taken some pains about them. And as now you are sailing to Rome in order to become governor of the Cnossians, and you are not content to stay at home with tho honours which you had, but you desire something greater and more conspicuous, so when did you ever make a voyage for the purpose of examining your own opinions, and casting them out, if you have any that are bad? Whom have you approached for this purpose? What time have you fixed for it? What age? Go over the times of your life by yourself, if you are ashamed of me (knowing the fact) when you were a boy, did you examine your own opinions? and did you not then, as you do all things now, do as you did do? and when you were become a youth and attended the rhetoricians, and yourself practised rhetoric, what did you imagine that you were deficient in? And when you were a young man and engaged in public matters, and pleaded causes yourself, and were gaining reputation, who then seemed your equal? And when would you have submitted to any man examining and showing that your opinions are bad? What then do you wish me to say to you?—Help me in this matter.—I have no theorem (rule) for this."
+      ],
+      "tools": [
+        "Tool callwriting in the session log: I will pause and examine my judgment when I react."
+      ],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Speaking"
+    },
+    {
+      "atSeconds": 45,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment before I"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Good. But make the promise exact.\n\nWhen anger rises, pause. Ask: “What did I see? What judgment did I add? What action is mine now?” You control"
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen.",
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.362 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 2, Chapter 2; Book 1, Chapter 22; Book 1, Chapter 1; Book 3, Chapter 9 · best cosine 0.362 >= 0.2315Book 2, Chapter 2Of Tranquillity (Freedom from Perturbation)For this reason also it is ridiculous to say, Suggest something to me (tell me what to do). What should I suggest to you? Well, form my mind so as to accommodate itself to any event. Why that is just the same as if a man who is ignorant of letters should say, Tell me what to write when any name is proposed to me. For if I should tell him to write Dion, and then another should come and propose to him not the name of Dion but that of Theon, what will be done? what will he write? But if you have practised writing, you are also prepared to write (or to do) any thing that is required. If you are not, what can I now suggest? For if circumstances require something else, what will you say, or what will you do? Remember then this general precept and you will need no suggestion. But if you gape after externals, you must of necessity ramble up and down in obedience to the will of your master. And who is the master? He who has the power over the things which you seek to gain or try to avoid.Book 1, Chapter 22Of PraecognitionsWhat should we do then? This is the inquiry of the true philosopher who is in labour. Now I do not see what the Good is nor the Bad. Am I not mad? Yes. But suppose that I place the good somewhere among the things which depend on the will: all will laugh at me. There will come some greyhead wearing many gold rings on his fingers, and he will shake his head and say, Hear, my child. It is right that you should philosophize; but you ought to have some brains also: all this that you are doing is silly. You learn the syllogism from philosophers; but you know how to act better than philosophers do.—Man, why then do you blame me, if I know? What shall I say to this slave? If I am silent, he will burst. I must speak in this way: Excuse me, as you would excuse lovers: I am not my own master: I am mad.Book 1, Chapter 1Of the Things which are in our Power, and not in our PowerLayout 1 BOOK I. CHAPTER I. of the things which are in our power, and not in our power. Of all the faculties (except that which I shall soon mention), you will find not one which is capable of contemplating itself, and, consequently, not capable either of approving or disapproving. How far does the grammatic art possess the contemplating power? As far as forming a judgment about what is written and spoken. And how far music? As far as judging about melody. Does either of them then contemplate itself? By no means. But when you must write something to your friend, grammar will tell you what words you should write; but whether you should write or not, grammar will not tell you. And so it is with music as to musical sounds; but whether you should sing at the present time and play on the lute, or do neither, music will not tell you. What faculty then will tell you? That which contemplates both itself and all other things. And what is this faculty? The rational faculty; for this is the only faculty that we have received which examines itself, what it is, and what power it has, and what is the value of this gift, and examines all other faculties: for what else is there which tells us that golden things are beautiful, for they do not say so themselves? Evidently it is the faculty which is capable of judging of appearances. What else judges of music, grammar, and the other faculties, proves their uses, and points out the occasions for using them? Nothing else.Book 3, Chapter 9To a certain Rhetorician who was going up to Rome on a SuitAnd how do you differ? But have you sounder opinions than your adversary? Why? You think so. And so does he think that his opinions are better; and so do madmen. This is a bad criterion. But show to me that you have made some inquiry into your opinions and have taken some pains about them. And as now you are sailing to Rome in order to become governor of the Cnossians, and you are not content to stay at home with tho honours which you had, but you desire something greater and more conspicuous, so when did you ever make a voyage for the purpose of examining your own opinions, and casting them out, if you have any that are bad? Whom have you approached for this purpose? What time have you fixed for it? What age? Go over the times of your life by yourself, if you are ashamed of me (knowing the fact) when you were a boy, did you examine your own opinions? and did you not then, as you do all things now, do as you did do? and when you were become a youth and attended the rhetoricians, and yourself practised rhetoric, what did you imagine that you were deficient in? And when you were a young man and engaged in public matters, and pleaded causes yourself, and were gaining reputation, who then seemed your equal? And when would you have submitted to any man examining and showing that your opinions are bad? What then do you wish me to say to you?—Help me in this matter.—I have no theorem (rule) for this."
+      ],
+      "tools": [
+        "Tool callwriting in the session log: I will pause and examine my judgment when I react."
+      ],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Speaking"
+    },
+    {
+      "atSeconds": 50,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment before I"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Good. But make the promise exact.\n\nWhen anger rises, pause. Ask: “What did I see? What judgment did I add? What action is mine now?” You control the pause, the judgment, and your next act. You do not control the other"
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen.",
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.362 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 2, Chapter 2; Book 1, Chapter 22; Book 1, Chapter 1; Book 3, Chapter 9 · best cosine 0.362 >= 0.2315Book 2, Chapter 2Of Tranquillity (Freedom from Perturbation)For this reason also it is ridiculous to say, Suggest something to me (tell me what to do). What should I suggest to you? Well, form my mind so as to accommodate itself to any event. Why that is just the same as if a man who is ignorant of letters should say, Tell me what to write when any name is proposed to me. For if I should tell him to write Dion, and then another should come and propose to him not the name of Dion but that of Theon, what will be done? what will he write? But if you have practised writing, you are also prepared to write (or to do) any thing that is required. If you are not, what can I now suggest? For if circumstances require something else, what will you say, or what will you do? Remember then this general precept and you will need no suggestion. But if you gape after externals, you must of necessity ramble up and down in obedience to the will of your master. And who is the master? He who has the power over the things which you seek to gain or try to avoid.Book 1, Chapter 22Of PraecognitionsWhat should we do then? This is the inquiry of the true philosopher who is in labour. Now I do not see what the Good is nor the Bad. Am I not mad? Yes. But suppose that I place the good somewhere among the things which depend on the will: all will laugh at me. There will come some greyhead wearing many gold rings on his fingers, and he will shake his head and say, Hear, my child. It is right that you should philosophize; but you ought to have some brains also: all this that you are doing is silly. You learn the syllogism from philosophers; but you know how to act better than philosophers do.—Man, why then do you blame me, if I know? What shall I say to this slave? If I am silent, he will burst. I must speak in this way: Excuse me, as you would excuse lovers: I am not my own master: I am mad.Book 1, Chapter 1Of the Things which are in our Power, and not in our PowerLayout 1 BOOK I. CHAPTER I. of the things which are in our power, and not in our power. Of all the faculties (except that which I shall soon mention), you will find not one which is capable of contemplating itself, and, consequently, not capable either of approving or disapproving. How far does the grammatic art possess the contemplating power? As far as forming a judgment about what is written and spoken. And how far music? As far as judging about melody. Does either of them then contemplate itself? By no means. But when you must write something to your friend, grammar will tell you what words you should write; but whether you should write or not, grammar will not tell you. And so it is with music as to musical sounds; but whether you should sing at the present time and play on the lute, or do neither, music will not tell you. What faculty then will tell you? That which contemplates both itself and all other things. And what is this faculty? The rational faculty; for this is the only faculty that we have received which examines itself, what it is, and what power it has, and what is the value of this gift, and examines all other faculties: for what else is there which tells us that golden things are beautiful, for they do not say so themselves? Evidently it is the faculty which is capable of judging of appearances. What else judges of music, grammar, and the other faculties, proves their uses, and points out the occasions for using them? Nothing else.Book 3, Chapter 9To a certain Rhetorician who was going up to Rome on a SuitAnd how do you differ? But have you sounder opinions than your adversary? Why? You think so. And so does he think that his opinions are better; and so do madmen. This is a bad criterion. But show to me that you have made some inquiry into your opinions and have taken some pains about them. And as now you are sailing to Rome in order to become governor of the Cnossians, and you are not content to stay at home with tho honours which you had, but you desire something greater and more conspicuous, so when did you ever make a voyage for the purpose of examining your own opinions, and casting them out, if you have any that are bad? Whom have you approached for this purpose? What time have you fixed for it? What age? Go over the times of your life by yourself, if you are ashamed of me (knowing the fact) when you were a boy, did you examine your own opinions? and did you not then, as you do all things now, do as you did do? and when you were become a youth and attended the rhetoricians, and yourself practised rhetoric, what did you imagine that you were deficient in? And when you were a young man and engaged in public matters, and pleaded causes yourself, and were gaining reputation, who then seemed your equal? And when would you have submitted to any man examining and showing that your opinions are bad? What then do you wish me to say to you?—Help me in this matter.—I have no theorem (rule) for this."
+      ],
+      "tools": [
+        "Tool callwriting in the session log: I will pause and examine my judgment when I react."
+      ],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Speaking"
+    },
+    {
+      "atSeconds": 55,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment before I"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Good. But make the promise exact.\n\nWhen anger rises, pause. Ask: “What did I see? What judgment did I add? What action is mine now?” You control the pause, the judgment, and your next act. You do not control the other person, the"
+        },
+        {
+          "speaker": "You",
+          "text": "Please look"
+        },
+        {
+          "speaker": "You",
+          "text": "Please look up a modern thing."
+        },
+        {
+          "speaker": "You",
+          "text": "Please look up a modern thing."
+        },
+        {
+          "speaker": "You",
+          "text": "Please look up a modern thing."
+        },
+        {
+          "speaker": "You",
+          "text": "Search the web and"
+        },
+        {
+          "speaker": "You",
+          "text": "Search the web and tell me what year the"
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen.",
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.362 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 2, Chapter 2; Book 1, Chapter 22; Book 1, Chapter 1; Book 3, Chapter 9 · best cosine 0.362 >= 0.2315Book 2, Chapter 2Of Tranquillity (Freedom from Perturbation)For this reason also it is ridiculous to say, Suggest something to me (tell me what to do). What should I suggest to you? Well, form my mind so as to accommodate itself to any event. Why that is just the same as if a man who is ignorant of letters should say, Tell me what to write when any name is proposed to me. For if I should tell him to write Dion, and then another should come and propose to him not the name of Dion but that of Theon, what will be done? what will he write? But if you have practised writing, you are also prepared to write (or to do) any thing that is required. If you are not, what can I now suggest? For if circumstances require something else, what will you say, or what will you do? Remember then this general precept and you will need no suggestion. But if you gape after externals, you must of necessity ramble up and down in obedience to the will of your master. And who is the master? He who has the power over the things which you seek to gain or try to avoid.Book 1, Chapter 22Of PraecognitionsWhat should we do then? This is the inquiry of the true philosopher who is in labour. Now I do not see what the Good is nor the Bad. Am I not mad? Yes. But suppose that I place the good somewhere among the things which depend on the will: all will laugh at me. There will come some greyhead wearing many gold rings on his fingers, and he will shake his head and say, Hear, my child. It is right that you should philosophize; but you ought to have some brains also: all this that you are doing is silly. You learn the syllogism from philosophers; but you know how to act better than philosophers do.—Man, why then do you blame me, if I know? What shall I say to this slave? If I am silent, he will burst. I must speak in this way: Excuse me, as you would excuse lovers: I am not my own master: I am mad.Book 1, Chapter 1Of the Things which are in our Power, and not in our PowerLayout 1 BOOK I. CHAPTER I. of the things which are in our power, and not in our power. Of all the faculties (except that which I shall soon mention), you will find not one which is capable of contemplating itself, and, consequently, not capable either of approving or disapproving. How far does the grammatic art possess the contemplating power? As far as forming a judgment about what is written and spoken. And how far music? As far as judging about melody. Does either of them then contemplate itself? By no means. But when you must write something to your friend, grammar will tell you what words you should write; but whether you should write or not, grammar will not tell you. And so it is with music as to musical sounds; but whether you should sing at the present time and play on the lute, or do neither, music will not tell you. What faculty then will tell you? That which contemplates both itself and all other things. And what is this faculty? The rational faculty; for this is the only faculty that we have received which examines itself, what it is, and what power it has, and what is the value of this gift, and examines all other faculties: for what else is there which tells us that golden things are beautiful, for they do not say so themselves? Evidently it is the faculty which is capable of judging of appearances. What else judges of music, grammar, and the other faculties, proves their uses, and points out the occasions for using them? Nothing else.Book 3, Chapter 9To a certain Rhetorician who was going up to Rome on a SuitAnd how do you differ? But have you sounder opinions than your adversary? Why? You think so. And so does he think that his opinions are better; and so do madmen. This is a bad criterion. But show to me that you have made some inquiry into your opinions and have taken some pains about them. And as now you are sailing to Rome in order to become governor of the Cnossians, and you are not content to stay at home with tho honours which you had, but you desire something greater and more conspicuous, so when did you ever make a voyage for the purpose of examining your own opinions, and casting them out, if you have any that are bad? Whom have you approached for this purpose? What time have you fixed for it? What age? Go over the times of your life by yourself, if you are ashamed of me (knowing the fact) when you were a boy, did you examine your own opinions? and did you not then, as you do all things now, do as you did do? and when you were become a youth and attended the rhetoricians, and yourself practised rhetoric, what did you imagine that you were deficient in? And when you were a young man and engaged in public matters, and pleaded causes yourself, and were gaining reputation, who then seemed your equal? And when would you have submitted to any man examining and showing that your opinions are bad? What then do you wish me to say to you?—Help me in this matter.—I have no theorem (rule) for this."
+      ],
+      "tools": [
+        "Tool callwriting in the session log: I will pause and examine my judgment when I react."
+      ],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Listening"
+    },
+    {
+      "atSeconds": 63,
+      "admitted": true,
+      "turns": [
+        {
+          "speaker": "Epictetus",
+          "text": "So. You found me. I am Epictetus — I taught at Nicopolis,"
+        },
+        {
+          "speaker": "You",
+          "text": "Pictitas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "Pictetas."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel"
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "When I feel angry."
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "You",
+          "text": "How should I think about what is in my control?"
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Tell me this: what did the person do, exactly? What did you say or do next? And what are you afraid will happen now?\n\nAnger begins with an appearance: “This is insulting,” “This must not happen,” “He has ruined my day.” The event arrived without asking you. Your judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment before I"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "Please write to my session log that I will pause and examine my judgment"
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "You",
+          "text": "I react."
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "Good. But make the promise exact.\n\nWhen anger rises, pause. Ask: “What did I see? What judgment did I add? What action is mine now?” You control the pause, the judgment, and your next act. You do not control the other person, the"
+        },
+        {
+          "speaker": "You",
+          "text": "Please look"
+        },
+        {
+          "speaker": "You",
+          "text": "Please look up a modern thing."
+        },
+        {
+          "speaker": "You",
+          "text": "Please look up a modern thing."
+        },
+        {
+          "speaker": "You",
+          "text": "Please look up a modern thing."
+        },
+        {
+          "speaker": "You",
+          "text": "Search the web and"
+        },
+        {
+          "speaker": "You",
+          "text": "Search the web and tell me what year the"
+        },
+        {
+          "speaker": "You",
+          "text": "Search the web and tell me what year the first iPhone was"
+        },
+        {
+          "speaker": "You",
+          "text": "Search the web and tell me what year the first iPhone was released."
+        },
+        {
+          "speaker": "Epictetus",
+          "text": "The first iPhone was released on June"
+        }
+      ],
+      "rag": [
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.485 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 1, Chapter 18; Book 1, Chapter 28; Book 1, Chapter 18; Book 1, Chapter 15 · best cosine 0.485 >= 0.2315Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersBut so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes. The thief does not know wherein man's good consists, but he thinks that it consists in having fine clothes, the very thing which you also think. Must he not then come and take them away? When you show a cake to greedy persons, and swallow it all yourself, do you expect them not to snatch it from you? Do not provoke them do not have a window: do not air your clothes. I also lately had an iron lamp placed by the side of my household gods: hearing a noise at the door, I ran down, and found that the lamp had been carried off. I reflected that he who had taken the lamp had done nothing strange. What then? To-morrow, I said, you will find an earthen lamp: for a man only loses that which he has. I have lost my garment. The reason is that you had a garment. I have pain in my head. Have you any pain in your horns? Why then are you troubled? for we only lose those things, we have only pains about those things which we possess. But the tyrant will chain—what? the leg. He will take away—what? the neck. What then will he not chain and not take away? the will. This is why the antients taught the maxim, Know thyself.Book 1, Chapter 28That we ought not to be Angry with Men; and what are the Small and the Great Things among MenCan then a man think that a thing is useful to him and not choose it? He cannot. How says Medea? — \" 'Tis true I know what evil I shall do, But passion overpowers the better counsel.\" She thought that to indulge her passion and take vengeance on her husband was more profitable than to spare her children. It was so; but she was deceived. Show her plainly that she is deceived, and she will not do it; but so long as you do not show it, what can she follow except that which appears to herself (her opinion)? Nothing else. Why then are you angry with the unhappy woman that she has been bewildered about the most important things, and is become a viper instead of a human creature? And why not, if it is possible, rather pity, as we pity the blind and the lame, so those who are blinded and maimed in the faculties which are supreme? Whoever then clearly remembers this, that to man the measure of every act is the appearance (the opinion),—whether the thing appears good or bad: if good, he is free from blame; if bad, himself suffers the penalty, for it is impossible that he who is deceived can be one person, and he who suffers another person—whoever remembers this will not be angry with any man, will not be vexed at any man, will not revile or blame any man, nor hate nor quarrel with any man. So then all these great and dreadful deeds have this origin, in the appearance (opinion)? Yes, this origin and no other.Book 1, Chapter 18That we ought not to be Angry with the Errors (Faults) of othersIf you speak thus, you will see how inhuman this is which you say, and that it is just as if you would say, Ought we not to destroy this blind and deaf man? But if the greatest harm is the privation of the greatest things, and the greatest thing in every man is the will or choice such as it ought to be, and a man is deprived of this will, why are you also angry with him? Man, you ought not to be affected contrary to nature by the bad things of another. Pity him rather: drop this readiness to be offended and to hate, and these words which the many utter: \"these accursed and odious fellows.\" How have you been made so wise at once? and how are you so peevish? Why then are we angry? Is it because we value so much the things of which these men rob us? Do not admire your clothes, and then you will not be angry with the thief. Do not admire the beauty of your wife, and you will not be angry with the adulterer. Learn that a thief and an adulterer have no place in the things which are yours, but in those which belong to others and which are not in your power. If you dismiss these things and consider them as nothing, with whom are you still angry? But so long as you value these things, be angry with yourself rather than with the thief and the adulterer. Consider the matter thus: you have fine clothes; your neighbour has not you have a window; you wish to air the clothes.Book 1, Chapter 15What Philosophy promisesLayout 1 CHAPTER XV. what philosophy promises. When a man was consulting him how he should persuade his brother to cease being angry with him, Epictetus replied, Philosophy does not propose to secure for a man any external thing. If it did (or, if it were not, as I say), philosophy would be allowing something which is not within its province. For as the carpenter's material is wood, and that of the statuary is copper, so the matter of the art of living is each man's life.—What then is my brother's?—That again belongs to his own art; but with respect to yours, it is one of the external things, like a piece of land, like health, like reputation. But Philosophy promises none of these. In every circumstance I will maintain, she says, the governing part conformable to nature. Whose governing part? His in whom I am, she says. How then shall my brother cease to be angry with me? Bring him to me and I will tell him. But I have nothing to say to you about his anger. When the man, who was consulting him, said, I seek to know this, How, even if my brother is not reconciled to me, shall I maintain myself in a state conformable to nature? Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is. If you say to me now that you want a fig, I will answer to you that it requires time: let it flower first, then put forth fruit, and then ripen.",
+        "RAG grounded this turnvector + BM25, merged by reciprocal rank fusion · 0.362 cosine · minimum 0.2315 · automatic at 0.360 · accepted automatically · 4 passages selected: Book 2, Chapter 2; Book 1, Chapter 22; Book 1, Chapter 1; Book 3, Chapter 9 · best cosine 0.362 >= 0.2315Book 2, Chapter 2Of Tranquillity (Freedom from Perturbation)For this reason also it is ridiculous to say, Suggest something to me (tell me what to do). What should I suggest to you? Well, form my mind so as to accommodate itself to any event. Why that is just the same as if a man who is ignorant of letters should say, Tell me what to write when any name is proposed to me. For if I should tell him to write Dion, and then another should come and propose to him not the name of Dion but that of Theon, what will be done? what will he write? But if you have practised writing, you are also prepared to write (or to do) any thing that is required. If you are not, what can I now suggest? For if circumstances require something else, what will you say, or what will you do? Remember then this general precept and you will need no suggestion. But if you gape after externals, you must of necessity ramble up and down in obedience to the will of your master. And who is the master? He who has the power over the things which you seek to gain or try to avoid.Book 1, Chapter 22Of PraecognitionsWhat should we do then? This is the inquiry of the true philosopher who is in labour. Now I do not see what the Good is nor the Bad. Am I not mad? Yes. But suppose that I place the good somewhere among the things which depend on the will: all will laugh at me. There will come some greyhead wearing many gold rings on his fingers, and he will shake his head and say, Hear, my child. It is right that you should philosophize; but you ought to have some brains also: all this that you are doing is silly. You learn the syllogism from philosophers; but you know how to act better than philosophers do.—Man, why then do you blame me, if I know? What shall I say to this slave? If I am silent, he will burst. I must speak in this way: Excuse me, as you would excuse lovers: I am not my own master: I am mad.Book 1, Chapter 1Of the Things which are in our Power, and not in our PowerLayout 1 BOOK I. CHAPTER I. of the things which are in our power, and not in our power. Of all the faculties (except that which I shall soon mention), you will find not one which is capable of contemplating itself, and, consequently, not capable either of approving or disapproving. How far does the grammatic art possess the contemplating power? As far as forming a judgment about what is written and spoken. And how far music? As far as judging about melody. Does either of them then contemplate itself? By no means. But when you must write something to your friend, grammar will tell you what words you should write; but whether you should write or not, grammar will not tell you. And so it is with music as to musical sounds; but whether you should sing at the present time and play on the lute, or do neither, music will not tell you. What faculty then will tell you? That which contemplates both itself and all other things. And what is this faculty? The rational faculty; for this is the only faculty that we have received which examines itself, what it is, and what power it has, and what is the value of this gift, and examines all other faculties: for what else is there which tells us that golden things are beautiful, for they do not say so themselves? Evidently it is the faculty which is capable of judging of appearances. What else judges of music, grammar, and the other faculties, proves their uses, and points out the occasions for using them? Nothing else.Book 3, Chapter 9To a certain Rhetorician who was going up to Rome on a SuitAnd how do you differ? But have you sounder opinions than your adversary? Why? You think so. And so does he think that his opinions are better; and so do madmen. This is a bad criterion. But show to me that you have made some inquiry into your opinions and have taken some pains about them. And as now you are sailing to Rome in order to become governor of the Cnossians, and you are not content to stay at home with tho honours which you had, but you desire something greater and more conspicuous, so when did you ever make a voyage for the purpose of examining your own opinions, and casting them out, if you have any that are bad? Whom have you approached for this purpose? What time have you fixed for it? What age? Go over the times of your life by yourself, if you are ashamed of me (knowing the fact) when you were a boy, did you examine your own opinions? and did you not then, as you do all things now, do as you did do? and when you were become a youth and attended the rhetoricians, and yourself practised rhetoric, what did you imagine that you were deficient in? And when you were a young man and engaged in public matters, and pleaded causes yourself, and were gaining reputation, who then seemed your equal? And when would you have submitted to any man examining and showing that your opinions are bad? What then do you wish me to say to you?—Help me in this matter.—I have no theorem (rule) for this.",
+        "RAG rejected this turnvector + BM25, merged by reciprocal rank fusion · 0.188 cosine · minimum 0.2315 · automatic at 0.360 · below minimum cosine · No passages added · best cosine 0.188 < 0.2315, not grounding this turn"
+      ],
+      "tools": [
+        "Tool callwriting in the session log: I will pause and examine my judgment when I react.",
+        "Tool calllooking up: the iPhone and the year the first iPhone was released"
+      ],
+      "audio": [
+        {
+          "paused": false,
+          "muted": false,
+          "readyState": 4,
+          "hasStream": true
+        }
+      ],
+      "status": "Speaking"
+    }
+  ]
+}

@@ -24,11 +24,17 @@ main + RAG/review branch + proof-dashboard branch
 - The main voice model uses GPT-5.6 Luna with reasoning `none`.
 - One exact merged commit is deployed to Vercel and LiveKit Cloud.
 
-## Current status
+## Completed status
 
-- Source histories and the Luna migration are merged in the release worktree.
-- Combined Python and web checks, local browser checks, final judge review,
-  exact deployments, and one real combined call are release gates below.
+- Source histories and the Luna migration are merged in production commit
+  `73fc4ce`.
+- 66 Python tests, 67 web tests, Ruff, TypeScript, and the production build pass.
+- The independent judge returned `SHIP`.
+- Vercel deployment `dpl_71mLapYUSfKc6vXB2m2R6f7LUYoo` and LiveKit version
+  `ynTAeumzVE3r` are live from that exact commit.
+- One real `/proof` call verified room admission, active remote audio,
+  transcript, the exact `0.2315` RAG floor, both tools, chapter retention, and
+  the completed review draft with no browser error.
 
 ## Checks
 
