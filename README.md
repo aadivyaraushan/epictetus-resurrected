@@ -10,21 +10,31 @@ drew on appear beside the conversation as he speaks. He never cites them out
 loud — nobody quotes chapter numbers at their own lectures — so the panel does
 the citing and he does the talking.
 
+## → **https://epictetus-resurrected.vercel.app**
+
 > **Status of the deliverables** — read this first, it is the honest version.
 >
 > | | |
 > |---|---|
 > | Corpus, index, retrieval, evaluation | **done and measured** |
-> | Agent worker (speech, language model, voice, 4 tools, RAG) | **written, tests pass** |
-> | Web front end + token endpoint | **written, 18 tests pass, builds clean** |
+> | Agent worker (speech, language model, voice, 4 tools, RAG) | **done, 35 tests pass** |
+> | Web front end + token endpoint | **done, 18 tests pass, deployed** |
 > | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
-> | Deployed link | **not yet** — needs the API keys below |
+> | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
 > | Video | **not yet** |
 >
-> The worker has never completed a live call, because `DEEPGRAM_API_KEY`,
-> `ELEVENLABS_API_KEY` and `TAVILY_API_KEY` are not set. Nothing that depends on
-> hearing or speaking has been verified end to end. Everything claimed with a
-> number below was measured; everything not yet run says so.
+> **What has been verified with the real keys:** the worker registers with
+> LiveKit as `agent_name: epictetus`; the production token endpoint mints a
+> token with a unique room, minimal grants and agent dispatch; speech works in
+> both directions — a sentence spoken by ElevenLabs and fed back to Deepgram
+> came back word for word at confidence 1.000; and the persona holds in text,
+> with all four tools firing, nothing cited out loud, and no philosophy at
+> "hello".
+>
+> **What has not:** a full spoken call through a microphone, end to end. Every
+> component of it has been exercised, but not the whole thing at once, because
+> the verification here had no microphone. Everything claimed with a number was
+> measured; everything not run says so.
 
 ---
 
