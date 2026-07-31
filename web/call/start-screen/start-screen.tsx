@@ -14,7 +14,8 @@ import { DISCOURSES_QUOTES, pickDiscourseQuote } from "./quotes";
 export function StartScreen({
   onStart,
   connecting,
-  failure,
+  callFailure,
+  notionFailure,
   notion,
   notionBusy,
   onChooseDatabase,
@@ -22,7 +23,8 @@ export function StartScreen({
 }: {
   onStart: () => void;
   connecting: boolean;
-  failure: string | null;
+  callFailure: string | null;
+  notionFailure: string | null;
   notion: NotionConnection;
   notionBusy: boolean;
   onChooseDatabase: (id: string) => void;
@@ -40,7 +42,7 @@ export function StartScreen({
   }
 
   return (
-    <main className="shell">
+    <main className="shell start-shell og-start-shell">
       <header className="masthead">
         <div className="brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -78,8 +80,18 @@ export function StartScreen({
           {connecting ? "Waking him…" : "Start Call"}
         </button>
 
+        {callFailure && (
+          <p className="failure" role="alert">
+            {callFailure}
+          </p>
+        )}
+
         <div className="notion-connect">
-          {!notion.connected ? (
+          {notionBusy ? (
+            <p className="notion-status" aria-live="polite">
+              Checking Notion connection…
+            </p>
+          ) : !notion.connected ? (
             <>
               <a className="quiet button-link" href="/api/notion/connect">
                 Connect Notion
@@ -120,13 +132,13 @@ export function StartScreen({
               )}
             </>
           )}
-        </div>
 
-        {failure && (
-          <p className="failure" role="alert">
-            {failure}
-          </p>
-        )}
+          {notionFailure && (
+            <p className="failure notion-failure" role="alert">
+              {notionFailure}
+            </p>
+          )}
+        </div>
       </form>
     </main>
   );

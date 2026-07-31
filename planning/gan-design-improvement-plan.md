@@ -76,3 +76,52 @@ Save a dated result in `saved-results/` with:
 ## Start Gate
 
 Implementation starts only after the user confirms the preflight choices: visual direction, screen scope, treatment of the current dirty files, loop/time bound, and whether a real paid voice-call smoke test is allowed.
+
+## Revision — Restore Original Home (2026-07-31)
+
+The redesigned start screen did not improve the user's experience. Restore the
+pre-GAN centered home composition and compact masthead exactly, while retaining
+the redesigned live-call and review screens plus the safer split call/Notion
+error handling. Verify the restored desktop and mobile home against the saved
+baseline before handoff.
+
+## Release Plan — Vercel Production (2026-07-31)
+
+```text
+TESTED ISOLATED WORKTREE
+          |
+          v
+commit only intended product files
+          |
+          v
+link existing Vercel project
+epictetus-resurrected
+          |
+          v
+production deploy -> readiness check -> live browser canary
+          |
+          +---- unhealthy ----> restore previous Ready deployment
+          |
+          `---- healthy ------> save release evidence
+```
+
+- Keep the dirty local `main` worktree untouched; this repository has no Git
+  remote or pull-request path.
+- Deploy the verified `codex/gan-design-improvement` worktree directly to the
+  existing Vercel production project after explicit release clearance.
+- Re-run the 50-test suite, type check, production build, and diff review before
+  deployment.
+- Verify the production URL at desktop and mobile sizes, check the browser
+  console, confirm the expected home structure, and inspect the deployment
+  status.
+- If the new deployment is unhealthy, restore the previous Ready production
+  deployment instead of changing the dirty local `main` worktree.
+
+### Cleared release sequence
+
+The user explicitly chose to commit the current `main` files before release.
+Commit that existing work as its own baseline, commit the verified design work,
+merge the design branch into local `main`, and deploy the merged `main` tree to
+Vercel production. No Git remote or connected Vercel Git repository exists, so
+there is no external Git push target; direct Vercel deployment is the verified
+release path.
