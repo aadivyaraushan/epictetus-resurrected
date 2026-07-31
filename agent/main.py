@@ -60,7 +60,8 @@ log = logging.getLogger("agent.main")
 # here, in one place, and nowhere else -- swapping a vendor is an edit to this
 # block, not a search through the codebase.
 STT_MODEL = "nova-3"
-LLM_MODEL = "gpt-4.1"
+LLM_MODEL = "gpt-5.6-luna"
+LLM_REASONING_EFFORT = "none"
 TTS_MODEL = "eleven_turbo_v2_5"  # ElevenLabs' fast tier: character, latency clawed back
 
 server = AgentServer()
@@ -120,7 +121,17 @@ def build_stt() -> deepgram.STT:
 
 
 def build_llm() -> openai.LLM:
-    return openai.LLM(model=LLM_MODEL, temperature=0.75, api_key=_key("OPENAI_API_KEY"))
+    log.info(
+        "[agent.main] building LLM: model=%s reasoning=%s",
+        LLM_MODEL,
+        LLM_REASONING_EFFORT,
+    )
+    return openai.LLM(
+        model=LLM_MODEL,
+        reasoning_effort=LLM_REASONING_EFFORT,
+        temperature=0.75,
+        api_key=_key("OPENAI_API_KEY"),
+    )
 
 
 def build_turn_filter() -> LunaTurnFilter:

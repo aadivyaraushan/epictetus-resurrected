@@ -76,6 +76,18 @@ def test_llm_builds_from_the_variable_we_document(clean_env):
     assert build_llm() is not None
 
 
+def test_llm_uses_luna_without_reasoning_for_voice_tools(clean_env):
+    """Chat Completions tools require effective reasoning ``none`` on GPT-5.6.
+
+    Luna keeps this spoken path in the family's low-latency, low-cost role; the
+    explicit reasoning setting keeps both function tools available.
+    """
+    llm = build_llm()
+
+    assert llm._opts.model == "gpt-5.6-luna"
+    assert llm._opts.reasoning_effort == "none"
+
+
 def test_llm_says_which_variable_is_missing(clean_env):
     clean_env.delenv("OPENAI_API_KEY", raising=False)
     with pytest.raises(RuntimeError, match="OPENAI_API_KEY"):
