@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { GET as beginOAuth } from "./connect/route";
 import { GET as finishOAuth } from "./callback/route";
-import { DELETE, GET, POST } from "./route";
+import { DELETE, GET } from "./route";
 
 function cookieFrom(response: Response, name: string) {
   const match = response.headers.get("set-cookie")?.match(new RegExp(`${name}=([^;,]+)`));
@@ -77,7 +77,7 @@ describe("public Notion connection routes", () => {
     );
   });
 
-  it("lists accessible databases, selects one, and remembers it", async () => {
+  it("automatically binds the only accessible database", async () => {
     const start = await beginOAuth(new Request("http://localhost:3000/api/notion/connect"));
     const state = new URL(start.headers.get("location")!).searchParams.get("state")!;
     const stateCookie = cookieFrom(start, "notion_oauth_state");
@@ -132,23 +132,102 @@ describe("public Notion connection routes", () => {
     expect(await status.json()).toMatchObject({
       connected: true,
       workspaceName: "My Workspace",
-      databases: [{ id: "reviews", name: "Reviews" }],
-    });
-
-    const selection = await POST(
-      new Request("http://localhost:3000/api/notion", {
-        method: "POST",
-        headers: {
-          Cookie: `notion_session=${sessionCookie}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ dataSourceId: "reviews" }),
-      }),
-    );
-    expect(await selection.json()).toMatchObject({
       selectedDatabase: { id: "reviews", name: "Reviews", titleProperty: "Reflection" },
     });
-    expect(cookieFrom(selection, "notion_session")).toBeTruthy();
+    expect(cookieFrom(status, "notion_session")).toBeTruthy();
+  });
+
+  it("rejects a connection with no accessible database", async () => {
+    const start = await beginOAuth(new Request("http://localhost:3000/api/notion/connect"));
+    const state = new URL(start.headers.get("location")!).searchParams.get("state")!;
+    const stateCookie = cookieFrom(start, "notion_oauth_state");
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(
+          new Response(
+            JSON.stringify({
+              access_token: "notion-access",
+              refresh_token: "notion-refresh",
+              workspace_name: "My Workspace",
+            }),
+            { status: 200 },
+          ),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ results: [], has_more: false }), { status: 200 }),
+        ),
+    );
+    const callback = await finishOAuth(
+      new Request(`http://localhost:3000/api/notion/callback?code=code&state=${state}`, {
+        headers: { Cookie: `notion_oauth_state=${stateCookie}` },
+      }),
+    );
+
+    const status = await GET(
+      new Request("http://localhost:3000/api/notion", {
+        headers: { Cookie: `notion_session=${cookieFrom(callback, "notion_session")}` },
+      }),
+    );
+
+    expect(await status.json()).toEqual({
+      connected: false,
+      reconnectMessage:
+        "No database was shared. Reconnect and choose the Evening Reviews database itself.",
+    });
+    expect(status.headers.get("set-cookie")).toContain("notion_session=");
+  });
+
+  it("rejects a connection with more than one accessible database", async () => {
+    const start = await beginOAuth(new Request("http://localhost:3000/api/notion/connect"));
+    const state = new URL(start.headers.get("location")!).searchParams.get("state")!;
+    const stateCookie = cookieFrom(start, "notion_oauth_state");
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(
+          new Response(
+            JSON.stringify({
+              access_token: "notion-access",
+              refresh_token: "notion-refresh",
+              workspace_name: "My Workspace",
+            }),
+            { status: 200 },
+          ),
+        )
+        .mockResolvedValueOnce(
+          new Response(
+            JSON.stringify({
+              results: [
+                { object: "data_source", id: "reviews", title: [{ plain_text: "Reviews" }] },
+                { object: "data_source", id: "notes", title: [{ plain_text: "Notes" }] },
+              ],
+              has_more: false,
+            }),
+            { status: 200 },
+          ),
+        ),
+    );
+    const callback = await finishOAuth(
+      new Request(`http://localhost:3000/api/notion/callback?code=code&state=${state}`, {
+        headers: { Cookie: `notion_oauth_state=${stateCookie}` },
+      }),
+    );
+
+    const status = await GET(
+      new Request("http://localhost:3000/api/notion", {
+        headers: { Cookie: `notion_session=${cookieFrom(callback, "notion_session")}` },
+      }),
+    );
+
+    expect(await status.json()).toEqual({
+      connected: false,
+      reconnectMessage:
+        "More than one database was shared. Reconnect and choose only the Evening Reviews database.",
+    });
+    expect(status.headers.get("set-cookie")).toContain("notion_session=");
   });
 
   it("disconnects by clearing the browser session", async () => {

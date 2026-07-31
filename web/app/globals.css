@@ -388,7 +388,6 @@ body:has(.og-start-shell) {
   color: #6d6656;
 }
 
-.og-start-shell .notion-connect select,
 .review-form input,
 .review-form textarea {
   width: 100%;
@@ -397,13 +396,6 @@ body:has(.og-start-shell) {
   border-radius: var(--radius-field);
   background: var(--stone-1);
   color: var(--ink);
-}
-
-.og-start-shell .notion-connect select {
-  min-height: 44px;
-  padding: 9px 12px;
-  font-family: var(--font-interface);
-  font-size: 0.875rem;
 }
 
 .og-start-shell .connection-line {
@@ -424,13 +416,6 @@ body:has(.og-start-shell) {
   flex: 0 0 auto;
   border-radius: 50%;
   background: var(--success);
-}
-
-.og-start-shell .notion-connect label {
-  align-self: flex-start;
-  color: #6d6656;
-  font-family: var(--font-interface);
-  font-size: 12px;
 }
 
 .og-start-shell .notion-connect .hint {

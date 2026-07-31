@@ -239,10 +239,12 @@ database schema.
 ### Public Notion connection
 
 Each caller connects their own Notion workspace through the integration's public
-OAuth flow and chooses which shared database receives reviews. Access and refresh
+OAuth flow and shares exactly one database to receive reviews. The app binds that
+database automatically; a grant with zero or multiple databases is cleared and
+must be reconnected. Access and refresh
 tokens are encrypted in an HttpOnly, same-site browser cookie; they never enter
 browser JavaScript, LiveKit metadata, worker logs, or the transcript. The cookie
-keeps the selection available in the same browser and refreshes an expired token.
+keeps the database available in the same browser and refreshes an expired token.
 
 The old author passphrase and fixed Notion page path were removed. Notion is
 optional for speaking with Epictetus, but a connected database is required to

@@ -34,7 +34,7 @@ type Admission = {
   token: string;
 };
 
-const EMPTY_NOTION: NotionConnection = { connected: false, databases: [] };
+const EMPTY_NOTION: NotionConnection = { connected: false };
 
 export default function Page() {
   const [admission, setAdmission] = useState<Admission | null>(null);
@@ -110,27 +110,6 @@ export default function Page() {
     source.current.capturedCommitment = text;
   }, []);
 
-  const chooseDatabase = useCallback(async (dataSourceId: string) => {
-    if (!dataSourceId) return;
-    setNotionBusy(true);
-    setNotionFailure(null);
-    try {
-      const response = await fetch("/api/notion", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ dataSourceId }),
-      });
-      const body = await response.json();
-      if (!response.ok) throw new Error(body?.error ?? "Could not choose that database.");
-      setNotion((current) => ({ ...current, selectedDatabase: body.selectedDatabase }));
-    } catch (error) {
-      console.error("[page.notion] database selection failed", error);
-      setNotionFailure("Could not choose that database. Please try again.");
-    } finally {
-      setNotionBusy(false);
-    }
-  }, []);
-
   const disconnectNotion = useCallback(async () => {
     setNotionBusy(true);
     setNotionFailure(null);
@@ -149,7 +128,7 @@ export default function Page() {
     return (
       <ReviewScreen
         source={review}
-        databaseName={notion.selectedDatabase?.name ?? null}
+        databaseName={notion.connected ? notion.selectedDatabase.name : null}
         onNewCall={() => {
           setReview(null);
           setCallFailure(null);
@@ -169,7 +148,6 @@ export default function Page() {
         notionFailure={notionFailure}
         notion={notion}
         notionBusy={notionBusy}
-        onChooseDatabase={chooseDatabase}
         onDisconnectNotion={disconnectNotion}
       />
     );
@@ -193,7 +171,7 @@ export default function Page() {
       {/* Without this nothing he says is audible -- it renders the audio elements. */}
       <RoomAudioRenderer />
       <CallView
-        reviewDestination={notion.selectedDatabase?.name ?? null}
+        reviewDestination={notion.connected ? notion.selectedDatabase.name : null}
         onTurnsChange={rememberTurns}
         onCommitment={rememberCommitment}
         onEndCall={completeCall}

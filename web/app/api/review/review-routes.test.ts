@@ -118,6 +118,20 @@ describe("completed review routes", () => {
     expect(response.status).toBe(400);
   });
 
+  it("asks for a reconnect when no single database is bound", async () => {
+    const response = await save(
+      new Request("http://localhost:3000/api/review/save", {
+        method: "POST",
+        body: JSON.stringify({ completed: true }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      error: "Reconnect Notion and share exactly one database before saving.",
+    });
+  });
+
   it("writes exactly one page only after review completion", async () => {
     const session = sealNotionSession(
       {

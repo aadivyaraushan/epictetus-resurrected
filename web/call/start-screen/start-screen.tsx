@@ -18,7 +18,6 @@ export function StartScreen({
   notionFailure,
   notion,
   notionBusy,
-  onChooseDatabase,
   onDisconnectNotion,
 }: {
   onStart: () => void;
@@ -27,7 +26,6 @@ export function StartScreen({
   notionFailure: string | null;
   notion: NotionConnection;
   notionBusy: boolean;
-  onChooseDatabase: (id: string) => void;
   onDisconnectNotion: () => void;
 }) {
   const [frontQuote, setFrontQuote] = useState(DISCOURSES_QUOTES[0]);
@@ -94,11 +92,15 @@ export function StartScreen({
           ) : !notion.connected ? (
             <>
               <a className="quiet button-link" href="/api/notion/connect">
-                Connect Notion
+                {notion.reconnectMessage ? "Reconnect Notion" : "Connect Notion"}
               </a>
               <p className="hint">
-                Optional. Connect the workspace where you want completed reviews saved.
-                Epictetus never reads your Notion pages during a call.
+                {notion.reconnectMessage ?? (
+                  <>
+                    Optional. Connect the workspace where you want completed reviews saved.
+                    Epictetus never reads your Notion pages during a call.
+                  </>
+                )}
               </p>
             </>
           ) : (
@@ -107,29 +109,12 @@ export function StartScreen({
                 <span className="connection-dot" aria-hidden="true" />
                 Connected to {notion.workspaceName}
               </p>
-              <label htmlFor="review-database">Evening reviews database</label>
-              <select
-                id="review-database"
-                value={notion.selectedDatabase?.id ?? ""}
-                onChange={(event) => onChooseDatabase(event.target.value)}
-                disabled={notionBusy}
-              >
-                <option value="">Choose a database…</option>
-                {notion.databases.map((database) => (
-                  <option key={database.id} value={database.id}>
-                    {database.name}
-                  </option>
-                ))}
-              </select>
+              <p className="hint">
+                Evening reviews save to <strong>{notion.selectedDatabase.name}</strong>.
+              </p>
               <button className="quiet" type="button" onClick={onDisconnectNotion}>
                 Disconnect Notion
               </button>
-              {notion.databases.length === 0 && (
-                <p className="hint">
-                  No databases are shared with this connection yet. Reconnect and choose
-                  the page that contains your reviews database.
-                </p>
-              )}
             </>
           )}
 
@@ -144,9 +129,10 @@ export function StartScreen({
   );
 }
 
-export type NotionConnection = {
-  connected: boolean;
-  workspaceName?: string;
-  databases: { id: string; name: string }[];
-  selectedDatabase?: { id: string; name: string; titleProperty: string } | null;
-};
+export type NotionConnection =
+  | { connected: false; reconnectMessage?: string }
+  | {
+      connected: true;
+      workspaceName: string;
+      selectedDatabase: { id: string; name: string; titleProperty: string };
+    };

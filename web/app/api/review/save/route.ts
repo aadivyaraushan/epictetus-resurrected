@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const session = notionSessionFrom(request);
     if (!session?.selectedDatabase) {
       return NextResponse.json(
-        { error: "Connect Notion and choose a database before saving." },
+        { error: "Reconnect Notion and share exactly one database before saving." },
         { status: 409 },
       );
     }
