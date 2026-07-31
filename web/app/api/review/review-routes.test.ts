@@ -161,6 +161,9 @@ describe("completed review routes", () => {
           summary: "A summary.",
           nextStep: "Send the outline.",
           transcript: "You: I will send it.",
+          chaptersReferenced: [
+            { citation: "Book 4, Chapter 1", title: "About Freedom" },
+          ],
         }),
       }),
     );
@@ -169,5 +172,11 @@ describe("completed review routes", () => {
     expect(await response.json()).toEqual({ saved: true, pageId: "new-page" });
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher.mock.calls[0][0]).toBe("https://api.notion.com/v1/pages");
+    expect(String((fetcher.mock.calls[0][1] as RequestInit).body)).toContain(
+      "Chapters referenced",
+    );
+    expect(String((fetcher.mock.calls[0][1] as RequestInit).body)).toContain(
+      "Book 4, Chapter 1 — About Freedom",
+    );
   });
 });
