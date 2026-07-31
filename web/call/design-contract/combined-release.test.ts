@@ -36,9 +36,20 @@ describe("the proof route keeps the current call and review behavior", () => {
     const callView = read("call/live/call-view.tsx");
     const timeline = read("call/proof/proof-timeline.tsx");
 
-    expect(experience).toContain("proofAdmission={proofMode ? admission.proof : null}");
+    expect(experience).toContain(
+      "proofAdmission={proofMode && roomConnected ? admission.proof : null}",
+    );
     expect(callView).toContain("proofAdmission");
     expect(timeline).toContain("Proof timeline");
     expect(timeline).toContain("Room admitted");
+  });
+
+  it("does not call a token response an admitted room before LiveKit connects", () => {
+    const experience = read("call/experience/call-experience.tsx");
+
+    expect(experience).toContain("onConnected={() => setRoomConnected(true)}");
+    expect(experience).toContain(
+      "proofAdmission={proofMode && roomConnected ? admission.proof : null}",
+    );
   });
 });

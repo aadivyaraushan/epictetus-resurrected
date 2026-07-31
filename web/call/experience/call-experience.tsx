@@ -28,6 +28,7 @@ const EMPTY_NOTION: NotionConnection = { connected: false };
 
 export function CallExperience({ proofMode = false }: { proofMode?: boolean }) {
   const [admission, setAdmission] = useState<Admission | null>(null);
+  const [roomConnected, setRoomConnected] = useState(false);
   const [review, setReview] = useState<CallReviewSource | null>(null);
   const [notion, setNotion] = useState<NotionConnection>(EMPTY_NOTION);
   const [notionBusy, setNotionBusy] = useState(true);
@@ -70,6 +71,7 @@ export function CallExperience({ proofMode = false }: { proofMode?: boolean }) {
 
   const startCall = useCallback(async () => {
     setConnecting(true);
+    setRoomConnected(false);
     setCallFailure(null);
     source.current = { turns: [], capturedCommitment: "", chaptersReferenced: [] };
     try {
@@ -87,6 +89,7 @@ export function CallExperience({ proofMode = false }: { proofMode?: boolean }) {
 
   const leaveCall = useCallback(() => {
     setAdmission(null);
+    setRoomConnected(false);
     setConnecting(false);
   }, []);
 
@@ -163,6 +166,7 @@ export function CallExperience({ proofMode = false }: { proofMode?: boolean }) {
       connect={true}
       audio={true}
       video={false}
+      onConnected={() => setRoomConnected(true)}
       onDisconnected={leaveCall}
       onError={(error) => {
         console.error("[call-experience] room error", error);
@@ -178,7 +182,7 @@ export function CallExperience({ proofMode = false }: { proofMode?: boolean }) {
         onCommitment={rememberCommitment}
         onChaptersChange={rememberChapters}
         onEndCall={completeCall}
-        proofAdmission={proofMode ? admission.proof : null}
+        proofAdmission={proofMode && roomConnected ? admission.proof : null}
       />
     </LiveKitRoom>
   );

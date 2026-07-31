@@ -52,7 +52,7 @@ export function admissionEvent(admission: ProofAdmission): ProofEvent {
 function readableScore(score: number | null, minimum: number, automatic: number) {
   if (score === null) return "No similarity score";
   return `${score.toFixed(3)} cosine · minimum ${minimum.toFixed(
-    3,
+    4,
   )} · automatic at ${automatic.toFixed(3)}`;
 }
 

@@ -59,6 +59,7 @@ describe("proof-call events", () => {
 
     expect(grounded).toMatchObject({ category: "rag", title: "RAG grounded this turn" });
     expect(grounded?.detail).toContain("0.510 cosine");
+    expect(grounded?.detail).toContain("minimum 0.2315");
     expect(grounded?.detail).toContain("automatic at 0.360");
     expect(grounded?.detail).toContain("accepted automatically");
     expect(grounded?.detail).toContain("Book 1, Chapter 1");
