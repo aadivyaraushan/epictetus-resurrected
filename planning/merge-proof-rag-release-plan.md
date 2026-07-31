@@ -16,12 +16,19 @@ main + RAG/review branch + proof-dashboard branch
         `/` and `/proof`        combined RAG events
 ```
 
-## Done
+## Acceptance criteria
 
 - `/` keeps the current call, chapter evidence, and review draft behavior.
-- `/proof` is live and shows safe room, transcript, RAG, and tool events.
+- `/proof` shows safe room, transcript, RAG, and tool events.
 - Each RAG event accurately names the score path and Luna decision.
-- The same merged commit is deployed to Vercel and LiveKit Cloud.
+- The main voice model uses GPT-5.6 Luna with reasoning `none`.
+- One exact merged commit is deployed to Vercel and LiveKit Cloud.
+
+## Current status
+
+- Source histories and the Luna migration are merged in the release worktree.
+- Combined Python and web checks, local browser checks, final judge review,
+  exact deployments, and one real combined call are release gates below.
 
 ## Checks
 
@@ -36,4 +43,6 @@ main + RAG/review branch + proof-dashboard branch
 
 - Preserve the dirty main checkout and the original source worktrees.
 - Keep secrets out of files and browser-visible events.
-- Keep `0.2315`, `0.36`, and Luna `high` reasoning unchanged.
+- Keep retrieval boundaries at `0.2315` and `0.36`.
+- Keep voice Luna at reasoning `none`, retrieval-filter Luna at `none`, and the
+  post-call review draft at `high`.

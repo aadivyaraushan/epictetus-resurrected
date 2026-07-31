@@ -410,17 +410,31 @@ mismatch shows up as the container exiting instantly with an exec format error.
 of a call and registers with LiveKit to wait for dispatch. Per-request serverless
 cannot do that. If the worker is off, the link is dead.
 
-**The short path: LiveKit Cloud agent hosting.** One command from the repo root:
+**The short path: LiveKit Cloud agent hosting.** First make a gitignored
+`.env.worker` containing only the worker values from `.env`:
 
-```bash
-set -a && . ./.env && set +a && lk agent create --secrets-file .env .
+```text
+LIVEKIT_URL=
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
+OPENAI_API_KEY=
+DEEPGRAM_API_KEY=
+ELEVENLABS_API_KEY=
+ELEVENLABS_VOICE_ID=
+TAVILY_API_KEY=
 ```
 
-`--secrets-file .env` uploads the API keys to LiveKit so the hosted worker has
-them; that upload is the reason this command is left for a human to run rather
-than run from an agent session. Afterwards, `lk agent deploy .` pushes a new
-version and `lk agent list` shows it — the dispatch name should read
-`epictetus`, which is the name the token asks for.
+Then run this command from the repo root:
+
+```bash
+lk agent create --secrets-file .env.worker .
+```
+
+`--secrets-file` uploads those values to LiveKit so the hosted worker has them.
+Do not use the full `.env`: it also contains web-only Notion and review secrets
+that the worker does not need. Afterwards, `lk agent deploy .` pushes a new
+version and `lk agent list` shows it — the dispatch name should read `epictetus`,
+which is the name the token asks for.
 
 **Three things this cost an hour, all worth knowing before you start:**
 
