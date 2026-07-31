@@ -45,6 +45,7 @@ describe("review drafting", () => {
     expect(request.model).toBe("gpt-5.6-luna");
     expect(request.store).toBe(false);
     expect(request.max_output_tokens).toBe(500);
+    expect(request.reasoning).toEqual({ effort: "high" });
     expect(request.text.format).toMatchObject({
       type: "json_schema",
       name: "evening_review",
