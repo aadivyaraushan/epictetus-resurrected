@@ -290,8 +290,26 @@ narrative tools, the thing the brief actually asks for.
 |---|---|---|
 | `look_up_modern_thing` | web search | he's been dead 1,900 years and everything is unfamiliar |
 | `read_my_calendar` | Google Calendar | he asks what's actually on your plate |
-| `read_my_notes` | Notion | the same, for what you've written down |
+| `search_my_notion` | Notion search — free-text query across whatever I've shared with the integration, then reads the matching page | the same, for what you've written down |
 | `write_to_journal` | Notion write-back | Stoics ended the day writing down what they resolved |
+
+**Notes are searched, not queried against a fixed database.** The first draft
+named two Notion database ids, which meant deciding up front which notes
+Epictetus was allowed to see. Instead `search_my_notion` takes whatever he wants
+to look for — `POST /v1/search` needs no database id and returns any page shared
+with the integration — and a second call reads that page's blocks. He asks "have
+you written anything about this?" and goes and looks, which is both closer to
+the character and less setup.
+
+**Reads search; the write is pinned.** `write_to_journal` appends to one page id
+held in an env var (`PATCH /v1/blocks/{page_id}/children`, a normal page, not a
+database). Searching for the write target by title would mean a bad match writes
+into the wrong page, and a write that lands somewhere unexpected is worse than a
+read that misses.
+
+**What this needs from the user:** Notion's search only sees pages explicitly
+shared with the integration, so the scope is set in Notion's UI, not in code —
+which also makes it the natural privacy control.
 
 **Grader problem:** the grader isn't me. My calendar and Notion return nothing
 for them, and I'd be handing a company a public URL wired to my real accounts.
