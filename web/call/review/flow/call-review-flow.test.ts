@@ -18,9 +18,13 @@ describe("live call to completed review flow", () => {
         { id: "two", speaker: "epictetus", text: "Then name the hour." },
       ],
       captured ?? "",
+      [{ citation: "Book 2, Chapter 1", title: "On Tranquillity" }],
     );
 
     expect(review.capturedCommitment).toBe(commitment);
+    expect(review.chaptersReferenced).toEqual([
+      { citation: "Book 2, Chapter 1", title: "On Tranquillity" },
+    ]);
     expect(formatTranscript(review.turns)).toBe(
       "You: I will do it tomorrow.\n\nEpictetus: Then name the hour.",
     );
@@ -29,5 +33,22 @@ describe("live call to completed review flow", () => {
   it("ignores reflection and malformed activity messages", () => {
     expect(readCommitmentActivity({ kind: "reflection", commitment: "A fear." })).toBeNull();
     expect(readCommitmentActivity({ kind: "commitment", commitment: 42 })).toBeNull();
+  });
+
+  it("keeps only the first copy of each referenced chapter", async () => {
+    const { mergeReferencedChapters } = await import("../review-data");
+
+    expect(
+      mergeReferencedChapters(
+        [{ citation: "Book 2, Chapter 1", title: "On Tranquillity" }],
+        [
+          { citation: "Book 2, Chapter 1", title: "On Tranquillity" },
+          { citation: "Book 4, Chapter 1", title: "About Freedom" },
+        ],
+      ),
+    ).toEqual([
+      { citation: "Book 2, Chapter 1", title: "On Tranquillity" },
+      { citation: "Book 4, Chapter 1", title: "About Freedom" },
+    ]);
   });
 });

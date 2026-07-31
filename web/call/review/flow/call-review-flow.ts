@@ -1,4 +1,4 @@
-import type { CallReviewSource, TranscriptTurn } from "../review-data";
+import type { CallReviewSource, ReferencedChapter, TranscriptTurn } from "../review-data";
 
 export function readCommitmentActivity(body: unknown) {
   const activity = body as { kind?: unknown; commitment?: unknown };
@@ -12,6 +12,7 @@ export function readCommitmentActivity(body: unknown) {
 export function finishCallReview(
   turns: TranscriptTurn[],
   capturedCommitment: string,
+  chaptersReferenced: ReferencedChapter[] = [],
 ): CallReviewSource {
-  return { turns: [...turns], capturedCommitment };
+  return { turns: [...turns], capturedCommitment, chaptersReferenced: [...chaptersReferenced] };
 }

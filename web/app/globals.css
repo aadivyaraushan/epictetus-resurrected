@@ -746,6 +746,34 @@ body:has(.og-start-shell) {
   background: var(--stone-1);
 }
 
+.referenced-chapters {
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--line);
+}
+
+.referenced-chapters h2 {
+  margin: 0 0 var(--space-3);
+  color: var(--ink-muted);
+  font-family: var(--font-interface);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.referenced-chapters ul,
+.referenced-chapters p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-family: var(--font-reading);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.referenced-chapters ul {
+  padding-left: 1.25rem;
+}
+
 .review-transcript {
   color: var(--ink-muted) !important;
 }
