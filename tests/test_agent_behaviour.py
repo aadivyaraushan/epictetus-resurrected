@@ -217,7 +217,7 @@ async def test_a_failing_index_does_not_end_the_call():
 # --- 3. which tools exist at all ---------------------------------------------
 
 
-EXPECTED_TOOLS = {"look_up_modern_thing", "search_my_notion", "write_to_journal"}
+EXPECTED_TOOLS = {"look_up_modern_thing", "search_my_notion", "write_to_session_log"}
 
 
 def test_the_agent_exposes_exactly_the_three_planned_tools():
@@ -275,9 +275,46 @@ def test_a_demo_search_that_matches_nothing_still_says_something():
     assert DemoLife().search_notes("xylophone quarterly velocipede") == DemoLife().search_notes("")
 
 
-def test_a_journal_entry_can_be_written_and_read_back():
+def test_a_session_log_entry_can_be_written_and_read_back():
     """The write-back tool has to actually do something, even in demo, or
     Epictetus says he wrote it down and nothing happened."""
     life = DemoLife()
-    life.write_journal("Bear and forbear.")
-    assert "Bear and forbear." in [e["text"] for e in life.journal()]
+    life.write_session_log("Bear and forbear.")
+    assert "Bear and forbear." in [e["text"] for e in life.session_log()]
+
+
+def test_the_session_log_starts_empty():
+    """This is the whole reason it is a session log and not a journal. Nothing
+    is seeded, so a non-empty log is proof the write tool fired on this call --
+    there is no other way for a line to get in there."""
+    assert DemoLife().session_log() == []
+
+
+def test_a_written_entry_is_numbered_so_he_can_say_it_out_loud():
+    """"That is the third thing I have written down" is checkable by a listener
+    in a way that "I have written it down" is not."""
+    life = DemoLife()
+    assert life.write_session_log("first")["entry"] == 1
+    assert life.write_session_log("second")["entry"] == 2
+
+
+def test_an_empty_entry_is_refused_rather_than_written():
+    """A blank line in the log would look like a write that worked."""
+    with pytest.raises(ValueError):
+        DemoLife().write_session_log("   ")
+
+
+def test_nothing_keeps_a_journal_any_more():
+    """The journal became the session log (see the tool's docstring). Tool,
+    protocol method and both backends move together -- a half-finished rename
+    leaves a method that still works and is never called, which is worse than
+    one that is gone."""
+    from agent.persona.epictetus_agent import Epictetus
+    from agent.tools.personal.life_context import LifeContext, LifeSource
+    from agent.tools.personal.live_life import LiveLife
+
+    assert not hasattr(Epictetus, "write_to_journal")
+    assert not hasattr(LifeSource, "write_journal")
+    assert not hasattr(DemoLife(), "write_journal")
+    assert not hasattr(LiveLife, "write_journal")
+    assert "write_journal" not in LifeContext.__protocol_attrs__

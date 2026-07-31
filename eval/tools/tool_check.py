@@ -33,7 +33,16 @@ logging.basicConfig(level=logging.WARNING)
 PROMPTS = [
     ("look_up_modern_thing", "my therapist keeps telling me to try something called cold plunging, what even is that"),
     ("search_my_notion", "what did I write in my notes about work? can you look?"),
-    ("write_to_journal", "okay. I resolve to finish the draft by Friday and stop rewriting the intro. write that down for me"),
+    # Deliberately not a resolution and not an instruction to write. The old
+    # journal tool only fired on "I resolve to X, write that down"; a session
+    # log has to fire on an ordinary admission in the middle of a conversation,
+    # unprompted, or it is the same rare tool under a new name.
+    ("write_to_session_log", "I think the real reason I have not sent it is that I would rather it stay unfinished than be judged"),
+    # The other half of the session-log test. Telling him to keep a record hard
+    # enough that it fires unprompted is easy; the failure that costs is a tool
+    # call on "can you hear me", which the caller sees in the panel and which
+    # makes the log worthless as evidence of anything.
+    ("nothing", "hi, can you hear me okay?"),
 ]
 
 
@@ -45,7 +54,14 @@ class _NoGrounding:
 async def main():
     life = LifeSource(DemoLife(), DemoLife(), name="demo")
 
+    # `python eval/tools/tool_check.py log` runs only the prompts whose tool name
+    # contains "log". Iterating on one tool's wording should cost one model call,
+    # not three.
+    only = sys.argv[1] if len(sys.argv) > 1 else ""
+
     for expected, said in PROMPTS:
+        if only and only not in expected:
+            continue
         session = AgentSession(llm=build_llm())
         agent = Epictetus(_NoGrounding(), life)
         await session.start(agent=agent)
@@ -65,7 +81,10 @@ async def main():
             for e in result.events
             if getattr(e, "type", "") == "message" and getattr(e.item, "role", "") == "assistant"
         )
-        ok = "OK " if expected in fired else "MISS"
+        if expected == "nothing":
+            ok = "OK " if not fired else "FIRED"
+        else:
+            ok = "OK " if expected in fired else "MISS"
         print(f"\n{ok} expected {expected!r}, fired {fired}")
         print(f"     said:  {said[:70]}")
         print(f"     reply: {spoken[:220]}")

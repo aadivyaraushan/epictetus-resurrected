@@ -1,4 +1,10 @@
-"""The real notes and the real journal -- reached only with the passphrase.
+"""The real notes and the real session log -- reached only with the passphrase.
+
+The page the session log is appended to is still named by NOTION_JOURNAL_PAGE_ID.
+The variable kept its old name on purpose: it is a deployed secret on the hosted
+worker, and renaming it would mean the running worker looks for a variable that
+is not there until the secret is re-uploaded. The page it points at is the same
+page either way.
 
 Input:  credentials from the environment; nothing from the caller
 Output: the same shapes DemoLife produces, so the tools cannot tell them apart
@@ -69,6 +75,13 @@ def _plain_text(block: dict) -> str:
 class LiveLife:
     """My actual week. Constructed per call, so a revoked token is noticed."""
 
+    def __init__(self) -> None:
+        # Counted rather than read back. The number Epictetus says out loud is
+        # "how many I have written during this conversation", which is what a
+        # listener can check -- and counting it here costs nothing, where asking
+        # Notion would be another round trip in the middle of a spoken turn.
+        self._written = 0
+
     def search_notes(self, query: str) -> list[dict]:
         """Search everything shared with the integration, then read the best hit.
 
@@ -114,7 +127,7 @@ class LiveLife:
         )
         return notes
 
-    def journal(self) -> list[dict]:
+    def session_log(self) -> list[dict]:
         page_id = os.environ["NOTION_JOURNAL_PAGE_ID"]
         with httpx.Client(timeout=TIMEOUT) as http:
             response = http.get(
@@ -129,10 +142,10 @@ class LiveLife:
             if text
         ]
 
-    def write_journal(self, text: str) -> dict:
+    def write_session_log(self, text: str) -> dict:
         text = (text or "").strip()
         if not text:
-            raise ValueError("refusing to write an empty journal entry")
+            raise ValueError("refusing to write an empty entry")
 
         page_id = os.environ["NOTION_JOURNAL_PAGE_ID"]
         stamped = f"{date.today().isoformat()} — {text}"
@@ -155,5 +168,15 @@ class LiveLife:
             )
             response.raise_for_status()
 
-        log.info("[agent.tools.personal] live journal entry written (%d chars)", len(text))
-        return {"written": True, "where": "your Notion journal", "text": stamped}
+        self._written += 1
+        log.info(
+            "[agent.tools.personal] live session log entry %d written (%d chars)",
+            self._written,
+            len(text),
+        )
+        return {
+            "written": True,
+            "where": "your Notion page",
+            "text": stamped,
+            "entry": self._written,
+        }

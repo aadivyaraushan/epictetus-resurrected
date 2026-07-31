@@ -103,23 +103,27 @@ class Epictetus(Agent):
         )
 
     @function_tool
-    async def write_to_journal(self, context: RunContext, resolution: str) -> str:
-        """Write down what this person has resolved.
+    async def write_to_session_log(self, context: RunContext, note: str) -> str:
+        """Write one line into the record you are keeping of this conversation.
 
-        Use this near the end, once they have said what they will actually do --
-        the way you told your students to go over the day before sleeping. Write
-        their resolution in their own words, in one or two sentences, not your
-        advice.
+        Keep it as you go, not only at the end. Write a line whenever something
+        is worth keeping: when they finally say what is actually wrong, when
+        something you said lands, when they name what they will do. Arrian kept
+        such a record of your own conversations, which is the only reason any of
+        them survive.
+
+        Write what *they* said, in their words, in a sentence or two. Not your
+        advice, and not a summary of the whole call.
 
         Args:
-            resolution: what they resolved, in their words
+            note: the thing worth keeping, in their words
         """
-        await self._say_doing("writing in the journal", resolution)
+        await self._say_doing("writing in the session log", note)
         try:
-            written = await asyncio.to_thread(self._life.write_journal, resolution)
+            written = await asyncio.to_thread(self._life.write_session_log, note)
         except ValueError:
-            return "There was nothing to write down yet. Ask them what they will actually do."
-        return f"Written down in {written['where']}: {written['text']}"
+            return "There was nothing worth writing yet. Keep listening."
+        return f"Entry {written['entry']} in {written['where']}: {written['text']}"
 
     # --- telling the browser what he just did -------------------------------
 

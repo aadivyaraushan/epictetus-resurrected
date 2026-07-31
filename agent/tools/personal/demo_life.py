@@ -6,7 +6,7 @@ seeded notes the two personal tools would be dead weight in the one call that
 gets graded.
 
 Input:  nothing -- it is fixed
-Output: some notes, and a journal that can be written to
+Output: some notes, and an empty session log that can be written to
 
 The notes are deliberately about a *hard* week rather than a pleasant one,
 because Epictetus has nothing to say about an easy Tuesday. A performance review
@@ -34,15 +34,13 @@ NOTES = [
     "I am angry that the migration doc went unread and I have not said so to anyone who could fix it.",
 ]
 
-SEED_JOURNAL = [
-    "Lost my temper in standup over a two-line comment. Nobody else noticed. I did.",
-    "Said yes to Sophia before I had finished hearing the question.",
-]
-
-
 class DemoLife:
     def __init__(self) -> None:
-        self._journal = list(SEED_JOURNAL)
+        # Deliberately empty, unlike the notes above. The notes are seeded
+        # because a search that returns nothing looks broken; the session log is
+        # not, because an empty start is what makes it evidence. Every line in
+        # it got there by the write tool firing during this call.
+        self._log: list[str] = []
 
     def search_notes(self, query: str) -> list[dict]:
         """Matches on shared words, and returns everything when nothing matches.
@@ -62,20 +60,29 @@ class DemoLife:
         )
         return [{"text": text} for text in chosen]
 
-    def journal(self) -> list[dict]:
-        return [{"text": text} for text in self._journal]
+    def session_log(self) -> list[dict]:
+        return [{"text": text} for text in self._log]
 
-    def write_journal(self, text: str) -> dict:
+    def write_session_log(self, text: str) -> dict:
         """Kept in memory for the length of the call.
 
-        It does not survive a restart, and it does not need to -- what it has to
-        do is be readable back within the same conversation, so that when
+        It does not survive a restart, and it does not need to. What it has to
+        do is be readable back inside the same conversation, so that when
         Epictetus says he has written something down and the caller asks him to
         read it back, something is actually there.
         """
         text = (text or "").strip()
         if not text:
-            raise ValueError("refusing to write an empty journal entry")
-        self._journal.append(text)
-        log.info("[agent.tools.personal] demo journal entry written (%d chars)", len(text))
-        return {"written": True, "where": "the demo journal", "text": text}
+            raise ValueError("refusing to write an empty entry")
+        self._log.append(text)
+        log.info(
+            "[agent.tools.personal] demo session log entry %d written (%d chars)",
+            len(self._log),
+            len(text),
+        )
+        return {
+            "written": True,
+            "where": "the log of this conversation",
+            "text": text,
+            "entry": len(self._log),
+        }

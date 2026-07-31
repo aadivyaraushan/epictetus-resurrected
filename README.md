@@ -17,7 +17,7 @@ the citing and he does the talking.
 > | | |
 > |---|---|
 > | Corpus, index, retrieval, evaluation | **done and measured** |
-> | Agent worker (speech, language model, voice, 3 tools, RAG) | **done, 50 tests pass** |
+> | Agent worker (speech, language model, voice, 3 tools, RAG) | **done, 54 tests pass** |
 > | Web front end + token endpoint | **done, 18 tests pass, deployed** |
 > | Worker container | **builds clean** — 1.39 GB, index asserted at build time |
 > | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
@@ -79,7 +79,7 @@ the citing and he does the talking.
              Vercel serverless function                    │  │ 3 TOOLS        │  │
              signs the JWT with the LiveKit                │  │ look_up_modern │──┼──> web
              API secret (server-side only)                 │  │ search_notion  │──┼──> Notion
-                                                           │  │ write_journal  │──┼──> Notion
+                                                           │  │ write_log      │──┼──> Notion
                                                            │  └────────────────┘  │
                                                            └──────────────────────┘
 ```
@@ -226,7 +226,7 @@ among them (see above).
 |---|---|---|
 | `look_up_modern_thing` | web search | he has been dead 1,900 years and nothing is familiar |
 | `search_my_notion` | Notion search — free-text, then reads the page it found | he asks what you have written down when nobody was listening |
-| `write_to_journal` | Notion write-back | Stoics ended the day writing down what they resolved |
+| `write_to_session_log` | Notion write-back | Arrian kept a record of these conversations; that record *is* the Discourses |
 
 All three return prose, not JSON, because the model is about to say the result out
 loud. All three publish a line to the browser before they run, so a second of
@@ -238,6 +238,23 @@ which needs no database id and reaches any page shared with the integration; a
 second call reads that page's blocks. The write is the exception — it appends to
 one pinned page id, because a bad title match on a *write* puts text somewhere
 the caller did not expect, which is worse than a read that simply misses.
+
+**The write tool logs the whole conversation, not just a resolution at the end.**
+It began as a journal: use it once the caller has said what they will actually
+do. That fired almost never. The first real call ran thirteen turns and wrote
+nothing, because nobody had reached a resolution by the end — the tool was
+correct and useless at the same time. Now it is a running log he adds to
+whenever something is worth keeping, which fires several times in a normal call.
+
+Two things fell out of that change. The log **starts empty on every call**,
+where the demo notes stay seeded, so a non-empty log is proof the write ran —
+there is no other way for a line to get in. And each write comes back **numbered**,
+so he says "that is the third thing I have written down", which a listener can
+check against the panel.
+
+It is also better in character, not worse. Arrian sat in these lectures taking
+notes; the *Discourses* are that record. A session log is the thing the corpus
+literally is.
 
 **Google Calendar was cut.** An earlier version had a fourth tool reading my
 calendar. It was the most setup in the project (OAuth consent screens, redirect

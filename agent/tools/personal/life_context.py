@@ -43,9 +43,9 @@ class LifeContext(Protocol):
 
     def search_notes(self, query: str) -> list[dict]: ...
 
-    def journal(self) -> list[dict]: ...
+    def session_log(self) -> list[dict]: ...
 
-    def write_journal(self, text: str) -> dict: ...
+    def write_session_log(self, text: str) -> dict: ...
 
 
 def choose_life_backend(participant, live_available: bool) -> str:
@@ -103,11 +103,11 @@ class LifeSource:
     def search_notes(self, query: str) -> list[dict]:
         return self._try("search_notes", query)
 
-    def journal(self) -> list[dict]:
-        return self._try("journal")
+    def session_log(self) -> list[dict]:
+        return self._try("session_log")
 
-    def write_journal(self, text: str) -> dict:
-        return self._try("write_journal", text)
+    def write_session_log(self, text: str) -> dict:
+        return self._try("write_session_log", text)
 
 
 def build_life_context(participant, *, live_factory=None) -> LifeSource:

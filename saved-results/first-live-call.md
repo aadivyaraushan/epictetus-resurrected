@@ -81,6 +81,10 @@ knowledge of himself, which is not nothing, and the source panel honestly shows 
    wrong; it is not enough to move a number on.
 2. **No tool fired.** `look_up_modern_thing`, `search_my_notion` and `write_to_journal`
    were all available and none came up naturally. They are verified separately, in text.
+   *(Later the same day, this finding is what turned `write_to_journal` into
+   `write_to_session_log` — a tool that only fires on an explicit resolution is a tool
+   that never fires. See `what-makes-each-tool-fire.md`. The other two are unchanged, and
+   the retrieval numbers in this file are unaffected.)*
 3. **Nothing here measures whether the answers were any good** — only which passages went
    into the prompt. Quality of the reply is a human judgement and was not scored.
 
