@@ -11,6 +11,7 @@ include = ["agent*"]
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-q --strict-markers"
+asyncio_mode = "auto"
 markers = [
     "needs_index: requires the built vector index (run corpus + index build first)",
     "needs_openai: requires OPENAI_API_KEY and spends money",
