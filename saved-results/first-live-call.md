@@ -1,5 +1,9 @@
 # The first real spoken call — what the relevance gate did on live speech
 
+> **Historical result:** this call supported the former `0.36` gate. A later
+> conversation exposed required turns below it; the replacement is documented
+> in [`rag-luna-filter-2026-07-31.md`](rag-luna-filter-2026-07-31.md).
+
 **Date:** 2026-07-31, 06:26–06:32 local
 **What this is for:** every number in `retrieval-parameters.md` was measured against
 written questions. This is the first time the gate met a person talking. It is the
