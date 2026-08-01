@@ -4,11 +4,12 @@ A voice agent you have a real spoken conversation with. He is Epictetus — born
 slave, lamed, exiled from Rome, and now sitting somewhere in 2026 being asked
 about a job he hates and a father he is not speaking to.
 
-Everything he says is checked against his own recorded teaching first. The
-*Discourses* are indexed, searched on **every single turn**, and the passages he
-drew on appear beside the conversation as he speaks. He never cites them out
-loud — nobody quotes chapter numbers at their own lectures — so the panel does
-the citing and he does the talking.
+Everything he says passes through the grounding hook first. Substantive turns
+search the indexed *Discourses*; short acknowledgements stop before the search,
+and low-relevance turns use no passages. When passages are retained, they appear
+beside the conversation as he speaks. He never cites them out loud — nobody
+quotes chapter numbers at their own lectures — so the panel does the citing and
+he does the talking.
 
 ## → **https://epictetus-resurrected.vercel.app**
 
@@ -52,7 +53,7 @@ the citing and he does the talking.
 >
 > **Also verified with the real keys:** the worker registers with LiveKit as
 > `agent_name: epictetus`; the production token endpoint mints a token with a
-> unique room, minimal grants and agent dispatch; a sentence spoken by ElevenLabs
+> unique room, room-scoped grants and agent dispatch; a sentence spoken by ElevenLabs
 > and fed back to Deepgram came back word for word at confidence 1.000; and the
 > persona holds, with the tools firing, nothing cited out loud, and no philosophy
 > at "hello".
@@ -62,10 +63,28 @@ the citing and he does the talking.
 
 ---
 
+## Technical deep dives
+
+The root README gives the end-to-end argument. These documents trace each
+important flow through its inputs, decisions, failure paths, evidence, and
+trade-offs:
+
+| Document | What it explains |
+|---|---|
+| [Room setup and token permissions](docs/architecture/room-setup-and-token-permissions.md) | Fresh rooms, server-side signing, the 30-minute room-scoped token, exact grants, worker dispatch, and recovery paths |
+| [Voice pipeline and latency choices](docs/architecture/voice-pipeline-and-latency.md) | Deepgram, Luna, ElevenLabs, Silero, prewarming, per-turn timing, degraded operation, and what latency was and was not measured |
+| [Agent tools, call log, and Notion review](docs/grounding/agent-tools-call-log-and-notion-review.md) | The two narrow tools, caller-worded in-memory state, visible activity, protected review drafting, editable approval, and Notion persistence |
+| [RAG retrieval, fusion, thresholds, and evidence](docs/grounding/rag-retrieval-fusion-thresholds-and-evidence.md) | PDF parsing, chapter-safe chunks, vector + BM25 search, reciprocal-rank fusion, the three-way gate, evaluation design, results, and limits |
+
+Each claim in these documents points back to current code or a saved measurement.
+Design intentions are labeled separately from measured results.
+
+---
+
 ## What it looks like
 
 ```
-  BROWSER (Vercel)                LIVEKIT CLOUD              AWS (agent worker)
+  BROWSER (Vercel)             LIVEKIT CLOUD ROOMS       HOSTED AGENT (LiveKit Cloud)
  ┌────────────────────┐          ┌──────────────┐          ┌──────────────────────┐
  │ Next.js app        │          │              │          │ Python worker        │
  │                    │  WebRTC  │              │  WebRTC  │ (livekit-agents)     │
@@ -78,10 +97,10 @@ the citing and he does the talking.
  │ │ Book II Ch. 5  │ │          │              │          │  └────────────────┘  │
  │ │ "..."          │ │          └──────────────┘          │          │           │
  │ └────────────────┘ │                 ^                  │          v           │
- │ [End → review]     │                 │                  │  RETRIEVAL runs on   │
- └────────┬───────────┘                 │                  │  EVERY turn — it is  │──> index
-          │                             │                  │  NOT a tool          │   (in image,
-          │  POST /api/token            │                  │          +           │    in repo)
+ │ [End → review]     │                 │                  │  GROUNDING CHECK on │
+ └────────┬───────────┘                 │                  │  EVERY turn — RAG is│──> index
+          │                             │                  │  NOT a tool          │    (in repo)
+          │  POST /api/token            │                  │          +           │
           └─────────────────────────────┘                  │  ┌────────────────┐  │
              Vercel serverless function                    │  │ 2 TOOLS        │  │
              signs the JWT with the LiveKit                │  │ look_up_modern │──┼──> web
@@ -119,26 +138,30 @@ builds its own and can prove it is faithful:
    survived the round trip.
 
 **95 chapters, 4 books, 118,841 words.** Chunked into **539 pieces**, each
-carrying its book, chapter, title and page. Committed to `index/`, 18 MB, so
-nothing has to be rebuilt to run this.
+carrying its book, chapter, title and chapter start page. Committed to `index/`,
+18 MB, so nothing has to be rebuilt to run this.
 
 ### Retrieval is not a tool, and that is the main design decision
 
 The obvious way to add RAG to an agent is to give it a `search_the_discourses`
 tool and let the model decide when to call it. This does not do that. Retrieval
-runs in `on_user_turn_completed`, on **every** turn, before the model produces
-anything.
+runs from `on_user_turn_completed` before the model produces anything. That hook
+runs on **every** turn; its first gate skips search and embedding when the turn
+has fewer than four words.
 
 The reason is uncomfortable: **a general language model may already know a great
 deal about Epictetus.** Hand it a retrieval tool and it can skip the tool,
 answer from memory, and sound completely right. The demo would look perfect and the graded
-system would be doing nothing. Running retrieval unconditionally means the
-passages are either in the prompt or provably were not, and there is no path
-where the model quietly routes around the thing being assessed.
+system would be doing nothing. Running the grounding decision unconditionally
+means passages are either in the prompt or the measured gates visibly declined
+them; there is no path where the model quietly routes around the thing being
+assessed.
 
-The cost is one embedding call per searchable turn — about 20 tokens and roughly
-250 ms, overlapping with speech that is still arriving. Matches from 0.2315 up
-to 0.36 also pay for one tiny GPT-5.6 Luna intent check; stronger matches do not.
+The cost is one embedding call per searchable turn — about 20 tokens, with later
+recorded median retrieval times of 252 ms and 269 ms on the two evaluation sets.
+The hook runs after the caller's turn completes and before response generation.
+Matches from 0.2315 up to 0.36 also pay for one tiny GPT-5.6 Luna intent check;
+stronger matches do not.
 
 ### Hybrid search, and proof it earns its keep
 
@@ -269,10 +292,13 @@ optional for speaking with Epictetus, but a connected database is required to
 save the completed review.
 
 The paid summary route accepts only a short-lived, server-signed permit issued
-when a call starts. It caps transcript and commitment size, consumes the permit
-after a successful draft, and limits repeated attempts from one forwarded
-network address. Deployment-level rate limiting should remain enabled as the
-outer protection when the app is public.
+with the room-token response. It caps transcript and commitment size and limits
+repeated attempts from one forwarded network address. The normal browser flow
+clears the permit cookie after a successful draft, but the server does not keep a
+used-nonce store: a copied cookie value remains replayable until its 30-minute
+expiry. The permit therefore proves recent room admission was requested, not
+that a call connected or completed. Deployment-level rate limiting should remain
+enabled as the outer protection when the app is public.
 
 ---
 
@@ -281,9 +307,9 @@ outer protection when the app is public.
 **Assumptions I made rather than asked about:**
 
 1. **"Deploy on Vercel/AWS" vs "hosted locally or on AWS (bonus points)".** The
-   brief says both. I went with AWS for the worker: it satisfies the strict
-   sentence *and* collects the bonus, so it is the only reading that cannot lose
-   points. The front end and token endpoint are on Vercel regardless.
+   brief says both. The front end and token endpoint are on Vercel, while the
+   long-running worker is hosted by LiveKit Cloud. That makes the public call
+   work without a local process, but it does not claim the AWS bonus.
 2. **A grader will ask about a specific fact in a specific chapter.** That shaped
    the whole evaluation: the metric is "is the right chapter in the top 4".
 3. **The Long translation is acceptable** as the *Discourses* — it is the standard
@@ -295,7 +321,8 @@ outer protection when the app is public.
 
 **Decisions worth naming:**
 
-- **Retrieval on every turn, not as a tool** — the central one, argued above.
+- **Grounding decision on every turn, RAG not exposed as a tool** — the central
+  one, argued above. Turns under four words stop before search or embedding.
 - **The gate reads raw similarity, not the fusion score.** The plan originally
   said to gate on the best fusion score. Fusion scores describe *rank*, not
   relevance: the top result scores about the same whether it is a perfect match
@@ -539,9 +566,10 @@ agent/           the worker
   retrieval/       PDF parsing, chunking, hybrid search, the gate
   tools/           web search for unfamiliar modern things
 corpus/          the Discourses: fetch it, typeset it, and the PDF itself
-index/           the committed vector store and keyword index
+index/           committed vector store and docstore; BM25 rebuilds at startup
 eval/            the retrieval harness and both question sets
 web/             Next.js call, OAuth, review, and save routes
+docs/            detailed architecture and grounding flows
 deploy/worker/   Dockerfile for the agent worker
 saved-results/   measurements, with the reasoning that used them
 planning/        the plan this was built from

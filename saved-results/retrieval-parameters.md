@@ -35,11 +35,13 @@ That headline is true and also flattering. The rest of this file is about why.
 ## What was built
 
 - **Corpus:** the *Discourses*, 95 chapters across 4 books, 118,841 words.
-- **Chunks:** 539, from `SentenceSplitter`, each tagged with book, chapter, title and page.
-- **Index:** vector embeddings (`text-embedding-3-small`) plus a BM25 keyword index,
-  both saved to `index/` and committed. 18 MB on disk.
+- **Chunks:** 539, from `SentenceSplitter`, each tagged with book, chapter, title and chapter start page.
+- **Index:** vector embeddings (`text-embedding-3-small`) and the shared docstore are
+  saved to `index/` and committed. BM25 rebuilds from that docstore when the worker
+  starts; there is no separately persisted keyword index. 18 MB on disk.
 - **Build cost:** 160,943 tokens embedded, $0.0032, once.
-- **Runtime cost:** one embedding of the user's sentence per turn. Roughly 20 tokens.
+- **Runtime cost:** one embedding of the user's sentence per searchable turn
+  (four or more whitespace-separated words). Roughly 20 tokens.
 
 Search runs both sides and merges them with reciprocal rank fusion — each result list
 contributes 1/(60 + its position) for every chunk, and the contributions are added up.
