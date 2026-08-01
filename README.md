@@ -24,10 +24,10 @@ he does the talking.
 > | Deployed link | **live** — front end on Vercel, token endpoint verified in production |
 > | Hosted worker | **live** — LiveKit Cloud, US East, registered as `epictetus` |
 > | Spoken call, end to end | **done** — see the transcript of the gate below |
-> | Video | **not yet** |
+> | Video | **[public 4:59 walkthrough](https://youtu.be/r2JJW_KUcdQ)** |
 >
 > **A real spoken call was made through the deployed link** — thirteen
-> turns over six minutes, no errors. Retrieval ran on every one of them, and
+> turns over six minutes, no errors. The grounding hook ran on every one of them;
 > **three cleared the former 0.36-only gate**:
 >
 > | turn | cosine | grounded on |
@@ -58,8 +58,8 @@ he does the talking.
 > persona holds, with the tools firing, nothing cited out loud, and no philosophy
 > at "hello".
 >
-> **What is still open:** the video is not recorded. Everything claimed with a
-> number was measured; everything not run says so.
+> **Video:** the public walkthrough is [available on YouTube](https://youtu.be/r2JJW_KUcdQ).
+> Everything claimed with a number was measured; everything not run says so.
 
 ---
 
