@@ -96,13 +96,14 @@ knowledge of himself, which is not nothing, and the source panel honestly shows 
 
 ## How to reproduce
 
-Start the worker, open the deployed link, and talk. The gate's decision for every turn is
-logged by `retrieval.search` with the turn text beside the score:
+Start the worker, open the deployed link, and talk. The gate logs one privacy-safe
+decision line per searchable turn: input character count, selected citations, cosine
+score, and which side of the gate it fell on:
 
 ```bash
 grep "retrieval.search\]" worker.log | grep -v "ready:"
 ```
 
-That one line per turn — what was said, what came back, the cosine, and which side of the
-gate it fell on — is what made this write-up possible, and is the reason the log prints
-the turn text rather than the score alone.
+That decision line is enough to verify the gate without retaining the caller's words in
+hosted logs. The paraphrased turns earlier in this document are the human-readable record
+used for this write-up.

@@ -218,25 +218,11 @@ The index is committed, so none of this rebuilds it. To rebuild from the PDF:
 
 ---
 
-## Accounts charged
+## Cost and account privacy
 
-All paid services in this project bill to the user's **personal account**, approved on
-2026-07-31 in two steps: first for OpenAI (*"its my personal account, okay to spend go
-ahead and use it"*), then for the rest via an explicit yes to a named estimate of under
-$5.
-
-| service | what identifies the account | how it was established |
-|---|---|---|
-| Deepgram | project `aadivya.raushan@gmail.com's Project` | read from the Deepgram projects API |
-| ElevenLabs | tier `payg`, 0 / 37,472 characters used at approval | read from `/v1/user`; the API does not expose the email |
-| LiveKit | project `bluejay-project-0gpdkfm2` | from `LIVEKIT_URL` |
-| Vercel | user `aadivyaraushan`, scope `aadivyaraushans-projects` | `vercel whoami` |
-| Tavily | not exposed by the API | key verified working (HTTP 200) only |
-| OpenAI | **never programmatically identified** | the user's own statement — see below |
-
-The OpenAI account is worth being precise about: two attempts to read its email from the
-API were blocked by the sandbox's permission classifier, and no attempt was made to route
-around that. "Personal account" there is the user's statement, not something verified.
+Paid services were used only after explicit approval. Account emails, project
+identifiers, approval-message text, and other billing-account details are intentionally
+omitted from this public artifact.
 
 **Rough cost.** Embeddings to date: about half a cent, one time. Per five-minute call,
 roughly: Deepgram ~$0.04 (~$0.008/min), ElevenLabs ~3,000 characters against the 37,472

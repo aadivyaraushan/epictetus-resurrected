@@ -181,8 +181,8 @@ class PassageSearch:
         keyword_hits = self._bm25.retrieve(bundle)
 
         log.debug(
-            "[retrieval.search] %r -> %d vector, %d keyword candidates",
-            question[:60],
+            "[retrieval.search] question_chars=%d -> %d vector, %d keyword candidates",
+            len(question),
             len(vector_hits),
             len(keyword_hits),
         )
@@ -214,8 +214,8 @@ class PassageSearch:
             else f"best cosine {best_cosine:.3f} < {MIN_COSINE_TO_GROUND}, not grounding this turn"
         )
         log.info(
-            "[retrieval.search] %r -> %s | %s",
-            question[:60],
+            "[retrieval.search] question_chars=%d -> %s | %s",
+            len(question),
             [p.citation for p in passages] if grounded else "no passages",
             reason,
         )

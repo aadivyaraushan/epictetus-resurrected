@@ -55,6 +55,8 @@ def look_up(query: str) -> str:
     if not query:
         return CANNOT_LOOK
 
+    query_chars = len(query)
+
     if not web_search_available():
         log.warning("[agent.tools.web] TAVILY_API_KEY is not set; cannot look anything up")
         return CANNOT_LOOK
@@ -71,7 +73,7 @@ def look_up(query: str) -> str:
             timeout=TIMEOUT_SECONDS,
         )
     except Exception:
-        log.exception("[agent.tools.web] search failed for %r", query[:80])
+        log.exception("[agent.tools.web] search failed (query_chars=%d)", query_chars)
         return CANNOT_LOOK
 
     answer = (response.get("answer") or "").strip()
@@ -82,8 +84,8 @@ def look_up(query: str) -> str:
     found = answer or " ".join(s for s in snippets if s)
 
     if not found:
-        log.info("[agent.tools.web] %r returned nothing usable", query[:80])
+        log.info("[agent.tools.web] query_chars=%d returned nothing usable", query_chars)
         return CANNOT_LOOK
 
-    log.info("[agent.tools.web] %r -> %d chars", query[:80], len(found))
+    log.info("[agent.tools.web] query_chars=%d -> %d chars", query_chars, len(found))
     return found[:1200]

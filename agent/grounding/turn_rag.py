@@ -104,7 +104,10 @@ class Grounding:
         text = (text or "").strip()
 
         if not worth_searching(text):
-            log.debug("[agent.grounding] %r is too short to search; skipping", text)
+            log.debug(
+                "[agent.grounding] turn_chars=%d is too short to search; skipping",
+                len(text),
+            )
             await self._show(
                 [],
                 status="skipped",
